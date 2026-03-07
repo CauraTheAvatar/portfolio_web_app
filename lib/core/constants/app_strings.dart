@@ -47,6 +47,106 @@ class AppStrings {
   static const String projectsTitle    = "Projects";
   static const String projectsSubtitle = "A selection of things I've built.";
   static const String projectsBack     = "Back to Projects";
+  static const String back             = "Back";
+
+  // Software sub-categories 
+  static const String subWeb           = "Web Applications";
+  static const String subWebDesc       = "Full-stack and frontend web apps built for the browser.";
+  static const String subMobile        = "Mobile Applications";
+  static const String subMobileDesc    = "Cross-platform mobile apps built with Flutter.";
+  static const String subGithub        = "GitHub Projects";
+  static const String subGithubDesc    = "Open source and personal repositories.";
+
+  // Firebase Storage base 
+  // Replace YOUR_BUCKET with your Firebase project's storage bucket name.
+  // All image URLs follow this pattern:
+  //   https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o/PATH?alt=media
+  //
+  // After uploading images to Firebase Storage, paste the download URLs here.
+  // No other file needs to change — all screens reference these constants.
+
+  static const String _fb = 'https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o';
+
+  // Profile image (hero section)
+  static const String fbProfileImage     = '$_fb/profile%2Fprofile.jpg?alt=media';
+
+  // Software — Prayer Box
+  static const String fbPrayerBoxWeb     = '$_fb/projects%2Fprayer_box_web.jpg?alt=media';
+  static const String fbPrayerBoxMobile  = '$_fb/projects%2Fprayer_box_mobile.jpg?alt=media';
+
+  // WordPress — Cao Cao
+  static const String fbCaoCao           = '$_fb/projects%2Fcao_cao.jpg?alt=media';
+
+  // Data Engineering — Pipeline
+  static const String fbDataPipeline     = '$_fb/projects%2Fdata_pipeline.jpg?alt=media';
+
+  // UI Design gallery images — add one constant per design upload
+  // static const String fbUIPrayerBox   = '$_fb/ui%2Fprayer_box_ui.jpg?alt=media';
+
+  // Graphic Design gallery images — add one constant per image upload
+  // Posters
+  // static const String fbPoster1       = '$_fb/graphic%2Fposters%2Fposter_1.jpg?alt=media';
+  // Brand Graphics
+  // static const String fbBrand1        = '$_fb/graphic%2Fbrand%2Fbrand_1.jpg?alt=media';
+  // Event Graphics
+  // static const String fbEvent1        = '$_fb/graphic%2Fevents%2Fevent_1.jpg?alt=media';
+
+  // Prayer Box project
+  static const String projPrayerBoxTitle   = "Prayer Box";
+  static const String projPrayerBoxDesc    = "A cross-platform prayer journaling app that helps users record, organise and reflect on their prayers. Built with Flutter and Firebase.";
+  static const String projPrayerBoxWeb     = "https://prayer-box.web.app";
+  static const String projPrayerBoxGithub  = "https://github.com/yourname/prayer-box";
+
+  // GitHub listing
+  static const String githubProfile        = "https://github.com/yourname";
+
+  // WordPress 
+  static const String projCaoCaoTitle  = "Cao Cao Investment Website";
+  static const String projCaoCaoDesc   = "Corporate investment firm website built on WordPress. Includes service pages, team profiles, and a contact portal.";
+  static const String projCaoCaoUrl    = "https://caocaoinvestments.com";
+
+  // Data Engineering 
+  static const String projPipelineTitle  = "Scalable Data Pipeline";
+  static const String projPipelineDesc   = "An end-to-end data pipeline built for scalability. Handles ingestion, transformation, and loading across distributed sources.";
+  static const String projPipelineGithub = "https://github.com/yourname/scalable-data-pipeline";
+
+  // Data Analytics sub-categories 
+  static const String subDataFull      = "Data Analytics";
+  static const String subDataFullDesc  = "Full project documentation and analysis reports.";
+  static const String subDataViz       = "Data Visualization";
+  static const String subDataVizDesc   = "Tableau Public dashboards and interactive visualizations.";
+  static const String subDataCode      = "Code";
+  static const String subDataCodeDesc  = "Analysis scripts and notebooks stored on GitHub.";
+  static const String tableauProfile   = "https://public.tableau.com/app/profile/yourname";
+
+  // Data Analytics project list 
+  // Each entry: title, summary, docUrl
+  // docUrl → Google Drive / Dropbox / direct PDF link for download button
+  static const List<Map<String, String>> analyticsProjects = [
+    {
+      'title':   'Customer Churn Analysis',
+      'summary': 'Cohort analysis identifying churn drivers across customer segments. Includes predictive modelling and actionable recommendations.',
+      'docUrl':  'https://drive.google.com/your-doc-link',
+    },
+    {
+      'title':   'Sales Performance Dashboard',
+      'summary': 'End-to-end sales analysis covering revenue trends, regional performance, and YoY comparisons.',
+      'docUrl':  'https://drive.google.com/your-doc-link',
+    },
+    {
+      'title':   'Market Basket Analysis',
+      'summary': 'Association rule mining on retail transaction data to uncover product affinity and cross-sell opportunities.',
+      'docUrl':  'https://drive.google.com/your-doc-link',
+    },
+  ];
+  static const String dataGithub       = "https://github.com/yourname/data-analytics";
+
+  // UI Design 
+  static const String figmaProfile     = "https://figma.com/@yourname";
+  static const String canvaProfile     = "https://canva.com/yourname";
+
+  // Graphic Design categories 
+  static const String graphicBack      = "Back to Graphic Design";
 
   // Project category labels — each maps to a sub-screen
   static const String catSoftware     = "Software Development";
@@ -200,13 +300,19 @@ class AppStrings {
   static const String contactGithubLabel   = "GitHub";
   static const String contactLinkedinLabel = "LinkedIn";
 
+  // Footer 
+  static const String footerCopyright = "© 2026 Laura Conceicao. All Rights Reserved.";
+  static const String footerTagline   = "Building elegant solutions one line of code at a time.";
+  static const String footerNav       = "Introduction  ·  Projects  ·  Skills  ·  About  ·  Contact";
+
   // Form labels
   static const String formName        = "Full Name";
   static const String formEmail       = "Email Address";
   static const String formMessage     = "Message";
   static const String formSend        = "Send Message";
-  static const String formToast       = "Message sent successfully. I will get back to you soon.";
+  static const String formToast       = "Message sent successfully. I'll respond soon.";
   static const String formHoneypot    = "_gotcha";             // hidden spam field name
+  // Replace with your Formspree endpoint ID: https://formspree.io/f/{id}
   static const String formspreeUrl    = "https://formspree.io/f/xvzwovdo";
   static const String formSuccess     = "Message sent! I'll be in touch soon.";
   static const String formError       = "Something went wrong. Please try again.";

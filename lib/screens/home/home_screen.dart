@@ -10,6 +10,9 @@ import 'package:portfolio_web_app/screens/home/sections/hero_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/projects_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/skills_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/contact_section.dart';
+import 'package:portfolio_web_app/core/constants/app_sizes.dart';
+import 'package:portfolio_web_app/core/animations/fade_in.dart';
+import 'package:portfolio_web_app/screens/home/sections/footer.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -20,53 +23,142 @@ class HomeScreen extends StatelessWidget {
     final controller = Get.put(HomeController());
 
     return Scaffold(
-
-      // Navbar — sticky by virtue of being Scaffold.appBar
       appBar: const Navbar(),
+      body: Stack(
+        children: [
 
-      body: SingleChildScrollView(
-        controller: controller.scrollController,
-        child: Column(
-          children: [
+          // Main scroll content 
+          SingleChildScrollView(
+            controller: controller.scrollController,
+            child: Column(
+              children: [
 
-            _SectionDetector(
-              sectionName: 'hero',
-              controller: controller,
-              child: HeroSection(key: controller.heroKey),
+                _SectionDetector(
+                  sectionName: 'hero',
+                  controller:  controller,
+                  child: RepaintBoundary(),
+                    child: RepaintBoundary(),
+                    child: RepaintBoundary(),
+                    child: RepaintBoundary(),
+                    child: RepaintBoundary(
+                    child: RepaintBoundary(
+                    child: FadeInSection(
+                      child: HeroSection(key: controller.heroKey),
+                    ),
+                  ),
+                ),
+              ),
+
+                _SectionDetector(
+                  sectionName: 'projects',
+                  controller:  controller,
+                  child: RepaintBoundary(
+                    child: FadeInSection(
+                      delay: const Duration(milliseconds: 60),
+                      child: ProjectsSection(key: controller.projectsKey),
+                    ),
+                  ),
+                ),
+
+                _SectionDetector(
+                  sectionName: 'skills',
+                  controller:  controller,
+                  child: RepaintBoundary(
+                    child: FadeInSection(
+                      delay: const Duration(milliseconds: 60),
+                      child: SkillsSection(key: controller.skillsKey),
+                    ),
+                  ),
+                ),
+
+                _SectionDetector(
+                  sectionName: 'about',
+                  controller:  controller,
+                  child: RepaintBoundary(
+                    child: FadeInSection(
+                      delay: const Duration(milliseconds: 60),
+                      child: AboutSection(key: controller.aboutKey),
+                    ),
+                  ),
+                ),
+
+                _SectionDetector(
+                  sectionName: 'contact',
+                  controller:  controller,
+                  child: RepaintBoundary(
+                    child: FadeInSection(
+                      delay: const Duration(milliseconds: 60),
+                      child: ContactSection(key: controller.contactKey),
+                    ),
+                  ),
+                ),
+
+                // Footer 
+                const FooterSection(),
+
+              ],
             ),
+          ),
 
-            _SectionDetector(
-              sectionName: 'projects',
-              controller: controller,
-              child: ProjectsSection(key: controller.projectsKey),
+          // Scroll Progress Bar 
+          const Positioned(
+            top:   0,
+            left:  0,
+            right: 0,
+            child: RepaintBoundary(
+              child: _ScrollProgressBar(),
             ),
+          ),
 
-            _SectionDetector(
-              sectionName: 'skills',
-              controller: controller,
-              child: SkillsSection(key: controller.skillsKey),
-            ),
-
-            _SectionDetector(
-              sectionName: 'about',
-              controller: controller,
-              child: AboutSection(key: controller.aboutKey),
-            ),
-
-            _SectionDetector(
-              sectionName: 'contact',
-              controller: controller,
-              child: ContactSection(key: controller.contactKey),
-            ),
-
-          ],
-        ),
+        ],
       ),
     );
   }
 }
 
-// Section Detector
+// Scroll Progress Bar 
+class _ScrollProgressBar extends StatefulWidget {
+  const _ScrollProgressBar();
+  @override State<_ScrollProgressBar> createState() => _ScrollProgressBarState();
+}
+
+class _ScrollProgressBarState extends State<_ScrollProgressBar> {
+
+  double _progress = 0.0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _attachListener();
+  }
+
+  void _attachListener() {
+    final controller = Get.find<HomeController>();
+    controller.scrollController.addListener(() {
+      if (!mounted) return;
+      final sc  = controller.scrollController;
+      if (!sc.hasClients) return;
+      final max = sc.position.maxScrollExtent;
+      if (max <= 0) return;
+      setState(() => _progress = (sc.offset / max).clamp(0.0, 1.0));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LinearProgressIndicator(
+      value:            _progress,
+      minHeight:        3,
+      backgroundColor:  Colors.transparent,
+      valueColor: const AlwaysStoppedAnimation<Color>(AppColors.gold),
+    );
+  }
+}
+
+// Section Detector 
+// Wraps a section in a VisibilityDetector and notifies the controller
+// when the section becomes sufficiently visible — drives scroll-spy navbar.
+
 class _SectionDetector extends StatelessWidget {
 
   const _SectionDetector({
@@ -75,9 +167,9 @@ class _SectionDetector extends StatelessWidget {
     required this.child,
   });
 
-  final String          sectionName;
-  final HomeController  controller;
-  final Widget          child;
+  final String         sectionName;
+  final HomeController controller;
+  final Widget         child;
 
   @override
   Widget build(BuildContext context) {

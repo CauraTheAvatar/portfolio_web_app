@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:portfolio_web_app/controllers/home_controller.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
@@ -27,8 +28,7 @@ class HeroSection extends StatelessWidget {
   }
 }
 
-// Desktop Layout — Row: left text 55% | right image 45%
-
+// Desktop Layout 
 class _DesktopLayout extends StatelessWidget {
   const _DesktopLayout();
 
@@ -57,8 +57,7 @@ class _DesktopLayout extends StatelessWidget {
   }
 }
 
-// Mobile Layout — Column: image top | text below
-
+// Mobile Layout 
 class _MobileLayout extends StatelessWidget {
   const _MobileLayout();
 
@@ -76,8 +75,6 @@ class _MobileLayout extends StatelessWidget {
 }
 
 // Hero Text
-// Full left-column content stack.
-
 class _HeroText extends StatelessWidget {
 
   const _HeroText({this.centerAlign = false});
@@ -95,7 +92,7 @@ class _HeroText extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
 
-        // Overline — "Hello, I'm"
+        // Overline 
         Text(
           AppStrings.heroGreeting,
           style: AppTextStyle.overline.copyWith(
@@ -106,7 +103,7 @@ class _HeroText extends StatelessWidget {
 
         const SizedBox(height: AppSizes.heroNameGap),
 
-        // Developer name — gold shimmer animation (ShaderMask sweep)
+        // Developer name 
         ShimmerName(
           style: AppTextStyle.developerName.copyWith(
             fontSize: AppTextStyle.developerName.fontSize! * screen.fontScale,
@@ -115,12 +112,12 @@ class _HeroText extends StatelessWidget {
 
         const SizedBox(height: AppSizes.heroRoleStripGap),
 
-        // Static role strip — "Software Developer | Data Analyst | ML Enthusiast"
+        // Static role strip 
         _RoleStrip(textAlign: textAlign),
 
         const SizedBox(height: AppSizes.heroAnimTitleGap),
 
-        // Animated subtitle — cycles the full developerTitles list
+        // Animated subtitle 
         _AnimatedTitles(centerAlign: centerAlign),
 
         const SizedBox(height: AppSizes.heroRuleGap),
@@ -155,10 +152,6 @@ class _HeroText extends StatelessWidget {
 }
 
 // Role Strip
-// Static pipe-separated primary titles per spec:
-// "Software Developer | Data Analyst | ML Enthusiast"
-// Pipes are rendered in gold; role text in black.
-
 class _RoleStrip extends StatelessWidget {
 
   const _RoleStrip({required this.textAlign});
@@ -202,9 +195,6 @@ class _RoleStrip extends StatelessWidget {
 }
 
 // Animated Titles
-// Fades + slides through the full developerTitles list every 2.8s.
-// Shown beneath the static role strip as a secondary animated accent.
-
 class _AnimatedTitles extends StatefulWidget {
 
   const _AnimatedTitles({this.centerAlign = false});
@@ -277,8 +267,7 @@ class _AnimatedTitlesState extends State<_AnimatedTitles>
   }
 }
 
-// Gold Rule — short decorative horizontal divider
-
+// Gold Rule 
 class _GoldRule extends StatelessWidget {
 
   const _GoldRule({this.centered = false});
@@ -300,8 +289,7 @@ class _GoldRule extends StatelessWidget {
   }
 }
 
-// CTA Buttons — primary "View My Work" | secondary "Get In Touch"
-
+// CTA Buttons 
 class _CtaButtons extends StatelessWidget {
 
   const _CtaButtons({
@@ -337,10 +325,7 @@ class _CtaButtons extends StatelessWidget {
   }
 }
 
-// Hover Button — animated for both CTA variants
-// Primary   : black fill → gold fill on hover
-// Secondary : black outline → gold outline + text on hover
-
+// Hover Button 
 class _HoverButton extends StatefulWidget {
 
   const _HoverButton({
@@ -409,15 +394,9 @@ class _HoverButtonState extends State<_HoverButton> {
 }
 
 // Profile Image
-// Right column — rounded container, gold border, dual shadow.
-// Uses assets/images/profile_placeholder.jpg per spec.
-// Falls back to a styled placeholder widget if the asset is not yet added.
-
 class _ProfileImage extends StatelessWidget {
 
   const _ProfileImage();
-
-  static const String _imagePath = 'assets/images/profile_placeholder.jpg';
 
   @override
   Widget build(BuildContext context) {
@@ -431,13 +410,11 @@ class _ProfileImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSizes.radiusXXL),
         border: Border.all(color: AppColors.gold, width: AppSizes.borderThick),
         boxShadow: [
-          // Gold ambient glow
           BoxShadow(
             color: AppColors.gold.withOpacity(0.18),
             blurRadius: AppSizes.profileShadowBlur1,
             offset: const Offset(0, 10),
           ),
-          // Neutral depth shadow
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
             blurRadius: AppSizes.profileShadowBlur2,
@@ -447,22 +424,26 @@ class _ProfileImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppSizes.radiusXL),
-        child: Image.asset(
-          _imagePath,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => _Placeholder(size: size),
+        child: CachedNetworkImage(
+          imageUrl:       AppStrings.fbProfileImage,
+          fit:            BoxFit.cover,
+          fadeInDuration: const Duration(milliseconds: 500),
+          fadeInCurve:    Curves.easeIn,
+          placeholder: (_, __) => _Placeholder(size: size, loading: true),
+          errorWidget: (_, __, ___) => _Placeholder(size: size),
         ),
       ),
     );
   }
 }
 
-// Placeholder — rendered by errorBuilder when the asset is not yet present
+// Placeholder 
 
 class _Placeholder extends StatelessWidget {
 
-  const _Placeholder({required this.size});
+  const _Placeholder({required this.size, this.loading = false});
   final double size;
+  final bool   loading;
 
   @override
   Widget build(BuildContext context) {
@@ -470,24 +451,32 @@ class _Placeholder extends StatelessWidget {
       width:  size,
       height: size,
       color:  AppColors.lightGrey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.person_rounded,
-            size:  size * 0.38,
-            color: AppColors.gold.withOpacity(0.5),
-          ),
-          const SizedBox(height: AppSizes.spaceM),
-          Text(
-            'profile_placeholder.jpg',
-            style: AppTextStyle.bodySmall.copyWith(
-              color: AppColors.grey,
-              letterSpacing: 0.4,
+      child: loading
+          ? const Center(
+              child: SizedBox(
+                width: 28, height: 28,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: AppColors.gold),
+              ),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.person_rounded,
+                  size:  size * 0.38,
+                  color: AppColors.gold.withOpacity(0.5),
+                ),
+                const SizedBox(height: AppSizes.spaceM),
+                Text(
+                  'Add profile image URL',
+                  style: AppTextStyle.bodySmall.copyWith(
+                    color: AppColors.grey,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

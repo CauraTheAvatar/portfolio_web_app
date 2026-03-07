@@ -10,7 +10,7 @@ class ProjectsSection extends StatelessWidget {
 
   const ProjectsSection({super.key});
 
-  // Category definitions — order matches spec
+  // Category definitions
   static const List<_CategoryData> _categories = [
     _CategoryData(
       title:      AppStrings.catSoftware,
@@ -34,7 +34,7 @@ class ProjectsSection extends StatelessWidget {
       title:      AppStrings.catDataViz,
       subtitle:   'Tableau dashboards',
       icon:       Icons.bar_chart_rounded,
-      route:      RouteNames.projectDataViz,
+      route:      RouteNames.projectDataAnal,
     ),
     _CategoryData(
       title:      AppStrings.catDataAnalytics,
@@ -83,8 +83,7 @@ class ProjectsSection extends StatelessWidget {
   }
 }
 
-// Section Header — title + subtitle + gold rule
-
+// Section Header
 class _SectionHeader extends StatelessWidget {
 
   @override
@@ -133,8 +132,7 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-// Category Grid — builds a uniform cross-axis grid of cards
-
+// Category Grid
 class _CategoryGrid extends StatelessWidget {
 
   const _CategoryGrid({
@@ -168,8 +166,7 @@ class _CategoryGrid extends StatelessWidget {
   }
 }
 
-// Category Card — hover lift + glow + scale
-
+// Category Card
 class _CategoryCard extends StatefulWidget {
 
   const _CategoryCard({required this.data});
@@ -267,7 +264,6 @@ class _CategoryCardState extends State<_CategoryCard>
 }
 
 // Card Content — icon + title + subtitle + arrow
-
 class _CardContent extends StatelessWidget {
 
   const _CardContent({
@@ -323,7 +319,7 @@ class _CardContent extends StatelessWidget {
 
         const SizedBox(height: AppSizes.cardInternalGapL),
 
-        // Arrow — slides right on hover
+        // Arrow
         AnimatedSlide(
           offset: hovered ? const Offset(0.15, 0) : Offset.zero,
           duration: AppSizes.durationDefault,
@@ -350,8 +346,7 @@ class _CardContent extends StatelessWidget {
   }
 }
 
-// Category Data — immutable descriptor for each project category card
-
+// Category Data 
 class _CategoryData {
 
   const _CategoryData({

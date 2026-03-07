@@ -8,14 +8,24 @@ class RouteNames {
   static const String projectSoftware  = '/projects/software';
   static const String projectWordPress = '/projects/wordpress';
   static const String projectDataEng   = '/projects/data-engineering';
-  static const String projectDataViz   = '/projects/data-visualization';
   static const String projectDataAnal  = '/projects/data-analytics';
   static const String projectUIDesign  = '/projects/ui-design';
   static const String projectGraphic   = '/projects/graphic-design';
 
-  // Sections (deep-link anchors) 
-  // These are not separate routes — they are used as named anchors
-  // passed to ScrollService to jump to a section from outside HomeScreen.
+  // Software sub-screens 
+  static const String softwareWeb     = '/projects/software/web';
+  static const String softwareMobile  = '/projects/software/mobile';
+  static const String softwareGithub  = '/projects/software/github';
+
+  // Data Analytics sub-screens 
+  static const String dataAnalFull    = '/projects/data-analytics/full';
+  static const String dataAnalViz     = '/projects/data-analytics/visualization';
+  static const String dataAnalCode    = '/projects/data-analytics/code';
+
+  // Graphic Design sub-screens 
+  static const String graphicDetail   = '/projects/graphic-design/detail';
+
+  // Sections (deep-link anchors)
   static const String hero     = '/hero';
   static const String projects = '/projects';
   static const String skills   = '/skills';
@@ -23,8 +33,6 @@ class RouteNames {
   static const String contact  = '/contact';
 
   // Helpers 
-
-  // All registered section anchor names in top-to-bottom order.
   static const List<String> sections = [
     hero,
     projects,
@@ -33,8 +41,7 @@ class RouteNames {
     contact,
   ];
 
-  // Maps a section route string to its [HomeController] activeSection key.
-  // Used by ScrollService to resolve an incoming deep-link to the correct key.
+  /// Maps a section route string to its [HomeController] activeSection key.
   static const Map<String, String> routeToSection = {
     hero:     'hero',
     projects: 'projects',

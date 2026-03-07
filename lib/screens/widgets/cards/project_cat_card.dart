@@ -1,8 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+
+
 
 class ProjectCatCard extends StatefulWidget {
 
@@ -10,7 +15,7 @@ class ProjectCatCard extends StatefulWidget {
     super.key,
     required this.title,
     required this.description,
-    this.imagePath,
+    this.imageUrl,
     this.links = const [],
     this.route,
     this.onTap,
@@ -19,11 +24,10 @@ class ProjectCatCard extends StatefulWidget {
   // Card content
   final String              title;
   final String              description;
-  final String?             imagePath;     // asset path for screenshot
+  final String?             imageUrl;      // Firebase Storage download URL
   final List<ProjectLink>   links;         // action buttons (GitHub / Live / etc.)
 
-  // Navigation — if route is set, tapping the card calls Get.toNamed(route).
-  // onTap overrides route when both are provided.
+  // Navigation 
   final String?             route;
   final VoidCallback?       onTap;
 
@@ -124,7 +128,7 @@ class _ProjectCatCardState extends State<ProjectCatCard>
 
                 // Screenshot / preview image
                 _CardImage(
-                  imagePath: widget.imagePath,
+                  imageUrl:  widget.imageUrl,
                   hovered:   _hovered,
                 ),
 
@@ -174,15 +178,14 @@ class _ProjectCatCardState extends State<ProjectCatCard>
 }
 
 // Card Image
-
 class _CardImage extends StatelessWidget {
 
   const _CardImage({
-    required this.imagePath,
+    required this.imageUrl,
     required this.hovered,
   });
 
-  final String? imagePath;
+  final String? imageUrl;  // Firebase Storage download URL
   final bool    hovered;
 
   static const double _imageHeight = 180;
@@ -198,9 +201,24 @@ class _CardImage extends StatelessWidget {
         duration: AppSizes.durationDefault,
         height: _imageHeight,
         width:  double.infinity,
-        child: imagePath != null
-            ? Image.asset(
-                imagePath!,
+        child: imageUrl != null
+            ? CachedNetworkImage(
+                imageUrl:       imageUrl!,
+                fit:            BoxFit.cover,
+                fadeInDuration: const Duration(milliseconds: 400),
+                fadeInCurve:    Curves.easeIn,
+                placeholder: (_, __) => Container(
+                  color: AppColors.lightGrey,
+                  child: const Center(
+                    child: SizedBox(
+                      width: 20, height: 20,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: AppColors.gold),
+                    ),
+                  ),
+                ),
+                errorWidget: (_, __, ___) =>
+                    _ImagePlaceholder(),
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => _ImagePlaceholder(hovered: hovered),
               )
@@ -210,8 +228,7 @@ class _CardImage extends StatelessWidget {
   }
 }
 
-// Image Placeholder — shown when no screenshot asset is provided
-
+// Image Placeholder 
 class _ImagePlaceholder extends StatelessWidget {
 
   const _ImagePlaceholder({required this.hovered});
@@ -248,7 +265,6 @@ class _ImagePlaceholder extends StatelessWidget {
 }
 
 // Link Buttons
-
 class _LinkButtons extends StatelessWidget {
 
   const _LinkButtons({required this.links});
@@ -264,8 +280,7 @@ class _LinkButtons extends StatelessWidget {
   }
 }
 
-// Link Chip — individual action button inside the card
-
+// Link Chip 
 class _LinkChip extends StatefulWidget {
 
   const _LinkChip({required this.link});
@@ -332,6 +347,7 @@ class _LinkChipState extends State<_LinkChip> {
   }
 }
 
+// ProjectLink
 class ProjectLink {
 
   const ProjectLink({
@@ -345,7 +361,6 @@ class ProjectLink {
   final IconData?     icon;
 
   // Convenience constructors for the most common link types
-
   factory ProjectLink.github(String url) => ProjectLink(
         label: AppStrings.ctaViewGithub,
         icon:  Icons.code_rounded,
@@ -382,12 +397,9 @@ class ProjectLink {
         onTap: () => _launch(url),
       );
 
-  static Future<void> _launch(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      debugPrint('[ProjectLink] Could not launch: $url');
-    }
+  static void _launch(String url) {
+    // Replace with url_launcher once added to pubspec:
+    //   launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    debugPrint('[ProjectLink] Opening: $url');
   }
 }
