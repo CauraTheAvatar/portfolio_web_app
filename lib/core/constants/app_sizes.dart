@@ -17,36 +17,36 @@ class AppSizes {
   static const double space8XL  = 80;
 
   // Border Radius 
-  static const double radiusXS   =  2;   // underline pills, divider caps
-  static const double radiusS    =  6;   // buttons
-  static const double radiusM    = 10;   // icon containers, chips
-  static const double radiusL    = 12;   // cards
-  static const double radiusXL   = 18;   // image inner clip (inset from border)
-  static const double radiusXXL  = 20;   // image outer container
+  static const double radiusXS   =  2;   
+  static const double radiusS    =  6;   
+  static const double radiusM    = 10;   
+  static const double radiusL    = 12;   
+  static const double radiusXL   = 18;   
+  static const double radiusXXL  = 20;   
 
   // Border Width 
-  static const double borderThin    = 1.0;   // navbar bottom border, dividers
-  static const double borderDefault = 1.5;   // card borders, button borders
-  static const double borderThick   = 2.5;   // profile image border
-  static const double borderAccent  = 3.0;   // drawer active item left border
+  static const double borderThin    = 1.0;   
+  static const double borderDefault = 1.5;   
+  static const double borderThick   = 2.5;   
+  static const double borderAccent  = 3.0;   
 
   // Icon Sizes 
-  static const double iconXS   = 14;  // arrow / inline icon
-  static const double iconS    = 22;  // close button
-  static const double iconM    = 24;  // hamburger / menu button
-  static const double iconL    = 26;  // card category icon, navbar hamburger
-  static const double iconXL   = 32;  // placeholder accents (scaled by container)
+  static const double iconXS   = 14;  
+  static const double iconS    = 22;  
+  static const double iconM    = 24;  
+  static const double iconL    = 26;  
+  static const double iconXL   = 32; 
 
   // Navbar 
   static const double navbarHeight          = 70;
   static const double navbarLogoFontSize    = 20;
   static const double navbarLogoDotSize     =  8;
-  static const double navbarLogoDotSpacing  =  9;   // margin-right before name
-  static const double navbarItemPaddingH    = 15;   // horizontal padding per link
-  static const double navbarUnderlineWidth  = 24;   // active underline max width
+  static const double navbarLogoDotSpacing  =  9;   
+  static const double navbarItemPaddingH    = 15;   
+  static const double navbarUnderlineWidth  = 24;   
   static const double navbarUnderlineHeight =  2;
-  static const double navbarUnderlineGap    =  4;   // gap between label and line
-  static const double navbarBlurSigma       = 18;   // glass blur sigma X & Y
+  static const double navbarUnderlineGap    =  4;   
+  static const double navbarBlurSigma       = 18;   
   static const double navbarShadowBlur      = 20;
 
   // Mobile Drawer 
@@ -54,8 +54,8 @@ class AppSizes {
   static const double drawerShadowBlur      =  24;
   static const double drawerShadowOffsetX   =  -4;
   static const double drawerDividerHeight   =   1;
-  static const double drawerDividerSpacingH =  24;  // horizontal margin
-  static const double drawerDividerSpacingV =  14;  // vertical margin
+  static const double drawerDividerSpacingH =  24;  
+  static const double drawerDividerSpacingV =  14;  
   static const double drawerHeaderPadL      =  24;
   static const double drawerHeaderPadT      =  20;
   static const double drawerHeaderPadR      =  12;
@@ -68,10 +68,10 @@ class AppSizes {
   static const double cardIconContainerSize = 52;
   static const double cardIconSize         = 26;
   static const double cardGridSpacing      = 24;
-  static const double cardInternalGapL     = 18;   // after icon, after title row
-  static const double cardInternalGapS     =  6;   // between title and subtitle
+  static const double cardInternalGapL     = 18;   
+  static const double cardInternalGapS     =  6;   
   static const double cardArrowIconSize    = 14;
-  static const double cardArrowLabelSize   = 10;   // overline fontSize override
+  static const double cardArrowLabelSize   = 10;   
   static const double cardArrowGap         =  6;
   static const double cardShadowBlurHover  = 24;
   static const double cardShadowBlurDepth  = 16;
@@ -82,10 +82,10 @@ class AppSizes {
   static const double sectionPaddingVerticalMob = 60;
   static const double sectionMinHeightDesktop   = 640;
   static const double sectionMinHeightMobile    = 500;
-  static const double sectionHeaderGapOverline  = 12;   // overline → title
-  static const double sectionHeaderGapRule      = 14;   // title → rule
-  static const double sectionHeaderGapSubtitle  = 14;   // rule → subtitle
-  static const double sectionHeaderGapContent   = 56;   // subtitle → grid/content
+  static const double sectionHeaderGapOverline  = 12;   
+  static const double sectionHeaderGapRule      = 14;   
+  static const double sectionHeaderGapSubtitle  = 14;   
+  static const double sectionHeaderGapContent   = 56;   
 
   // Divider / Gold Rule 
   static const double goldRuleWidth   = 52;
@@ -94,31 +94,31 @@ class AppSizes {
   // Profile Image 
   static const double profileImageDesktop = 340;
   static const double profileImageMobile  = 220;
-  static const double profileShadowBlur1  =  30;  // gold glow
-  static const double profileShadowBlur2  =  20;  // neutral depth
+  static const double profileShadowBlur1  =  30;  
+  static const double profileShadowBlur2  =  20;  
 
-  // Button ─
+  // Button 
   static const double buttonPaddingH       = 28;
   static const double buttonPaddingV       = 14;
   static const double buttonShadowBlur     = 12;
   static const double buttonShadowOffsetY  =  4;
-  static const double buttonGapBetween     = 16;  // space between primary/secondary
+  static const double buttonGapBetween     = 16;  
 
   // Hero text column internals 
-  static const double heroColGap           = 60;   // gap between text and image cols
-  static const double heroMobileImageGap   = 40;   // gap after image in mobile stack
+  static const double heroColGap           = 60;   
+  static const double heroMobileImageGap   = 40;   
   static const double heroOverlineFontSize = 13;
-  static const double heroOverlineSpacing  =  3;   // letterSpacing
-  static const double heroNameGap          = 10;   // overline → name
-  static const double heroRoleStripGap     = 12;   // name → role strip
-  static const double heroAnimTitleGap     = 10;   // role strip → animated title
-  static const double heroRuleGap          = 24;   // animated title → gold rule
-  static const double heroParaGap          = 24;   // gold rule → paragraph
-  static const double heroCtaGap           = 36;   // paragraph → CTA buttons
-  static const double heroParaMaxWidth     = 480;  // max width of intro paragraph
-  static const double heroAnimTitleSize    = 18;   // animated subtitle fontSize
+  static const double heroOverlineSpacing  =  3;   
+  static const double heroNameGap          = 10;  
+  static const double heroRoleStripGap     = 12;   
+  static const double heroAnimTitleGap     = 10;   
+  static const double heroRuleGap          = 24;   
+  static const double heroParaGap          = 24;   
+  static const double heroCtaGap           = 36;   
+  static const double heroParaMaxWidth     = 480;  
+  static const double heroAnimTitleSize    = 18;   
 
-  // Shadow blur catalogue (shared across components) 
+  // Shadow blur catalogue 
   static const double shadowBlurXS   =  8;
   static const double shadowBlurS    = 10;
   static const double shadowBlurM    = 12;
@@ -132,6 +132,8 @@ class AppSizes {
   static const Duration durationDefault = Duration(milliseconds: 200);
   static const Duration durationMedium  = Duration(milliseconds: 280);
   static const Duration durationSlow    = Duration(milliseconds: 400);
+  static const Duration durationMagnetic = Duration(milliseconds: 150); 
+  static const Duration durationOverlay  = Duration(milliseconds: 250);
   static const Duration durationScroll  = Duration(milliseconds: 600);
   static const Duration durationShimmer = Duration(seconds: 3);
   static const Duration durationTitles  = Duration(milliseconds: 2800);

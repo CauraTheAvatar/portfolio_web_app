@@ -95,11 +95,7 @@ class ScreenInfo {
       'ScreenInfo(width: $width, height: $height, type: $screenType)';
 }
 
-//
 // Responsive
-// Static utility class — resolves ScreenInfo and exposes layout builders.
-//
-
 class Responsive {
   Responsive._();
 

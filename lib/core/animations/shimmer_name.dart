@@ -24,10 +24,10 @@ class _ShimmerNameState extends State<ShimmerName>
   late final Animation<double>   _animation;
 
   // Shimmer gradient colours
-  // Base gold → bright highlight → base gold — creates the sweep illusion
+  // Creates the sweep illusion
   static const _baseGold      = AppColors.gold;
-  static const _highlightGold = Color(0xFFFFF0A0); // warm bright highlight
-  static const _deepGold      = Color(0xFFB8860B);  // dark anchor on edges
+  static const _highlightGold = Color(0xFFFFF0A0); 
+  static const _deepGold      = Color(0xFFB8860B);  
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _ShimmerNameState extends State<ShimmerName>
     _controller = AnimationController(
       vsync: this,
       duration: AppSizes.durationShimmer,
-    )..repeat(); // loop forever
+    )..repeat(); 
 
     _animation = CurvedAnimation(
       parent: _controller,
@@ -55,8 +55,6 @@ class _ShimmerNameState extends State<ShimmerName>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        // Sweep position moves from -1 → 2 so the highlight fully enters
-        // and exits the text bounds on every cycle
         final double sweep = _animation.value * 3 - 1;
 
         return ShaderMask(
@@ -84,7 +82,6 @@ class _ShimmerNameState extends State<ShimmerName>
           child: child,
         );
       },
-      // Text is built once — ShaderMask repaints the shader, not the text
       child: Text(
         widget.text,
         style: widget.style,

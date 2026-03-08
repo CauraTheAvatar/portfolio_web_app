@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
 
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/navigation/route_names.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
-import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
+
 
 class SoftwareProjectScreen extends StatelessWidget {
   const SoftwareProjectScreen({super.key});
@@ -13,28 +14,28 @@ class SoftwareProjectScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    AppStrings.catSoftware,
+      title: AppStrings.catSoftware,
       overline: 'DEVELOPMENT',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: [
           SubCategoryCard(
-            title:       AppStrings.subWeb,
+            title: AppStrings.subWeb,
             description: AppStrings.subWebDesc,
-            icon:        Icons.web_rounded,
-            onTap:       () => Get.toNamed(RouteNames.softwareWeb),
+            icon: Icons.web_rounded,
+            onTap: () => Get.toNamed(RouteNames.softwareWeb),
           ),
           SubCategoryCard(
-            title:       AppStrings.subMobile,
+            title: AppStrings.subMobile,
             description: AppStrings.subMobileDesc,
-            icon:        Icons.phone_android_rounded,
-            onTap:       () => Get.toNamed(RouteNames.softwareMobile),
+            icon: Icons.phone_android_rounded,
+            onTap: () => Get.toNamed(RouteNames.softwareMobile),
           ),
           SubCategoryCard(
-            title:       AppStrings.subGithub,
+            title: AppStrings.subGithub,
             description: AppStrings.subGithubDesc,
-            icon:        Icons.code_rounded,
-            onTap:       () => Get.toNamed(RouteNames.softwareGithub),
+            icon: Icons.code_rounded,
+            onTap: () => Get.toNamed(RouteNames.softwareGithub),
           ),
         ],
       ),
@@ -42,18 +43,17 @@ class SoftwareProjectScreen extends StatelessWidget {
   }
 }
 
-//  Web Applications // Add more _SoftwareProject entries to _projects as web apps are published.
-
+// Web Applications
 class WebAppsScreen extends StatelessWidget {
   const WebAppsScreen({super.key});
 
   static const List<_SoftwareProject> _projects = [
     _SoftwareProject(
-      title:       AppStrings.projPrayerBoxTitle,
+      title: AppStrings.projPrayerBoxTitle,
       description: AppStrings.projPrayerBoxDesc,
-      imageUrl:    AppStrings.fbPrayerBoxWeb,
-      liveUrl:     AppStrings.projPrayerBoxWeb,
-      githubUrl:   AppStrings.projPrayerBoxGithub,
+      imageUrl: AppStrings.fbPrayerBoxWeb,
+      liveUrl: AppStrings.projPrayerBoxWeb,
+      githubUrl: AppStrings.projPrayerBoxGithub,
     ),
     // Add more web projects here:
     // _SoftwareProject(
@@ -69,17 +69,17 @@ class WebAppsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    AppStrings.subWeb,
+      title: AppStrings.subWeb,
       overline: 'SOFTWARE',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: _projects.map((p) => ProjectCard(
-          title:       p.title,
+          title: p.title,
           description: p.description,
-          imageUrl:    p.imageUrl,
+          imageUrl: p.imageUrl,
           links: [
-            if (p.liveUrl   != null) _ProjectLink.live(p.liveUrl!),
-            if (p.githubUrl != null) _ProjectLink.github(p.githubUrl!),
+            if (p.liveUrl != null) ProjectLink.live(p.liveUrl!), 
+            if (p.githubUrl != null) ProjectLink.github(p.githubUrl!), 
           ],
         )).toList(),
       ),
@@ -87,17 +87,17 @@ class WebAppsScreen extends StatelessWidget {
   }
 }
 
-//  Mobile Applications 
+// Mobile Applications
 class MobileAppsScreen extends StatelessWidget {
   const MobileAppsScreen({super.key});
 
   static const List<_SoftwareProject> _projects = [
     _SoftwareProject(
-      title:       AppStrings.projPrayerBoxTitle,
+      title: AppStrings.projPrayerBoxTitle,
       description: AppStrings.projPrayerBoxDesc,
-      imageUrl:    AppStrings.fbPrayerBoxMobile,
-      liveUrl:     AppStrings.projPrayerBoxWeb,
-      githubUrl:   AppStrings.projPrayerBoxGithub,
+      imageUrl: AppStrings.fbPrayerBoxMobile,
+      liveUrl: AppStrings.projPrayerBoxWeb,
+      githubUrl: AppStrings.projPrayerBoxGithub,
     ),
   ];
 
@@ -105,17 +105,17 @@ class MobileAppsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    AppStrings.subMobile,
+      title: AppStrings.subMobile,
       overline: 'SOFTWARE',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: _projects.map((p) => ProjectCard(
-          title:       p.title,
+          title: p.title,
           description: p.description,
-          imageUrl:    p.imageUrl,
+          imageUrl: p.imageUrl,
           links: [
-            if (p.liveUrl   != null) _ProjectLink.live(p.liveUrl!),
-            if (p.githubUrl != null) _ProjectLink.github(p.githubUrl!),
+            if (p.liveUrl != null) ProjectLink.live(p.liveUrl!), 
+            if (p.githubUrl != null) ProjectLink.github(p.githubUrl!), 
           ],
         )).toList(),
       ),
@@ -123,16 +123,15 @@ class MobileAppsScreen extends StatelessWidget {
   }
 }
 
-//  GitHub Projects // Add individual repo cards below as more projects are published.
-
+// GitHub Projects
 class GithubProjectsScreen extends StatelessWidget {
   const GithubProjectsScreen({super.key});
 
   static const List<_SoftwareProject> _projects = [
     _SoftwareProject(
-      title:       'GitHub Profile',
+      title: 'GitHub Profile',
       description: 'Browse all public repositories, contributions, and open source work.',
-      githubUrl:   AppStrings.githubProfile,
+      githubUrl: AppStrings.githubProfile,
     ),
     // Add individual repos here:
     // _SoftwareProject(
@@ -148,17 +147,17 @@ class GithubProjectsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    AppStrings.subGithub,
+      title: AppStrings.subGithub,
       overline: 'SOFTWARE',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: _projects.map((p) => ProjectCard(
-          title:       p.title,
+          title: p.title,
           description: p.description,
-          imageUrl:    p.imageUrl,
+          imageUrl: p.imageUrl,
           links: [
-            if (p.githubUrl != null) _ProjectLink.github(p.githubUrl!),
-            if (p.liveUrl   != null) _ProjectLink.live(p.liveUrl!),
+            if (p.githubUrl != null) ProjectLink.github(p.githubUrl!), 
+            if (p.liveUrl != null) ProjectLink.live(p.liveUrl!), 
           ],
         )).toList(),
       ),
@@ -166,7 +165,7 @@ class GithubProjectsScreen extends StatelessWidget {
   }
 }
 
-//  Shared data model 
+// Shared data model
 class _SoftwareProject {
   const _SoftwareProject({
     required this.title,
@@ -175,9 +174,10 @@ class _SoftwareProject {
     this.liveUrl,
     this.githubUrl,
   });
-  final String  title;
-  final String  description;
-  final String? imageUrl;  // Firebase Storage download URL
+  
+  final String title;
+  final String description;
+  final String? imageUrl; // Firebase Storage download URL
   final String? liveUrl;
   final String? githubUrl;
 }

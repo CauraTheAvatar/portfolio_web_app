@@ -11,9 +11,7 @@ class ScrollService extends GetxService {
   // Internal reference to HomeController 
   HomeController get _home => Get.find<HomeController>();
 
-  // Section key map 
-  // Maps the activeSection string → its corresponding GlobalKey.
-  // Kept in sync with HomeController and RouteNames.
+  // Section key map
   Map<String, GlobalKey> get _keyMap => {
     'hero':     _home.heroKey,
     'projects': _home.projectsKey,
@@ -24,7 +22,7 @@ class ScrollService extends GetxService {
 
   // Public API 
 
-  // Scroll to a section by its string key (e.g. 'projects').
+  // Scroll to a section by its string key
   void scrollToSection(String section) {
     final key = _keyMap[section];
     if (key == null) {
@@ -58,7 +56,7 @@ class ScrollService extends GetxService {
     );
   }
 
-  // Scroll to the bottom of the page (e.g. Contact section CTA).
+  // Scroll to the bottom of the page
   void scrollToBottom() {
     final controller = _home.scrollController;
     if (!controller.hasClients) return;

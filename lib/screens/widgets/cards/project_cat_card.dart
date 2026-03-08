@@ -5,12 +5,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
-
-
-
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; 
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart'; 
 
 class ProjectCatCard extends StatefulWidget {
-
   const ProjectCatCard({
     super.key,
     required this.title,
@@ -22,14 +20,14 @@ class ProjectCatCard extends StatefulWidget {
   });
 
   // Card content
-  final String              title;
-  final String              description;
-  final String?             imageUrl;      // Firebase Storage download URL
-  final List<ProjectLink>   links;         // action buttons (GitHub / Live / etc.)
+  final String title;
+  final String description;
+  final String? imageUrl; // Firebase Storage download URL
+  final List<ProjectLink> links; // action buttons (GitHub / Live / etc.)
 
   // Navigation 
-  final String?             route;
-  final VoidCallback?       onTap;
+  final String? route;
+  final VoidCallback? onTap;
 
   @override
   State<ProjectCatCard> createState() => _ProjectCatCardState();
@@ -37,10 +35,9 @@ class ProjectCatCard extends StatefulWidget {
 
 class _ProjectCatCardState extends State<ProjectCatCard>
     with SingleTickerProviderStateMixin {
-
   bool _hovered = false;
   late final AnimationController _controller;
-  late final Animation<double>   _scale;
+  late final Animation<double> _scale;
 
   @override
   void initState() {
@@ -83,7 +80,7 @@ class _ProjectCatCardState extends State<ProjectCatCard>
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: _onEnter,
-      onExit:  _onExit,
+      onExit: _onExit,
       child: ScaleTransition(
         scale: _scale,
         child: GestureDetector(
@@ -91,7 +88,7 @@ class _ProjectCatCardState extends State<ProjectCatCard>
           child: AnimatedContainer(
             duration: AppSizes.durationDefault,
             decoration: BoxDecoration(
-              color:        AppColors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(AppSizes.radiusL),
               border: Border.all(
                 color: _hovered
@@ -103,33 +100,32 @@ class _ProjectCatCardState extends State<ProjectCatCard>
                   ? [
                       // Gold glow
                       BoxShadow(
-                        color:      AppColors.gold.withOpacity(0.22),
+                        color: AppColors.gold.withOpacity(0.22),
                         blurRadius: AppSizes.cardShadowBlurHover,
-                        offset:     const Offset(0, 8),
+                        offset: const Offset(0, 8),
                       ),
                       // Neutral depth
                       BoxShadow(
-                        color:      Colors.black.withOpacity(0.08),
+                        color: Colors.black.withOpacity(0.08),
                         blurRadius: AppSizes.cardShadowBlurDepth,
-                        offset:     const Offset(0, 4),
+                        offset: const Offset(0, 4),
                       ),
                     ]
                   : [
                       BoxShadow(
-                        color:      Colors.black.withOpacity(0.05),
+                        color: Colors.black.withOpacity(0.05),
                         blurRadius: AppSizes.cardShadowBlurRest,
-                        offset:     const Offset(0, 2),
+                        offset: const Offset(0, 2),
                       ),
                     ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // Screenshot / preview image
                 _CardImage(
-                  imageUrl:  widget.imageUrl,
-                  hovered:   _hovered,
+                  imageUrl: widget.imageUrl,
+                  hovered: _hovered,
                 ),
 
                 // Text content + links
@@ -138,7 +134,6 @@ class _ProjectCatCardState extends State<ProjectCatCard>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       // Project title
                       AnimatedDefaultTextStyle(
                         duration: AppSizes.durationDefault,
@@ -163,11 +158,9 @@ class _ProjectCatCardState extends State<ProjectCatCard>
                         // Link buttons row
                         _LinkButtons(links: widget.links),
                       ],
-
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -179,14 +172,13 @@ class _ProjectCatCardState extends State<ProjectCatCard>
 
 // Card Image
 class _CardImage extends StatelessWidget {
-
   const _CardImage({
     required this.imageUrl,
     required this.hovered,
   });
 
-  final String? imageUrl;  // Firebase Storage download URL
-  final bool    hovered;
+  final String? imageUrl; // Firebase Storage download URL
+  final bool hovered;
 
   static const double _imageHeight = 180;
 
@@ -194,43 +186,46 @@ class _CardImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
-        topLeft:  Radius.circular(AppSizes.radiusL),
+        topLeft: Radius.circular(AppSizes.radiusL),
         topRight: Radius.circular(AppSizes.radiusL),
       ),
       child: AnimatedContainer(
         duration: AppSizes.durationDefault,
         height: _imageHeight,
-        width:  double.infinity,
+        width: double.infinity,
         child: imageUrl != null
             ? CachedNetworkImage(
-                imageUrl:       imageUrl!,
-                fit:            BoxFit.cover,
+                imageUrl: imageUrl!,
+                fit: BoxFit.cover,
                 fadeInDuration: const Duration(milliseconds: 400),
-                fadeInCurve:    Curves.easeIn,
+                fadeInCurve: Curves.easeIn,
                 placeholder: (_, __) => Container(
                   color: AppColors.lightGrey,
                   child: const Center(
                     child: SizedBox(
-                      width: 20, height: 20,
+                      width: 20,
+                      height: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: AppColors.gold),
+                        strokeWidth: 2,
+                        color: AppColors.gold,
+                      ),
                     ),
                   ),
                 ),
-                errorWidget: (_, __, ___) =>
-                    _ImagePlaceholder(),
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _ImagePlaceholder(hovered: hovered),
+                errorWidget: (_, __, ___) => _ImagePlaceholder(
+                  hovered: hovered,
+                ),
               )
-            : _ImagePlaceholder(hovered: hovered),
+            : _ImagePlaceholder(
+                hovered: hovered,
+              ),
       ),
     );
   }
 }
 
-// Image Placeholder 
+// Image Placeholder
 class _ImagePlaceholder extends StatelessWidget {
-
   const _ImagePlaceholder({required this.hovered});
   final bool hovered;
 
@@ -247,7 +242,7 @@ class _ImagePlaceholder extends StatelessWidget {
           children: [
             Icon(
               Icons.image_rounded,
-              size:  36,
+              size: 36,
               color: AppColors.gold.withOpacity(0.4),
             ),
             const SizedBox(height: AppSizes.spaceXS),
@@ -266,23 +261,21 @@ class _ImagePlaceholder extends StatelessWidget {
 
 // Link Buttons
 class _LinkButtons extends StatelessWidget {
-
   const _LinkButtons({required this.links});
   final List<ProjectLink> links;
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing:    AppSizes.spaceS,
+      spacing: AppSizes.spaceS,
       runSpacing: AppSizes.spaceS,
       children: links.map((link) => _LinkChip(link: link)).toList(),
     );
   }
 }
 
-// Link Chip 
+// Link Chip
 class _LinkChip extends StatefulWidget {
-
   const _LinkChip({required this.link});
   final ProjectLink link;
 
@@ -291,7 +284,6 @@ class _LinkChip extends StatefulWidget {
 }
 
 class _LinkChipState extends State<_LinkChip> {
-
   bool _hovered = false;
 
   @override
@@ -299,14 +291,14 @@ class _LinkChipState extends State<_LinkChip> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
-      onExit:  (_) => setState(() => _hovered = false),
+      onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: widget.link.onTap,
         child: AnimatedContainer(
           duration: AppSizes.durationDefault,
           padding: const EdgeInsets.symmetric(
             horizontal: AppSizes.spaceXXL,
-            vertical:   AppSizes.spaceXS,
+            vertical: AppSizes.spaceXS,
           ),
           decoration: BoxDecoration(
             color: _hovered ? AppColors.gold : Colors.transparent,
@@ -319,26 +311,23 @@ class _LinkChipState extends State<_LinkChip> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-
               if (widget.link.icon != null) ...[
                 Icon(
                   widget.link.icon,
-                  size:  AppSizes.iconXS,
+                  size: AppSizes.iconXS,
                   color: _hovered ? AppColors.white : AppColors.black,
                 ),
                 const SizedBox(width: AppSizes.spaceXXS),
               ],
-
               AnimatedDefaultTextStyle(
                 duration: AppSizes.durationDefault,
                 style: AppTextStyle.buttonSecondary.copyWith(
-                  fontSize:   12,
+                  fontSize: 12,
                   color: _hovered ? AppColors.white : AppColors.black,
                   letterSpacing: 0.6,
                 ),
                 child: Text(widget.link.label),
               ),
-
             ],
           ),
         ),
@@ -349,51 +338,50 @@ class _LinkChipState extends State<_LinkChip> {
 
 // ProjectLink
 class ProjectLink {
-
   const ProjectLink({
     required this.label,
     required this.onTap,
     this.icon,
   });
 
-  final String        label;
-  final VoidCallback  onTap;
-  final IconData?     icon;
+  final String label;
+  final VoidCallback onTap;
+  final IconData? icon;
 
   // Convenience constructors for the most common link types
   factory ProjectLink.github(String url) => ProjectLink(
         label: AppStrings.ctaViewGithub,
-        icon:  Icons.code_rounded,
+        icon: Icons.code_rounded,
         onTap: () => _launch(url),
       );
 
   factory ProjectLink.live(String url) => ProjectLink(
         label: AppStrings.ctaViewLive,
-        icon:  Icons.open_in_new_rounded,
+        icon: Icons.open_in_new_rounded,
         onTap: () => _launch(url),
       );
 
   factory ProjectLink.figma(String url) => ProjectLink(
         label: AppStrings.ctaViewFigma,
-        icon:  Icons.design_services_rounded,
+        icon: Icons.design_services_rounded,
         onTap: () => _launch(url),
       );
 
   factory ProjectLink.tableau(String url) => ProjectLink(
         label: AppStrings.ctaViewTableau,
-        icon:  Icons.bar_chart_rounded,
+        icon: Icons.bar_chart_rounded,
         onTap: () => _launch(url),
       );
 
   factory ProjectLink.canva(String url) => ProjectLink(
         label: AppStrings.ctaViewCanva,
-        icon:  Icons.brush_rounded,
+        icon: Icons.brush_rounded,
         onTap: () => _launch(url),
       );
 
   factory ProjectLink.downloadDocs(String url) => ProjectLink(
         label: AppStrings.ctaDownloadDoc,
-        icon:  Icons.download_rounded,
+        icon: Icons.download_rounded,
         onTap: () => _launch(url),
       );
 

@@ -6,8 +6,9 @@ import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
 import 'package:portfolio_web_app/core/navigation/route_names.dart';
 import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
+import 'package:portfolio_web_app/screens/widgets/cards/project_card.dart' as project_card; 
 
-// PHASE 27 — Data Analytics Screen
+// Data Analytics Screen
 class DataAnalyScreen extends StatelessWidget {
   const DataAnalyScreen({super.key});
 
@@ -15,28 +16,31 @@ class DataAnalyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    AppStrings.catDataAnalytics,
+      title: AppStrings.catDataAnalytics,
       overline: 'ANALYTICS',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: [
           SubCategoryCard(
-            title:       'Data Analytics Projects',
-            description: 'Full project documentation with downloadable reports for each analysis.',
-            icon:        Icons.analytics_rounded,
-            onTap:       () => Get.toNamed(RouteNames.dataAnalFull),
+            title: 'Data Analytics Projects',
+            description:
+                'Full project documentation with downloadable reports for each analysis.',
+            icon: Icons.analytics_rounded,
+            onTap: () => Get.toNamed(RouteNames.dataAnalFull),
           ),
           SubCategoryCard(
-            title:       'Tableau Dashboards',
-            description: 'Interactive data visualisation dashboards published on Tableau Public.',
-            icon:        Icons.bar_chart_rounded,
-            onTap:       () => Get.to(() => const DataAnalVizScreen()),
+            title: 'Tableau Dashboards',
+            description:
+                'Interactive data visualisation dashboards published on Tableau Public.',
+            icon: Icons.bar_chart_rounded,
+            onTap: () => Get.to(() => const DataAnalVizScreen()),
           ),
           SubCategoryCard(
-            title:       'Code Repositories',
-            description: 'Python scripts, Jupyter notebooks, and SQL queries stored on GitHub.',
-            icon:        Icons.code_rounded,
-            onTap:       () => Get.toNamed(RouteNames.dataAnalCode),
+            title: 'Code Repositories',
+            description:
+                'Python scripts, Jupyter notebooks, and SQL queries stored on GitHub.',
+            icon: Icons.code_rounded,
+            onTap: () => Get.toNamed(RouteNames.dataAnalCode),
           ),
         ],
       ),
@@ -54,23 +58,23 @@ class DataAnalProjectsScreen extends StatelessWidget {
     final projects = AppStrings.analyticsProjects;
 
     return SecondaryScreenShell(
-      title:    'Data Analytics Projects',
+      title: 'Data Analytics Projects',
       overline: 'ANALYTICS',
       child: projects.isEmpty
           ? const _EmptyState()
           : ProjectGrid(
               columns: screen.subProjectCardColumns,
               cards: projects.map((p) => _AnalyticsProjectCard(
-                title:   p['title']!,
-                summary: p['summary']!,
-                docUrl:  p['docUrl']!,
-              )).toList(),
+                    title: p['title']!,
+                    summary: p['summary']!,
+                    docUrl: p['docUrl']!,
+                  )).toList(),
             ),
     );
   }
 }
 
-// Analytics project card 
+// Analytics project card
 class _AnalyticsProjectCard extends StatefulWidget {
   const _AnalyticsProjectCard({
     required this.title,
@@ -87,10 +91,9 @@ class _AnalyticsProjectCard extends StatefulWidget {
 
 class _AnalyticsProjectCardState extends State<_AnalyticsProjectCard>
     with SingleTickerProviderStateMixin {
-
   bool _hovered = false;
   late final AnimationController _ctrl;
-  late final Animation<double>   _scale;
+  late final Animation<double> _scale;
 
   @override
   void initState() {
@@ -101,13 +104,22 @@ class _AnalyticsProjectCardState extends State<_AnalyticsProjectCard>
   }
 
   @override
-  void dispose() { _ctrl.dispose(); super.dispose(); }
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (_) { setState(() => _hovered = true);  _ctrl.forward(); },
-      onExit:  (_) { setState(() => _hovered = false); _ctrl.reverse(); },
+      onEnter: (_) {
+        setState(() => _hovered = true);
+        _ctrl.forward();
+      },
+      onExit: (_) {
+        setState(() => _hovered = false);
+        _ctrl.reverse();
+      },
       child: ScaleTransition(
         scale: _scale,
         child: AnimatedContainer(
@@ -118,32 +130,34 @@ class _AnalyticsProjectCardState extends State<_AnalyticsProjectCard>
             borderRadius: BorderRadius.circular(AppSizes.radiusL),
             border: Border.all(
               color: _hovered
-                  ? AppColors.gold : AppColors.gold.withOpacity(0.35),
+                  ? AppColors.gold
+                  : AppColors.gold.withOpacity(0.35),
               width: AppSizes.borderDefault,
             ),
-            boxShadow: _hovered ? [
-              BoxShadow(
-                color:      AppColors.gold.withOpacity(0.20),
-                blurRadius: AppSizes.cardShadowBlurHover,
-                offset:     const Offset(0, 8),
-              ),
-              BoxShadow(
-                color:      Colors.black.withOpacity(0.07),
-                blurRadius: AppSizes.cardShadowBlurDepth,
-                offset:     const Offset(0, 4),
-              ),
-            ] : [
-              BoxShadow(
-                color:      Colors.black.withOpacity(0.05),
-                blurRadius: AppSizes.cardShadowBlurRest,
-                offset:     const Offset(0, 2),
-              ),
-            ],
+            boxShadow: _hovered
+                ? [
+                    BoxShadow(
+                      color: AppColors.gold.withOpacity(0.20),
+                      blurRadius: AppSizes.cardShadowBlurHover,
+                      offset: const Offset(0, 8),
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.07),
+                      blurRadius: AppSizes.cardShadowBlurDepth,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: AppSizes.cardShadowBlurRest,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               // Title
               AnimatedDefaultTextStyle(
                 duration: AppSizes.durationDefault,
@@ -157,10 +171,10 @@ class _AnalyticsProjectCardState extends State<_AnalyticsProjectCard>
 
               // Gold rule
               Container(
-                width:  AppSizes.goldRuleWidth,
+                width: AppSizes.goldRuleWidth,
                 height: AppSizes.borderAccent,
                 decoration: BoxDecoration(
-                  color:        AppColors.gold,
+                  color: AppColors.gold,
                   borderRadius: BorderRadius.circular(AppSizes.radiusXXL),
                 ),
               ),
@@ -177,7 +191,6 @@ class _AnalyticsProjectCardState extends State<_AnalyticsProjectCard>
 
               // Download button
               _DownloadButton(docUrl: widget.docUrl),
-
             ],
           ),
         ),
@@ -190,7 +203,9 @@ class _AnalyticsProjectCardState extends State<_AnalyticsProjectCard>
 class _DownloadButton extends StatefulWidget {
   const _DownloadButton({required this.docUrl});
   final String docUrl;
-  @override State<_DownloadButton> createState() => _DownloadButtonState();
+
+  @override
+  State<_DownloadButton> createState() => _DownloadButtonState();
 }
 
 class _DownloadButtonState extends State<_DownloadButton> {
@@ -201,7 +216,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
-      onExit:  (_) => setState(() => _hovered = false),
+      onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: () => debugPrint('[Download] ${widget.docUrl}'),
         // Replace with: launchUrl(Uri.parse(widget.docUrl))
@@ -209,7 +224,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
           duration: AppSizes.durationDefault,
           padding: const EdgeInsets.symmetric(
             horizontal: AppSizes.spaceXXL,
-            vertical:   AppSizes.spaceM,
+            vertical: AppSizes.spaceM,
           ),
           decoration: BoxDecoration(
             color: _hovered ? AppColors.gold : AppColors.black,
@@ -220,7 +235,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
             children: [
               Icon(
                 Icons.download_rounded,
-                size:  AppSizes.iconXS,
+                size: AppSizes.iconXS,
                 color: AppColors.white,
               ),
               const SizedBox(width: AppSizes.spaceS),
@@ -237,7 +252,7 @@ class _DownloadButtonState extends State<_DownloadButton> {
   }
 }
 
-// Tableau Dashboards 
+// Tableau Dashboards
 class DataAnalVizScreen extends StatelessWidget {
   const DataAnalVizScreen({super.key});
 
@@ -245,15 +260,16 @@ class DataAnalVizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    'Tableau Dashboards',
+      title: 'Tableau Dashboards',
       overline: 'ANALYTICS',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: [
-          ProjectCard(
-            title:       'Tableau Public Profile',
-            description: 'View all published dashboards and interactive data visualisations on Tableau Public.',
-            links: [_ProjectLink.tableau(AppStrings.tableauProfile)],
+          project_card.ProjectCard(
+            title: 'Tableau Public Profile',
+            description:
+                'View all published dashboards and interactive data visualisations on Tableau Public.',
+            links: [ProjectLink.tableau(AppStrings.tableauProfile)],
           ),
         ],
       ),
@@ -269,15 +285,16 @@ class DataAnalCodeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    'Code Repositories',
+      title: 'Code Repositories',
       overline: 'ANALYTICS',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: [
-          ProjectCard(
-            title:       'Analytics Code Repository',
-            description: 'Python scripts, Jupyter notebooks, and SQL queries for all data analytics projects.',
-            links: [_ProjectLink.github(AppStrings.dataGithub)],
+          project_card.ProjectCard(
+            title: 'Analytics Code Repository',
+            description:
+                'Python scripts, Jupyter notebooks, and SQL queries for all data analytics projects.',
+            links: [ProjectLink.github(AppStrings.dataGithub)],
           ),
         ],
       ),
@@ -288,17 +305,23 @@ class DataAnalCodeScreen extends StatelessWidget {
 // Empty state
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.folder_open_rounded, size: 64,
-              color: AppColors.gold.withOpacity(0.35)),
+          Icon(
+            Icons.folder_open_rounded,
+            size: 64,
+            color: AppColors.gold.withOpacity(0.35),
+          ),
           const SizedBox(height: AppSizes.spaceXXL),
-          Text('Projects coming soon.',
-              style: AppTextStyle.bodyLarge.copyWith(color: AppColors.grey)),
+          Text(
+            'Projects coming soon.',
+            style: AppTextStyle.bodyLarge.copyWith(color: AppColors.grey),
+          ),
         ],
       ),
     );

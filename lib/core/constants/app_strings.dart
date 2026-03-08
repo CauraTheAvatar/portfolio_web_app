@@ -14,7 +14,7 @@ class AppStrings {
   static const String developerName    = "Your Name";
   static const String developerTitle   = "Full-Stack Flutter Developer";
 
-  // Professional titles — cycled in the animated type-writer role display
+  // Professional titles 
   static const List<String> developerTitles = [
     "Software Developer",
     "Data Analyst",
@@ -35,6 +35,7 @@ class AppStrings {
   static const String navHero     = "Introduction";
   static const String navProjects = "Projects";
   static const String navSkills   = "Skills";
+  static const String navExperience = "Experience"; // ADDED
   static const String navAbout    = "About";
   static const String navContact  = "Contact";
 
@@ -110,14 +111,14 @@ class AppStrings {
   static const String projPipelineDesc   = "An end-to-end data pipeline built for scalability. Handles ingestion, transformation, and loading across distributed sources.";
   static const String projPipelineGithub = "https://github.com/yourname/scalable-data-pipeline";
 
-  // Data Analytics sub-categories 
-  static const String subDataFull      = "Data Analytics";
-  static const String subDataFullDesc  = "Full project documentation and analysis reports.";
-  static const String subDataViz       = "Data Visualization";
-  static const String subDataVizDesc   = "Tableau Public dashboards and interactive visualizations.";
-  static const String subDataCode      = "Code";
-  static const String subDataCodeDesc  = "Analysis scripts and notebooks stored on GitHub.";
-  static const String tableauProfile   = "https://public.tableau.com/app/profile/yourname";
+  // Data Analytics sub-categories
+  static const String subDataAnalyticsFull = "Data Analytics";
+  static const String subDataFullDesc      = "Full project documentation and analysis reports.";
+  static const String subDataViz           = "Data Visualization";
+  static const String subDataVizDesc       = "Tableau Public dashboards and interactive visualizations.";
+  static const String subDataAnalyticsCode = "Code";
+  static const String subDataCodeDesc      = "Analysis scripts and notebooks stored on GitHub.";
+  static const String tableauProfile       = "https://public.tableau.com/app/profile/yourname";
 
   // Data Analytics project list 
   // Each entry: title, summary, docUrl
@@ -148,24 +149,19 @@ class AppStrings {
   // Graphic Design categories 
   static const String graphicBack      = "Back to Graphic Design";
 
-  // Project category labels — each maps to a sub-screen
+  // Project category labels 
   static const String catSoftware     = "Software Development";
   static const String catWordPress    = "WordPress";
   static const String catDataEng      = "Data Engineering";
-  static const String catDataViz       = "Data Visualization (Tableau)";
+  static const String catDataViz      = "Data Visualization (Tableau)";
   static const String catDataAnalytics = "Data Analytics";
   static const String catUIDesign     = "UI Design";
   static const String catGraphicDesign = "Graphic Design";
 
-  // Software sub-category labels
-  static const String subWebApps     = "Web Applications";
-  static const String subMobileApps  = "Mobile Applications";
-  static const String subGithub      = "GitHub Projects";
-
   // Data analytics sub-category labels
-  static const String subDataFull    = "Data Analytics (Full)";
-  static const String subTableau     = "Data Visualisation Dashboards";
-  static const String subDataCode    = "Code";
+  static const String subDataAnalyticsFullLabel = "Data Analytics (Full)";
+  static const String subTableauLabel           = "Data Visualisation Dashboards";
+  static const String subDataAnalyticsCodeLabel = "Code";
 
   // CTA labels used on project cards
   static const String ctaViewLive    = "View Live";
@@ -179,7 +175,7 @@ class AppStrings {
   static const String skillsTitle    = "Skills";
   static const String skillsSubtitle = "Technologies & tools I work with.";
 
-  // Skill category cards — 4 groups shown in the hover-blur row
+  // Skill category cards
   static const List<Map<String, dynamic>> skillCategories = [
     {
       'title':    'Software Engineering',
@@ -238,6 +234,10 @@ class AppStrings {
     'Data Engineering',
     'WordPress',
   ];
+
+  // Experience Section
+  static const String expTitle = "Experience";
+  static const String expSubtitle = "My professional journey and work history.";
 
   // About Section 
   static const String aboutTitle    = "About Me";
@@ -303,7 +303,7 @@ class AppStrings {
   // Footer 
   static const String footerCopyright = "© 2026 Laura Conceicao. All Rights Reserved.";
   static const String footerTagline   = "Building elegant solutions one line of code at a time.";
-  static const String footerNav       = "Introduction  ·  Projects  ·  Skills  ·  About  ·  Contact";
+  static const String footerNav       = "Introduction  ·  Projects  ·  Skills  ·  Experience  ·  About  ·  Contact"; // UPDATED
 
   // Form labels
   static const String formName        = "Full Name";
@@ -311,8 +311,7 @@ class AppStrings {
   static const String formMessage     = "Message";
   static const String formSend        = "Send Message";
   static const String formToast       = "Message sent successfully. I'll respond soon.";
-  static const String formHoneypot    = "_gotcha";             // hidden spam field name
-  // Replace with your Formspree endpoint ID: https://formspree.io/f/{id}
+  static const String formHoneypot    = "_gotcha";             
   static const String formspreeUrl    = "https://formspree.io/f/xvzwovdo";
   static const String formSuccess     = "Message sent! I'll be in touch soon.";
   static const String formError       = "Something went wrong. Please try again.";

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio_web_app/core/theme/app_colors.dart';
 
-// Font families:
-//   PlayfairDisplay → name / display / section titles
+// Font families via Google Fonts:
+//   Playfair Display → name / display / section titles
 //   Montserrat      → body / UI / labels / buttons
 
 class AppTextStyle {
   AppTextStyle._();
 
-  // Display — Playfair Display 
+  // Playfair Display (serif) — for names, titles, display text
+  static TextStyle get _playfair => GoogleFonts.playfairDisplay();
+  
+  // Montserrat (sans-serif) — for body text, navigation, UI elements
+  static TextStyle get _montserrat => GoogleFonts.montserrat();
+
+  // DISPLAY — PLAYFAIR DISPLAY
 
   // Hero: developer name. Gold + italic + large.
-  static const TextStyle developerName = TextStyle(
-    fontFamily: 'PlayfairDisplay',
+  static TextStyle get developerName => _playfair.copyWith(
     fontSize: 58,
     fontWeight: FontWeight.w700,
     fontStyle: FontStyle.italic,
@@ -22,8 +28,7 @@ class AppTextStyle {
   );
 
   // Hero: role / tagline beneath the name.
-  static const TextStyle heroTagline = TextStyle(
-    fontFamily: 'PlayfairDisplay',
+  static TextStyle get heroTagline => _playfair.copyWith(
     fontSize: 26,
     fontWeight: FontWeight.w600,
     fontStyle: FontStyle.italic,
@@ -33,8 +38,7 @@ class AppTextStyle {
   );
 
   // Section headings (Projects, Skills, About, Contact).
-  static const TextStyle sectionTitle = TextStyle(
-    fontFamily: 'PlayfairDisplay',
+  static TextStyle get sectionTitle => _playfair.copyWith(
     fontSize: 38,
     fontWeight: FontWeight.w700,
     color: AppColors.black,
@@ -43,8 +47,7 @@ class AppTextStyle {
   );
 
   // Card / item title inside project cards, skill groups, etc.
-  static const TextStyle cardTitle = TextStyle(
-    fontFamily: 'PlayfairDisplay',
+  static TextStyle get cardTitle => _playfair.copyWith(
     fontSize: 20,
     fontWeight: FontWeight.w700,
     color: AppColors.black,
@@ -52,11 +55,10 @@ class AppTextStyle {
     height: 1.25,
   );
 
-  // Body — Montserrat 
+  // BODY — MONTSERRAT
 
   // Section subtitle / intro line beneath a section title.
-  static const TextStyle sectionSubtitle = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get sectionSubtitle => _montserrat.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppColors.grey,
@@ -65,8 +67,7 @@ class AppTextStyle {
   );
 
   // Standard readable body copy (about bio, project descriptions).
-  static const TextStyle bodyLarge = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get bodyLarge => _montserrat.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppColors.grey,
@@ -75,8 +76,7 @@ class AppTextStyle {
   );
 
   // Secondary body copy — card descriptions, captions.
-  static const TextStyle bodyMedium = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get bodyMedium => _montserrat.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.grey,
@@ -85,8 +85,7 @@ class AppTextStyle {
   );
 
   // Fine print — dates, metadata, footnotes.
-  static const TextStyle bodySmall = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get bodySmall => _montserrat.copyWith(
     fontSize: 12,
     fontWeight: FontWeight.w400,
     color: AppColors.grey,
@@ -94,20 +93,26 @@ class AppTextStyle {
     height: 1.5,
   );
 
-  // UI Elements — Montserrat 
+  // UI ELEMENTS — MONTSERRAT
+
+  // Navbar logo / brand name
+  static TextStyle get navbarLogo => _playfair.copyWith(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: AppColors.black,
+    letterSpacing: -0.5,
+  );
 
   // Navbar link — default state.
-  static const TextStyle navItem = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get navItem => _montserrat.copyWith(
     fontSize: 15,
     fontWeight: FontWeight.w400,
     color: AppColors.black,
     letterSpacing: 0.3,
   );
 
-  // Navbar link — active / hover state (applied programmatically).
-  static const TextStyle navItemActive = TextStyle(
-    fontFamily: 'Montserrat',
+  // Navbar link — active / hover state
+  static TextStyle get navItemActive => _montserrat.copyWith(
     fontSize: 15,
     fontWeight: FontWeight.w600,
     color: AppColors.gold,
@@ -115,8 +120,7 @@ class AppTextStyle {
   );
 
   // Primary CTA button label (white on black button).
-  static const TextStyle buttonPrimary = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get buttonPrimary => _montserrat.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w600,
     color: AppColors.white,
@@ -124,8 +128,7 @@ class AppTextStyle {
   );
 
   // Secondary / ghost button label (black text, outlined button).
-  static const TextStyle buttonSecondary = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get buttonSecondary => _montserrat.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w600,
     color: AppColors.black,
@@ -133,8 +136,7 @@ class AppTextStyle {
   );
 
   // ALL-CAPS overline above a section title or card group.
-  static const TextStyle overline = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get overline => _montserrat.copyWith(
     fontSize: 11,
     fontWeight: FontWeight.w600,
     color: AppColors.gold,
@@ -143,8 +145,7 @@ class AppTextStyle {
   );
 
   // Skill chip / tag label inside a chip widget.
-  static const TextStyle chip = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get chip => _montserrat.copyWith(
     fontSize: 12,
     fontWeight: FontWeight.w500,
     color: AppColors.gold,
@@ -152,8 +153,7 @@ class AppTextStyle {
   );
 
   // Form field input text.
-  static const TextStyle inputText = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get inputText => _montserrat.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.black,
@@ -162,8 +162,7 @@ class AppTextStyle {
   );
 
   // Form field hint / placeholder text.
-  static const TextStyle inputHint = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get inputHint => _montserrat.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.grey,
@@ -172,8 +171,7 @@ class AppTextStyle {
   );
 
   // Inline hyperlink or mailto text.
-  static const TextStyle link = TextStyle(
-    fontFamily: 'Montserrat',
+  static TextStyle get link => _montserrat.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     color: AppColors.gold,
@@ -182,17 +180,17 @@ class AppTextStyle {
     decorationColor: AppColors.gold,
   );
 
-  // Helpers 
+  // HELPERS
 
-  // Returns [developerName] with a custom font size — for responsive scaling.
+  // Returns [developerName] with a custom font size 
   static TextStyle developerNameScaled(double fontSize) =>
       developerName.copyWith(fontSize: fontSize);
 
-  // Returns [sectionTitle] with a custom font size — for responsive scaling.
+  // Returns [sectionTitle] with a custom font size 
   static TextStyle sectionTitleScaled(double fontSize) =>
       sectionTitle.copyWith(fontSize: fontSize);
 
-  // Returns any style with an overridden colour — avoids scattered copyWith calls.
+  // Returns any style with an overridden colour 
   static TextStyle withColor(TextStyle base, Color color) =>
       base.copyWith(color: color);
 }

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:portfolio_web_app/controllers/home_controller.dart';
+
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
-import 'package:portfolio_web_app/core/responsive/responsive.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
+import 'package:portfolio_web_app/core/responsive/responsive.dart';
 import 'package:portfolio_web_app/core/animations/shimmer_name.dart';
 
 class HeroSection extends StatelessWidget {

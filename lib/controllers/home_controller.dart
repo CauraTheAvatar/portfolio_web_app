@@ -8,17 +8,17 @@ class HomeController extends GetxController {
   final heroKey     = GlobalKey();
   final projectsKey = GlobalKey();
   final skillsKey   = GlobalKey();
+  final experienceKey = GlobalKey(); 
   final aboutKey    = GlobalKey();
   final contactKey  = GlobalKey();
 
-  // Active Section (reactive) — drives navbar highlight via Obx
+  // Active Section (reactive) 
   var activeSection = 'hero'.obs;
 
   // Scroll Controller
   final scrollController = ScrollController();
 
-  // Visibility threshold — section must cover at least 30% of viewport
-  // before it is considered "active". Prevents rapid flickering at boundaries.
+  // Visibility threshold 
   static const double _visibilityThreshold = 0.30;
 
   @override
@@ -27,9 +27,7 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  // Update Active Section — called by VisibilityDetector in HomeScreen.
-  // Only updates when the incoming section crosses the visibility threshold,
-  // preventing partial-overlap sections from stealing the active state.
+  // Update Active Section
   void updateSection(String section, double visibleFraction) {
     if (visibleFraction >= _visibilityThreshold &&
         activeSection.value != section) {
@@ -37,8 +35,7 @@ class HomeController extends GetxController {
     }
   }
 
-  // Scroll To — animates via ScrollController with navbar offset correction.
-  // Use for navbar taps and any programmatic scroll needing precise placement.
+  // Scroll To 
   void scrollTo(GlobalKey key) {
     final ctx = key.currentContext;
     if (ctx == null) return;
@@ -64,8 +61,7 @@ class HomeController extends GetxController {
     );
   }
 
-  // Scroll To Section — delegates to Scrollable.ensureVisible().
-  // Use for back-navigation from sub-screens or deep-link anchor resolution.
+  // Scroll To Section
   void scrollToSection(GlobalKey key) {
     final ctx = key.currentContext;
     if (ctx == null) return;
@@ -77,5 +73,4 @@ class HomeController extends GetxController {
       alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
     );
   }
-
 }

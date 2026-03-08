@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart'; 
+import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
+import 'package:portfolio_web_app/screens/widgets/images/cached_gallery_image.dart';
+
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
-import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
-import 'package:portfolio_web_app/screens/widgets/images/cached_gallery_image.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; 
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart'; 
 
 class UIDesignGalleryScreen extends StatelessWidget {
   const UIDesignGalleryScreen({super.key});
@@ -29,19 +33,19 @@ class UIDesignGalleryScreen extends StatelessWidget {
     final screen = Responsive.of(context);
 
     return SecondaryScreenShell(
-      title:    AppStrings.catUIDesign,
+      title: AppStrings.catUIDesign,
       overline: 'DESIGN',
       child: _projects.isEmpty
           ? const _EmptyState()
           : _UIGalleryGrid(
               projects: _projects,
-              columns:  screen.galleryColumns,
+              columns: screen.galleryColumns,
             ),
     );
   }
 }
 
-// Gallery Grid 
+// Gallery Grid
 class _UIGalleryGrid extends StatelessWidget {
   const _UIGalleryGrid({
     required this.projects,
@@ -49,18 +53,18 @@ class _UIGalleryGrid extends StatelessWidget {
   });
 
   final List<_UIProject> projects;
-  final int              columns;
+  final int columns;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final spacing   = AppSizes.cardGridSpacing;
+        final spacing = AppSizes.cardGridSpacing;
         final cardWidth =
             (constraints.maxWidth - spacing * (columns - 1)) / columns;
 
         return Wrap(
-          spacing:    spacing,
+          spacing: spacing,
           runSpacing: spacing,
           children: projects.map((p) => SizedBox(
             width: cardWidth,
@@ -72,7 +76,7 @@ class _UIGalleryGrid extends StatelessWidget {
   }
 }
 
-// UI Design Card 
+// UI Design Card
 class _UIDesignCard extends StatefulWidget {
   const _UIDesignCard({required this.project});
   final _UIProject project;
@@ -83,10 +87,9 @@ class _UIDesignCard extends StatefulWidget {
 
 class _UIDesignCardState extends State<_UIDesignCard>
     with SingleTickerProviderStateMixin {
-
   bool _hovered = false;
   late final AnimationController _ctrl;
-  late final Animation<double>   _scale;
+  late final Animation<double> _scale;
 
   @override
   void initState() {
@@ -98,7 +101,10 @@ class _UIDesignCardState extends State<_UIDesignCard>
   }
 
   @override
-  void dispose() { _ctrl.dispose(); super.dispose(); }
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   // Opens full-screen image viewer on 'View Full' tap
   void _showFullImage(BuildContext context, String imageUrl) {
@@ -112,14 +118,20 @@ class _UIDesignCardState extends State<_UIDesignCard>
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (_) { setState(() => _hovered = true);  _ctrl.forward(); },
-      onExit:  (_) { setState(() => _hovered = false); _ctrl.reverse(); },
+      onEnter: (_) {
+        setState(() => _hovered = true);
+        _ctrl.forward();
+      },
+      onExit: (_) {
+        setState(() => _hovered = false);
+        _ctrl.reverse();
+      },
       child: ScaleTransition(
         scale: _scale,
         child: AnimatedContainer(
           duration: AppSizes.durationDefault,
           decoration: BoxDecoration(
-            color:        AppColors.white,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(AppSizes.radiusL),
             border: Border.all(
               color: _hovered
@@ -130,31 +142,30 @@ class _UIDesignCardState extends State<_UIDesignCard>
             boxShadow: _hovered
                 ? [
                     BoxShadow(
-                      color:      AppColors.gold.withOpacity(0.20),
+                      color: AppColors.gold.withOpacity(0.20),
                       blurRadius: AppSizes.cardShadowBlurHover,
-                      offset:     const Offset(0, 8),
+                      offset: const Offset(0, 8),
                     ),
                     BoxShadow(
-                      color:      Colors.black.withOpacity(0.07),
+                      color: Colors.black.withOpacity(0.07),
                       blurRadius: AppSizes.cardShadowBlurDepth,
-                      offset:     const Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ]
                 : [
                     BoxShadow(
-                      color:      Colors.black.withOpacity(0.05),
+                      color: Colors.black.withOpacity(0.05),
                       blurRadius: AppSizes.cardShadowBlurRest,
-                      offset:     const Offset(0, 2),
+                      offset: const Offset(0, 2),
                     ),
                   ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // Lazy-loaded preview image with hover overlay (Phase 32) 
+              // Lazy-loaded preview image with hover overlay
               CachedGalleryImage(
-                imageUrl:        widget.project.imageUrl,
+                imageUrl: widget.project.imageUrl,
                 borderRadiusTop: true,
                 overlayActions: [
                   GalleryOverlayAction.viewFull(
@@ -170,13 +181,12 @@ class _UIDesignCardState extends State<_UIDesignCard>
                 ],
               ),
 
-              // Card content 
+              // Card content
               Padding(
                 padding: const EdgeInsets.all(AppSizes.cardPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     // Title
                     AnimatedDefaultTextStyle(
                       duration: AppSizes.durationDefault,
@@ -190,20 +200,17 @@ class _UIDesignCardState extends State<_UIDesignCard>
 
                     // Gold rule
                     Container(
-                      width:  AppSizes.goldRuleWidth,
+                      width: AppSizes.goldRuleWidth,
                       height: 2.5,
                       decoration: BoxDecoration(
-                        color:        AppColors.gold,
-                        borderRadius: BorderRadius.circular(AppSizes.radiusXXL),
+                        color: AppColors.gold,
+                        borderRadius:
+                            BorderRadius.circular(AppSizes.radiusXXL),
                       ),
                     ),
-
-                    // Links shown in image hover overlay (Phase 32)
-
                   ],
                 ),
               ),
-
             ],
           ),
         ),
@@ -212,9 +219,7 @@ class _UIDesignCardState extends State<_UIDesignCard>
   }
 }
 
-
-
-// Data Model 
+// Data Model
 class _UIProject {
   const _UIProject({
     required this.title,
@@ -222,13 +227,14 @@ class _UIProject {
     this.figmaUrl,
     this.canvaUrl,
   });
-  final String  title;
-  final String  imageUrl;
+  
+  final String title;
+  final String imageUrl;
   final String? figmaUrl;
   final String? canvaUrl;
 }
 
-// Empty State 
+// Empty State
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
 
@@ -240,7 +246,7 @@ class _EmptyState extends StatelessWidget {
         children: [
           Icon(
             Icons.design_services_rounded,
-            size:  64,
+            size: 64,
             color: AppColors.gold.withOpacity(0.35),
           ),
           const SizedBox(height: AppSizes.spaceXXL),
@@ -259,7 +265,7 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
-// Full Image Dialog — opened by "View Full" overlay button 
+// Full Image Dialog — opened by "View Full" overlay button
 class _FullImageDialog extends StatelessWidget {
   const _FullImageDialog({required this.imageUrl});
   final String imageUrl;
@@ -275,26 +281,27 @@ class _FullImageDialog extends StatelessWidget {
             Center(
               child: Hero(
                 tag: imageUrl,
-                child: CachedNetworkImage(
-                  imageUrl:    imageUrl,
-                  fit:         BoxFit.contain,
+                child: CachedNetworkImage( 
+                  imageUrl: imageUrl,
+                  fit: BoxFit.contain,
                   placeholder: (_, __) => const CircularProgressIndicator(
                       color: AppColors.gold),
                   errorWidget: (_, __, ___) => const Icon(
                       Icons.broken_image_rounded,
-                      color: AppColors.gold, size: 48),
+                      color: AppColors.gold,
+                      size: 48),
                 ),
               ),
             ),
             Positioned(
-              top:   AppSizes.space3XL,
+              top: AppSizes.space3XL,
               right: AppSizes.spaceXXL,
               child: GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
                 child: Container(
                   padding: const EdgeInsets.all(AppSizes.spaceS),
                   decoration: BoxDecoration(
-                    color:        AppColors.white.withOpacity(0.15),
+                    color: AppColors.white.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(AppSizes.radiusS),
                     border: Border.all(
                         color: AppColors.white.withOpacity(0.4),

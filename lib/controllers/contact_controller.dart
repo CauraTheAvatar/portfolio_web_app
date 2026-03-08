@@ -1,40 +1,27 @@
-import 'dart:ffi';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
-import 'package:portfolio_web_app/services/contact_service.dart';
-import 'package:portfolio_web_app/core/constants/app_strings.dart';
-import 'package:portfolio_web_app/services/contact_service.dart';
+import 'package:portfolio_web_app/services/formspree_service.dart';
+import 'package:portfolio_web_app/services/analytics_service.dart';
 
 class ContactController extends GetxController {
-
   static ContactController get to => Get.find();
 
-  // Observable state 
-
+  // Observable state
   final isSending = false.obs;
   final isSuccess = false.obs;
 
-  // Field controllers 
-  // Owned here so the controller can clear them on success and dispose properly.
+  // Field controllers
+  final nameCtrl = TextEditingController();
+  final emailCtrl = TextEditingController();
+  final messageCtrl = TextEditingController();
+  final honeypotCtrl = TextEditingController();
 
-  final nameCtrl     = TextEditingController();
-  final emailCtrl    = TextEditingController();
-  final messageCtrl  = TextEditingController();
-  final honeypotCtrl = TextEditingController(); // hidden spam trap
-
-  // Form key 
-  // Passed to the Form widget in ContactSection so validation can be
-  // triggered from the controller via formKey.currentState!.validate().
-
+  // Form key
   final formKey = GlobalKey<FormState>();
 
-  // Validators 
-  // Exposed as methods so widgets reference them without inline logic.
-
+  // Validators
   String? validateName(String? value) {
     if (value == null || value.trim().isEmpty) {
       return AppStrings.formValidName;
@@ -57,85 +44,88 @@ class ContactController extends GetxController {
     if (value == null || value.trim().isEmpty) {
       return AppStrings.formValidMsg;
     }
+    if (value.trim().length < 10) {
+      return 'Message must be at least 10 characters';
+    }
     return null;
   }
 
-  // Submit 
-  // Full send flow:
-  //   1. Run form validation — abort if invalid
-  //   2. Honeypot guard — silent abort if filled (bot detected)
-  //   3. Set isSending = true
-  //   4. Delegate POST to ContactService
-  //   5. On success → clear fields, set isSuccess, show success toast
-  //   6. On failure → show error toast
-  //   7. Always → set isSending = false
-
+  // Submit
   Future<void> submit() async {
-    // Step 1 — validate all fields
+    // Validate all fields
     final isValid = formKey.currentState?.validate() ?? false;
     if (!isValid) return;
 
-    // Step 2 — honeypot check (bots fill this, humans never see it)
-    if (honeypotCtrl.text.isNotEmpty) return;
+    // Honeypot check
+    if (honeypotCtrl.text.isNotEmpty) {
+      AnalyticsService.to.logEvent(AnalyticsEvent.contactSubmit, properties: {
+        'success': false,
+        'error': 'bot_detected',
+      });
+      return;
+    }
 
-    // Step 3 — enter loading state
+    // Enter loading state
     isSending.value = true;
     isSuccess.value = false;
 
-    // Step 4 — send via service
-    final result = await ContactService.send(
-      name:     nameCtrl.text,
-      email:    emailCtrl.text,
-      message:  messageCtrl.text,
+    // Send via Formspree service
+    final success = await FormspreeService.to.sendContactForm(
+      name: nameCtrl.text.trim(),
+      email: emailCtrl.text.trim(),
+      message: messageCtrl.text.trim(),
       honeypot: honeypotCtrl.text,
     );
 
-    // Step 5 / 6 — react to result
-    if (result.success) {
+    // React to result with analytics
+    if (success) {
       _clearFields();
       isSuccess.value = true;
-      _showToast(success: true);
+      
+      AnalyticsService.to.trackFormSubmission(
+        formName: 'contact',
+        success: true,
+      );
+      
+      Get.snackbar(
+        'Success',
+        AppStrings.formSuccess,
+        backgroundColor: AppColors.gold,
+        colorText: AppColors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 4),
+      );
     } else {
-      _showToast(success: false, message: result.error);
+      final error = FormspreeService.to.lastError.value;
+      
+      AnalyticsService.to.trackFormSubmission(
+        formName: 'contact',
+        success: false,
+        errorMessage: error,
+      );
+      
+      Get.snackbar(
+        'Error',
+        error.isEmpty ? AppStrings.formError : error,
+        backgroundColor: Colors.red,
+        colorText: AppColors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 4),
+      );
     }
 
-    // Step 7
     isSending.value = false;
   }
 
-  // Clear fields 
-
+  // Clear fields
   void _clearFields() {
     nameCtrl.clear();
     emailCtrl.clear();
     messageCtrl.clear();
-    // honeypotCtrl intentionally not cleared — irrelevant for UX
-    // Reset form so validation error states are also cleared
     formKey.currentState?.reset();
   }
 
-  // Toast 
-  // Uses GetX snackbar so no BuildContext is needed.
-  // Gold accent on success, red on failure.
-
-  void _showToast({required bool success, String? message}) {
-    Fluttertoast.showToast(
-      msg:          success
-          ? AppStrings.formToast
-          : (message ?? AppStrings.formError),
-      toastLength:  Toast.LENGTH_LONG,
-      gravity:      ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 4,
-      backgroundColor: const Color(0xFF111111),  // black
-      textColor:       const Color(0xFFFFFFFF),  // white
-      fontSize:        14,
-      webBgColor:      '#111111',
-      webPosition:     'center',
-    );
-  }
-
-  // Lifecycle 
-
+  // Lifecycle
   @override
   void onClose() {
     nameCtrl.dispose();

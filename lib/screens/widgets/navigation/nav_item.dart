@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; 
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart'; 
 
 class NavbarItem extends StatefulWidget {
-
   const NavbarItem({
     super.key,
     required this.title,
@@ -10,16 +11,15 @@ class NavbarItem extends StatefulWidget {
     this.isActive = false,
   });
 
-  final String        title;
-  final VoidCallback  onTap;
-  final bool          isActive;
+  final String title;
+  final VoidCallback onTap;
+  final bool isActive;
 
   @override
   State<NavbarItem> createState() => _NavbarItemState();
 }
 
 class _NavbarItemState extends State<NavbarItem> {
-
   bool _isHover = false;
 
   @override
@@ -29,7 +29,7 @@ class _NavbarItemState extends State<NavbarItem> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _isHover = true),
-      onExit:  (_) => setState(() => _isHover = false),
+      onExit: (_) => setState(() => _isHover = false),
       child: GestureDetector(
         onTap: widget.onTap,
         child: Padding(
@@ -38,8 +38,7 @@ class _NavbarItemState extends State<NavbarItem> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              // Label — animates between navItem (black) and navItemActive (gold)
+              // Label 
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
                 style: highlighted
@@ -50,7 +49,7 @@ class _NavbarItemState extends State<NavbarItem> {
 
               const SizedBox(height: 4),
 
-              // Gold underline — grows from 0 → 24px on highlight
+              // Gold underline 
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOut,
@@ -61,7 +60,6 @@ class _NavbarItemState extends State<NavbarItem> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-
             ],
           ),
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; // Added for completeness
 
 class MagneticCard extends StatefulWidget {
-
   const MagneticCard({
     super.key,
     required this.child,
@@ -20,9 +20,8 @@ class MagneticCard extends StatefulWidget {
 }
 
 class _MagneticCardState extends State<MagneticCard> {
-
   Offset _translate = Offset.zero;
-  bool   _active    = false;
+  bool _active = false;
 
   void _onEnter(PointerEvent event) {
     setState(() => _active = true);
@@ -30,7 +29,7 @@ class _MagneticCardState extends State<MagneticCard> {
 
   void _onExit(PointerEvent event) {
     setState(() {
-      _active    = false;
+      _active = false;
       _translate = Offset.zero;
     });
   }
@@ -45,8 +44,8 @@ class _MagneticCardState extends State<MagneticCard> {
     final centre = Offset(box.size.width / 2, box.size.height / 2);
 
     // Cursor position relative to card
-    final local   = box.globalToLocal(event.position);
-    final delta   = local - centre;
+    final local = box.globalToLocal(event.position);
+    final delta = local - centre;
 
     setState(() {
       _translate = delta * widget.strength;
@@ -57,11 +56,11 @@ class _MagneticCardState extends State<MagneticCard> {
   Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: _onEnter,
-      onExit:  _onExit,
+      onExit: _onExit,
       onHover: _onHover,
       child: AnimatedContainer(
-        duration: AppSizes.durationMagnetic,
-        curve:    Curves.easeOut,
+        duration: AppSizes.durationMagnetic, 
+        curve: Curves.easeOut,
         transform: Matrix4.translationValues(
           _translate.dx,
           _translate.dy,

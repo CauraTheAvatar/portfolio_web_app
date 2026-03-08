@@ -4,7 +4,6 @@ import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
 
 class AboutSection extends StatelessWidget {
-
   const AboutSection({super.key});
 
   @override
@@ -16,17 +15,15 @@ class AboutSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           // Section header
-          _SectionHeader(),
+          const _SectionHeader(),
 
           const SizedBox(height: AppSizes.sectionHeaderGapContent),
 
           // Three info blocks
           screen.isMobileOrTablet
-              ? _MobileLayout()
-              : _DesktopLayout(),
-
+              ? const _MobileLayout()
+              : const _DesktopLayout(),
         ],
       ),
     );
@@ -34,14 +31,13 @@ class AboutSection extends StatelessWidget {
 }
 
 // Section Header
-
 class _SectionHeader extends StatelessWidget {
+  const _SectionHeader();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         Text(
           'WHO I AM',
           style: AppTextStyle.overline,
@@ -58,7 +54,7 @@ class _SectionHeader extends StatelessWidget {
         const SizedBox(height: AppSizes.sectionHeaderGapRule),
 
         Container(
-          width:  AppSizes.goldRuleWidth,
+          width: AppSizes.goldRuleWidth,
           height: AppSizes.goldRuleHeight,
           decoration: BoxDecoration(
             color: AppColors.gold,
@@ -73,15 +69,14 @@ class _SectionHeader extends StatelessWidget {
           style: AppTextStyle.sectionSubtitle,
           textAlign: TextAlign.center,
         ),
-
       ],
     );
   }
 }
 
-// Desktop Layout — Row of three equal blocks
-
+// Desktop Layout (Row of three equal blocks)
 class _DesktopLayout extends StatelessWidget {
+  const _DesktopLayout();
 
   @override
   Widget build(BuildContext context) {
@@ -89,96 +84,88 @@ class _DesktopLayout extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-
           // Block 1 — Education (left-aligned)
           Expanded(
             child: _TextBlock(
-              title:     AppStrings.aboutEduTitle,
-              body:      AppStrings.aboutEduBody,
-              icon:      Icons.school_rounded,
+              title: AppStrings.aboutEduTitle,
+              body: AppStrings.aboutEduBody,
+              icon: Icons.school_rounded,
               alignment: TextAlign.left,
             ),
           ),
 
           const SizedBox(width: AppSizes.cardGridSpacing),
 
-          // Block 2 — Achievements (right-aligned) + startup chips
+          // Block 2 — Achievements + startup chips
           Expanded(
             child: _TextBlock(
-              title:     AppStrings.aboutAchTitle,
-              body:      AppStrings.aboutAchBody,
-              icon:      Icons.emoji_events_rounded,
+              title: AppStrings.aboutAchTitle,
+              body: AppStrings.aboutAchBody,
+              icon: Icons.emoji_events_rounded,
               alignment: TextAlign.right,
-              isMiddle:  true,
-              extra:     const _StartupCallouts(),
+              isMiddle: true,
+              extra: const _StartupCallouts(),
             ),
           ),
 
           const SizedBox(width: AppSizes.cardGridSpacing),
 
-          // Block 3 — Personal profile (left-aligned)
+          // Block 3 — Personal profile 
           Expanded(
             child: _TextBlock(
-              title:     AppStrings.aboutPersonalTitle,
-              body:      AppStrings.aboutPersonalBody,
-              icon:      Icons.self_improvement_rounded,
+              title: AppStrings.aboutPersonalTitle,
+              body: AppStrings.aboutPersonalBody,
+              icon: Icons.self_improvement_rounded,
               alignment: TextAlign.left,
             ),
           ),
-
         ],
       ),
     );
   }
 }
 
-// Mobile Layout — stacked Column
-
+// Mobile Layout
 class _MobileLayout extends StatelessWidget {
+  const _MobileLayout();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         _TextBlock(
-          title:     AppStrings.aboutEduTitle,
-          body:      AppStrings.aboutEduBody,
-          icon:      Icons.school_rounded,
+          title: AppStrings.aboutEduTitle,
+          body: AppStrings.aboutEduBody,
+          icon: Icons.school_rounded,
           alignment: TextAlign.left,
         ),
 
         const SizedBox(height: AppSizes.cardGridSpacing),
 
         _TextBlock(
-          title:     AppStrings.aboutAchTitle,
-          body:      AppStrings.aboutAchBody,
-          icon:      Icons.emoji_events_rounded,
-          alignment: TextAlign.left,  // left on mobile for readability
-          isMiddle:  true,
-          extra:     const _StartupCallouts(),
+          title: AppStrings.aboutAchTitle,
+          body: AppStrings.aboutAchBody,
+          icon: Icons.emoji_events_rounded,
+          alignment: TextAlign.left, 
+          isMiddle: true,
+          extra: const _StartupCallouts(),
         ),
 
         const SizedBox(height: AppSizes.cardGridSpacing),
 
         _TextBlock(
-          title:     AppStrings.aboutPersonalTitle,
-          body:      AppStrings.aboutPersonalBody,
-          icon:      Icons.self_improvement_rounded,
+          title: AppStrings.aboutPersonalTitle,
+          body: AppStrings.aboutPersonalBody,
+          icon: Icons.self_improvement_rounded,
           alignment: TextAlign.left,
         ),
-
       ],
     );
   }
 }
 
 // Text Block
-// Single about info block — white card with gold border.
-// isMiddle = true applies right-aligned text and a subtle gold-tinted bg.
-
 class _TextBlock extends StatefulWidget {
-
   const _TextBlock({
     required this.title,
     required this.body,
@@ -188,19 +175,18 @@ class _TextBlock extends StatefulWidget {
     this.extra,
   });
 
-  final String    title;
-  final String    body;
-  final IconData  icon;
+  final String title;
+  final String body;
+  final IconData icon;
   final TextAlign alignment;
-  final bool      isMiddle;
-  final Widget?   extra;
+  final bool isMiddle;
+  final Widget? extra;
 
   @override
   State<_TextBlock> createState() => _TextBlockState();
 }
 
 class _TextBlockState extends State<_TextBlock> {
-
   bool _hovered = false;
 
   @override
@@ -211,7 +197,7 @@ class _TextBlockState extends State<_TextBlock> {
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
-      onExit:  (_) => setState(() => _hovered = false),
+      onExit: (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
         duration: AppSizes.durationDefault,
         width: double.infinity,
@@ -232,32 +218,31 @@ class _TextBlockState extends State<_TextBlock> {
           boxShadow: _hovered
               ? [
                   BoxShadow(
-                    color:      AppColors.gold.withOpacity(0.15),
+                    color: AppColors.gold.withOpacity(0.15),
                     blurRadius: AppSizes.cardShadowBlurHover,
-                    offset:     const Offset(0, 6),
+                    offset: const Offset(0, 6),
                   ),
                   BoxShadow(
-                    color:      Colors.black.withOpacity(0.06),
+                    color: Colors.black.withOpacity(0.06),
                     blurRadius: AppSizes.cardShadowBlurDepth,
-                    offset:     const Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ]
               : [
                   BoxShadow(
-                    color:      Colors.black.withOpacity(0.04),
+                    color: Colors.black.withOpacity(0.04),
                     blurRadius: AppSizes.cardShadowBlurRest,
-                    offset:     const Offset(0, 2),
+                    offset: const Offset(0, 2),
                   ),
                 ],
         ),
         child: Column(
           crossAxisAlignment: crossAxis,
           children: [
-
             // Icon
             AnimatedContainer(
               duration: AppSizes.durationDefault,
-              width:  AppSizes.cardIconContainerSize,
+              width: AppSizes.cardIconContainerSize,
               height: AppSizes.cardIconContainerSize,
               decoration: BoxDecoration(
                 color: _hovered
@@ -267,7 +252,7 @@ class _TextBlockState extends State<_TextBlock> {
               ),
               child: Icon(
                 widget.icon,
-                size:  AppSizes.cardIconSize,
+                size: AppSizes.cardIconSize,
                 color: _hovered ? AppColors.gold : AppColors.grey,
               ),
             ),
@@ -288,13 +273,13 @@ class _TextBlockState extends State<_TextBlock> {
 
             const SizedBox(height: AppSizes.spaceS),
 
-            // Gold rule — short, aligned to match text alignment
+            // Gold rule 
             Align(
               alignment: widget.alignment == TextAlign.right
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               child: Container(
-                width:  32,
+                width: 32,
                 height: AppSizes.goldRuleHeight,
                 decoration: BoxDecoration(
                   color: AppColors.gold.withOpacity(
@@ -314,12 +299,11 @@ class _TextBlockState extends State<_TextBlock> {
               style: AppTextStyle.bodyMedium,
             ),
 
-            // Extra widget (startup callouts for middle block)
+            // Extra widget 
             if (widget.extra != null) ...[
               const SizedBox(height: AppSizes.cardInternalGapL),
               widget.extra!,
             ],
-
           ],
         ),
       ),
@@ -328,11 +312,7 @@ class _TextBlockState extends State<_TextBlock> {
 }
 
 // Startup Callouts
-// Gold-accented highlight chips for the two startups.
-// Rendered at the bottom of Block 2 (Achievements).
-
 class _StartupCallouts extends StatelessWidget {
-
   const _StartupCallouts();
 
   @override
@@ -340,7 +320,6 @@ class _StartupCallouts extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-
         Text(
           'VENTURES',
           style: AppTextStyle.overline.copyWith(fontSize: 10),
@@ -350,44 +329,40 @@ class _StartupCallouts extends StatelessWidget {
         const SizedBox(height: AppSizes.spaceS),
 
         _StartupChip(
-          name:     AppStrings.aboutStartup1,
+          name: AppStrings.aboutStartup1,
           subtitle: AppStrings.aboutStartup1Sub,
-          icon:     Icons.content_cut_rounded,
+          icon: Icons.content_cut_rounded,
         ),
 
         const SizedBox(height: AppSizes.spaceS),
 
         _StartupChip(
-          name:     AppStrings.aboutStartup2,
+          name: AppStrings.aboutStartup2,
           subtitle: AppStrings.aboutStartup2Sub,
-          icon:     Icons.celebration_rounded,
+          icon: Icons.celebration_rounded,
         ),
-
       ],
     );
   }
 }
 
-// Startup Chip — individual branded callout card
-
+// Startup Chip
 class _StartupChip extends StatefulWidget {
-
   const _StartupChip({
     required this.name,
     required this.subtitle,
     required this.icon,
   });
 
-  final String    name;
-  final String    subtitle;
-  final IconData  icon;
+  final String name;
+  final String subtitle;
+  final IconData icon;
 
   @override
   State<_StartupChip> createState() => _StartupChipState();
 }
 
 class _StartupChipState extends State<_StartupChip> {
-
   bool _hovered = false;
 
   @override
@@ -395,12 +370,12 @@ class _StartupChipState extends State<_StartupChip> {
     return MouseRegion(
       cursor: SystemMouseCursors.basic,
       onEnter: (_) => setState(() => _hovered = true),
-      onExit:  (_) => setState(() => _hovered = false),
+      onExit: (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
         duration: AppSizes.durationDefault,
         padding: const EdgeInsets.symmetric(
           horizontal: AppSizes.spaceXXL,
-          vertical:   AppSizes.spaceM,
+          vertical: AppSizes.spaceM,
         ),
         decoration: BoxDecoration(
           color: _hovered
@@ -417,10 +392,9 @@ class _StartupChipState extends State<_StartupChip> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-
             Icon(
               widget.icon,
-              size:  AppSizes.iconXS + 2,
+              size: AppSizes.iconXS + 2,
               color: AppColors.gold,
             ),
 
@@ -430,12 +404,11 @@ class _StartupChipState extends State<_StartupChip> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 Text(
                   widget.name,
-                  style: AppTextStyle.label.copyWith(
-                    color: AppColors.black,
+                  style: AppTextStyle.navItem.copyWith(
                     fontSize: 13,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
 
@@ -446,10 +419,8 @@ class _StartupChipState extends State<_StartupChip> {
                     fontSize: 11,
                   ),
                 ),
-
               ],
             ),
-
           ],
         ),
       ),

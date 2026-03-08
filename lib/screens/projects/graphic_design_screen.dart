@@ -1,65 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:portfolio_web_app/models/project_category_model.dart'; 
+import 'package:portfolio_web_app/models/project_model.dart'; 
 
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart';
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart';
+
 import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
+import 'package:portfolio_web_app/screens/widgets/cards/gallery_card.dart';
+import 'package:portfolio_web_app/services/analytics_service.dart';
+import 'package:portfolio_web_app/services/project_service.dart';
 
 class GraphicDesignScreen extends StatelessWidget {
   const GraphicDesignScreen({super.key});
 
   static const List<_GraphicCategory> _categories = [
-
     _GraphicCategory(
-      title:       'Posters',
+      title: 'Posters',
       description: 'Promotional and social media posters designed for print and digital.',
-      icon:        Icons.image_outlined,
-      images: [
-        // Add poster asset paths here:
-        // 'assets/images/graphic/posters/poster_1.jpg',
-        // 'assets/images/graphic/posters/poster_2.jpg',
-      ],
+      icon: Icons.image_outlined,
+      categoryType: 'posters',
     ),
-
     _GraphicCategory(
-      title:       'Brand Graphics',
+      title: 'Brand Graphics',
       description: 'Logo design, brand identity, and visual language systems.',
-      icon:        Icons.auto_awesome_rounded,
-      images: [
-        // Add brand graphic asset paths here:
-        // 'assets/images/graphic/brand/brand_1.jpg',
-        // 'assets/images/graphic/brand/brand_2.jpg',
-      ],
+      icon: Icons.auto_awesome_rounded,
+      categoryType: 'brand',
     ),
-
     _GraphicCategory(
-      title:       'Event Graphics',
+      title: 'Event Graphics',
       description: 'Flyers, banners, and event collateral for live and virtual events.',
-      icon:        Icons.celebration_rounded,
-      images: [
-        // Add event graphic asset paths here:
-        // 'assets/images/graphic/events/event_1.jpg',
-        // 'assets/images/graphic/events/event_2.jpg',
-      ],
+      icon: Icons.celebration_rounded,
+      categoryType: 'events',
     ),
-
   ];
 
   @override
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
+    
+    // Track screen view
+    AnalyticsService.to.logScreenView('graphic_design');
+
     return SecondaryScreenShell(
-      title:    AppStrings.catGraphicDesign,
+      title: AppStrings.catGraphicDesign,
       overline: 'VISUAL',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: _categories.map((cat) => _GraphicCategoryCard(
           category: cat,
-          onTap:    () => Get.to(
-            () => GraphicGalleryScreen(category: cat),
-            transition: Transition.rightToLeftWithFade,
-          ),
+          onTap: () {
+            AnalyticsService.to.logUserAction(
+              'graphic_category_click',
+              properties: {
+                'category': cat.title,
+              },
+            );
+            Get.to(
+              () => GraphicGalleryScreen(category: cat),
+              transition: Transition.rightToLeftWithFade,
+            );
+          },
         )).toList(),
       ),
     );
@@ -74,45 +79,78 @@ class GraphicGalleryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
+    
+    // Track gallery view
+    AnalyticsService.to.logScreenView('graphic_gallery_${category.categoryType}');
+
+    // Load projects from service with null safety
+    final projects = ProjectService.to.getProjectsByCategory(
+      ProjectCategory.graphicDesign,
+    ).where((p) => p.type == ProjectType.graphicDesign).toList();
+
+    if (projects.isEmpty) {
+      return SecondaryScreenShell(
+        title: category.title,
+        overline: 'GRAPHIC DESIGN',
+        child: const _EmptyGalleryState(),
+      );
+    }
 
     return SecondaryScreenShell(
-      title:    category.title,
+      title: category.title,
       overline: 'GRAPHIC DESIGN',
-      child: category.images.isEmpty
-          ? const _EmptyGalleryState()
-          : _PhotoGrid(
-              images:  category.images,
-              columns: screen.galleryColumns,
-            ),
+      child: _GalleryGrid(
+        projects: projects,
+        columns: screen.galleryColumns,
+      ),
     );
   }
 }
 
-// Photo Grid
-class _PhotoGrid extends StatelessWidget {
-  const _PhotoGrid({
-    required this.images,
+// Gallery Grid
+class _GalleryGrid extends StatelessWidget {
+  const _GalleryGrid({
+    required this.projects,
     required this.columns,
   });
 
-  final List<String> images;
-  final int          columns;
+  final List<ProjectModel> projects;
+  final int columns;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final spacing   = AppSizes.cardGridSpacing;
+        final spacing = AppSizes.cardGridSpacing;
         final cardWidth =
             (constraints.maxWidth - spacing * (columns - 1)) / columns;
 
         return Wrap(
-          spacing:    spacing,
+          spacing: spacing,
           runSpacing: spacing,
-          children: images.map((path) => SizedBox(
-            width: cardWidth,
-            child: _PhotoCard(imagePath: path),
-          )).toList(),
+          children: projects.map((project) {
+            // Safely access properties with null checks
+            final imageUrl = project.thumbnailUrl ?? 
+                (project.imageUrls.isNotEmpty ? project.imageUrls.first : '');
+            
+            return SizedBox(
+              width: cardWidth,
+              child: GalleryCard(
+                id: project.id,
+                title: project.title,
+                imageUrl: imageUrl,
+                type: GalleryCardType.graphicDesign,
+                links: project.links,
+                onViewFull: () {
+                  AnalyticsService.to.trackProjectInteraction(
+                    projectId: project.id,
+                    projectTitle: project.title,
+                    action: 'view_full',
+                  );
+                },
+              ),
+            );
+          }).toList(),
         );
       },
     );
@@ -126,7 +164,7 @@ class _GraphicCategoryCard extends StatefulWidget {
     required this.onTap,
   });
   final _GraphicCategory category;
-  final VoidCallback     onTap;
+  final VoidCallback onTap;
 
   @override
   State<_GraphicCategoryCard> createState() => _GraphicCategoryCardState();
@@ -134,10 +172,9 @@ class _GraphicCategoryCard extends StatefulWidget {
 
 class _GraphicCategoryCardState extends State<_GraphicCategoryCard>
     with SingleTickerProviderStateMixin {
-
   bool _hovered = false;
   late final AnimationController _ctrl;
-  late final Animation<double>   _scale;
+  late final Animation<double> _scale;
 
   @override
   void initState() {
@@ -149,16 +186,28 @@ class _GraphicCategoryCardState extends State<_GraphicCategoryCard>
   }
 
   @override
-  void dispose() { _ctrl.dispose(); super.dispose(); }
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final imageCount = widget.category.images.length;
+    // Get count from service with null safety
+    final projectCount = ProjectService.to.getProjectsByCategory(
+      ProjectCategory.graphicDesign,
+    ).where((p) => p.type == ProjectType.graphicDesign).length;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      onEnter: (_) { setState(() => _hovered = true);  _ctrl.forward(); },
-      onExit:  (_) { setState(() => _hovered = false); _ctrl.reverse(); },
+      onEnter: (_) {
+        setState(() => _hovered = true);
+        _ctrl.forward();
+      },
+      onExit: (_) {
+        setState(() => _hovered = false);
+        _ctrl.reverse();
+      },
       child: ScaleTransition(
         scale: _scale,
         child: GestureDetector(
@@ -167,7 +216,7 @@ class _GraphicCategoryCardState extends State<_GraphicCategoryCard>
             duration: AppSizes.durationDefault,
             padding: const EdgeInsets.all(AppSizes.cardPadding),
             decoration: BoxDecoration(
-              color:        AppColors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(AppSizes.radiusL),
               border: Border.all(
                 color: _hovered
@@ -178,32 +227,30 @@ class _GraphicCategoryCardState extends State<_GraphicCategoryCard>
               boxShadow: _hovered
                   ? [
                       BoxShadow(
-                        color:      AppColors.gold.withOpacity(0.22),
+                        color: AppColors.gold.withOpacity(0.22),
                         blurRadius: AppSizes.cardShadowBlurHover,
-                        offset:     const Offset(0, 8),
+                        offset: const Offset(0, 8),
                       ),
                       BoxShadow(
-                        color:      Colors.black.withOpacity(0.07),
+                        color: Colors.black.withOpacity(0.07),
                         blurRadius: AppSizes.cardShadowBlurDepth,
-                        offset:     const Offset(0, 4),
+                        offset: const Offset(0, 4),
                       ),
                     ]
                   : [
                       BoxShadow(
-                        color:      Colors.black.withOpacity(0.05),
+                        color: Colors.black.withOpacity(0.05),
                         blurRadius: AppSizes.cardShadowBlurRest,
-                        offset:     const Offset(0, 2),
+                        offset: const Offset(0, 2),
                       ),
                     ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                // Icon container
                 AnimatedContainer(
                   duration: AppSizes.durationDefault,
-                  width:  AppSizes.cardIconContainerSize,
+                  width: AppSizes.cardIconContainerSize,
                   height: AppSizes.cardIconContainerSize,
                   decoration: BoxDecoration(
                     color: _hovered
@@ -213,14 +260,11 @@ class _GraphicCategoryCardState extends State<_GraphicCategoryCard>
                   ),
                   child: Icon(
                     widget.category.icon,
-                    size:  AppSizes.cardIconSize,
+                    size: AppSizes.cardIconSize,
                     color: _hovered ? AppColors.gold : AppColors.grey,
                   ),
                 ),
-
                 const SizedBox(height: AppSizes.cardInternalGapL),
-
-                // Title
                 AnimatedDefaultTextStyle(
                   duration: AppSizes.durationDefault,
                   style: AppTextStyle.cardTitle.copyWith(
@@ -228,114 +272,36 @@ class _GraphicCategoryCardState extends State<_GraphicCategoryCard>
                   ),
                   child: Text(widget.category.title),
                 ),
-
                 const SizedBox(height: AppSizes.cardInternalGapS),
-
-                // Description
                 Text(
                   widget.category.description,
                   style: AppTextStyle.bodyMedium,
                 ),
-
                 const SizedBox(height: AppSizes.cardInternalGapL),
-
-                // Image count + arrow
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      imageCount == 0
+                      projectCount == 0
                           ? 'Coming soon'
-                          : '$imageCount ${imageCount == 1 ? 'image' : 'images'}',
+                          : '$projectCount ${projectCount == 1 ? 'project' : 'projects'}',
                       style: AppTextStyle.bodySmall.copyWith(
                         color: AppColors.gold,
                       ),
                     ),
                     AnimatedSlide(
-                      offset: _hovered
-                          ? const Offset(0.2, 0)
-                          : Offset.zero,
+                      offset: _hovered ? const Offset(0.2, 0) : Offset.zero,
                       duration: AppSizes.durationDefault,
-                      curve:    Curves.easeOut,
+                      curve: Curves.easeOut,
                       child: Icon(
                         Icons.arrow_forward_rounded,
-                        size:  AppSizes.cardArrowIconSize,
+                        size: AppSizes.cardArrowIconSize,
                         color: AppColors.gold,
                       ),
                     ),
                   ],
                 ),
-
               ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Photo Card
-class _PhotoCard extends StatefulWidget {
-  const _PhotoCard({required this.imagePath});
-  final String imagePath;
-
-  @override
-  State<_PhotoCard> createState() => _PhotoCardState();
-}
-
-class _PhotoCardState extends State<_PhotoCard> {
-  bool _hovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit:  (_) => setState(() => _hovered = false),
-      child: AnimatedContainer(
-        duration: AppSizes.durationDefault,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSizes.radiusL),
-          border: Border.all(
-            color: _hovered
-                ? AppColors.gold
-                : AppColors.gold.withOpacity(0.30),
-            width: AppSizes.borderDefault,
-          ),
-          boxShadow: _hovered
-              ? [
-                  BoxShadow(
-                    color:      AppColors.gold.withOpacity(0.20),
-                    blurRadius: AppSizes.cardShadowBlurHover,
-                    offset:     const Offset(0, 6),
-                  ),
-                ]
-              : [],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppSizes.radiusL - 1),
-          child: Image.asset(
-            widget.imagePath,
-            fit: BoxFit.cover,
-            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-              if (wasSynchronouslyLoaded) return child;
-              return AnimatedOpacity(
-                opacity:  frame == null ? 0.0 : 1.0,
-                duration: const Duration(milliseconds: 400),
-                curve:    Curves.easeIn,
-                child:    child,
-              );
-            },
-            errorBuilder: (_, __, ___) => Container(
-              height: 220,
-              color:  AppColors.lightGrey,
-              child:  Center(
-                child: Icon(
-                  Icons.image_rounded,
-                  size:  36,
-                  color: AppColors.gold.withOpacity(0.35),
-                ),
-              ),
             ),
           ),
         ),
@@ -350,12 +316,12 @@ class _GraphicCategory {
     required this.title,
     required this.description,
     required this.icon,
-    this.images = const [],
+    required this.categoryType,
   });
-  final String       title;
-  final String       description;
-  final IconData     icon;
-  final List<String> images;
+  final String title;
+  final String description;
+  final IconData icon;
+  final String categoryType;
 }
 
 // Empty States
@@ -368,14 +334,21 @@ class _EmptyGalleryState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.photo_library_rounded, size: 64,
-              color: AppColors.gold.withOpacity(0.35)),
+          Icon(
+            Icons.photo_library_rounded,
+            size: 64,
+            color: AppColors.gold.withOpacity(0.35),
+          ),
           const SizedBox(height: AppSizes.spaceXXL),
-          Text('Images coming soon.',
-              style: AppTextStyle.bodyLarge.copyWith(color: AppColors.grey)),
+          Text(
+            'Images coming soon.',
+            style: AppTextStyle.bodyLarge.copyWith(color: AppColors.grey),
+          ),
           const SizedBox(height: AppSizes.spaceS),
-          Text('Add asset paths to this category to populate the gallery.',
-              style: AppTextStyle.bodySmall),
+          Text(
+            'Add projects to populate the gallery.',
+            style: AppTextStyle.bodySmall,
+          ),
         ],
       ),
     );

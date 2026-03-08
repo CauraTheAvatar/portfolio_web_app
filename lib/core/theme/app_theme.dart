@@ -24,37 +24,36 @@ class AppTheme {
         scaffoldBackgroundColor: AppColors.white,
         canvasColor: AppColors.white,
 
-        // Typography 
-        fontFamily: 'Montserrat',
-        textTheme: const TextTheme(
-          // Display — Playfair Display
-          displayLarge:  AppTextStyle.developerName,
+        // Typography - REMOVED 'const' keyword
+        textTheme: TextTheme(
+          // Display 
+          displayLarge: AppTextStyle.developerName,
           displayMedium: AppTextStyle.heroTagline,
-          displaySmall:  AppTextStyle.sectionTitle,
+          displaySmall: AppTextStyle.sectionTitle,
 
-          // Headlines — Playfair Display
-          headlineLarge:  AppTextStyle.sectionTitle,
+          // Headlines 
+          headlineLarge: AppTextStyle.sectionTitle,
           headlineMedium: AppTextStyle.cardTitle,
-          headlineSmall:  AppTextStyle.cardTitle,
+          headlineSmall: AppTextStyle.cardTitle,
 
-          // Body — Montserrat
-          bodyLarge:   AppTextStyle.bodyLarge,
-          bodyMedium:  AppTextStyle.bodyMedium,
-          bodySmall:   AppTextStyle.bodySmall,
+          // Body 
+          bodyLarge: AppTextStyle.bodyLarge,
+          bodyMedium: AppTextStyle.bodyMedium,
+          bodySmall: AppTextStyle.bodySmall,
 
-          // Labels — Montserrat
-          labelLarge:  AppTextStyle.buttonPrimary,
+          // Labels 
+          labelLarge: AppTextStyle.buttonPrimary,
           labelMedium: AppTextStyle.chip,
-          labelSmall:  AppTextStyle.overline,
+          labelSmall: AppTextStyle.overline,
 
           // Title slots (used by AppBar, Card headers, etc.)
-          titleLarge:  AppTextStyle.cardTitle,
+          titleLarge: AppTextStyle.cardTitle,
           titleMedium: AppTextStyle.navItem,
-          titleSmall:  AppTextStyle.bodyMedium,
+          titleSmall: AppTextStyle.bodyMedium,
         ),
 
-        // AppBar 
-        appBarTheme: const AppBarTheme(
+        // AppBar - REMOVED 'const' keyword
+        appBarTheme: AppBarTheme(
           backgroundColor: AppColors.white,
           foregroundColor: AppColors.black,
           elevation: 0,
@@ -65,7 +64,7 @@ class AppTheme {
           surfaceTintColor: Colors.transparent,
         ),
 
-        // Elevated Button (primary — black bg, white text) 
+        // Elevated Button 
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.black,
@@ -77,7 +76,7 @@ class AppTheme {
               borderRadius: BorderRadius.circular(6),
             ),
           ).copyWith(
-            // Hover: lift + gold tint
+            // Hover
             elevation: WidgetStateProperty.resolveWith(
               (states) => states.contains(WidgetState.hovered) ? 4 : 0,
             ),
@@ -88,7 +87,7 @@ class AppTheme {
           ),
         ),
 
-        // Outlined Button (secondary — white bg, black border) 
+        // Outlined Button
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.black,
@@ -121,7 +120,7 @@ class AppTheme {
         ),
 
         // Card 
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: AppColors.white,
           elevation: 4,
           shadowColor: AppColors.black.withOpacity(0.08),

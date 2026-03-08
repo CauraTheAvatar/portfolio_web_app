@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
-import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
 
 class DataEnginScreen extends StatelessWidget {
   const DataEnginScreen({super.key});
 
   static const List<_DataEngProject> _projects = [
     _DataEngProject(
-      title:     AppStrings.projPipelineTitle,
+      title: AppStrings.projPipelineTitle,
       description: AppStrings.projPipelineDesc,
       githubUrl: AppStrings.projPipelineGithub,
     ),
@@ -26,17 +26,17 @@ class DataEnginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title:    AppStrings.catDataEng,
+      title: AppStrings.catDataEng,
       overline: 'ENGINEERING',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: _projects.map((p) => ProjectCard(
-          title:       p.title,
+          title: p.title,
           description: p.description,
-          imageUrl:    p.imageUrl,
+          imageUrl: p.imageUrl,
           links: [
-            _ProjectLink.github(p.githubUrl),
-            if (p.liveUrl != null) _ProjectLink.live(p.liveUrl!),
+            ProjectLink.github(p.githubUrl), 
+            if (p.liveUrl != null) ProjectLink.live(p.liveUrl!), 
           ],
         )).toList(),
       ),
@@ -52,9 +52,10 @@ class _DataEngProject {
     this.imageUrl,
     this.liveUrl,
   });
-  final String  title;
-  final String  description;
-  final String  githubUrl;
-  final String? imageUrl;  // Firebase Storage download URL
+  
+  final String title;
+  final String description;
+  final String githubUrl;
+  final String? imageUrl; // Firebase Storage download URL
   final String? liveUrl;
 }

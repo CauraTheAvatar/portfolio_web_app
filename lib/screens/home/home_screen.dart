@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import 'package:portfolio_web_app/controllers/home_controller.dart';
-import 'package:portfolio_web_app/screens/widgets/navigation/navbar.dart';
-
 import 'package:portfolio_web_app/screens/home/sections/about_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/hero_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/projects_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/skills_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/contact_section.dart';
-import 'package:portfolio_web_app/core/constants/app_sizes.dart';
-import 'package:portfolio_web_app/core/animations/fade_in.dart';
 import 'package:portfolio_web_app/screens/home/sections/footer.dart';
+import 'package:portfolio_web_app/screens/home/sections/experience_section.dart'; 
+
+import 'package:portfolio_web_app/screens/widgets/navigation/navbar.dart';
+import 'package:portfolio_web_app/core/animations/fade_in.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; 
+import 'package:portfolio_web_app/controllers/home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
-
   const HomeScreen({super.key});
 
   @override
@@ -26,32 +26,24 @@ class HomeScreen extends StatelessWidget {
       appBar: const Navbar(),
       body: Stack(
         children: [
-
           // Main scroll content 
           SingleChildScrollView(
             controller: controller.scrollController,
             child: Column(
               children: [
-
                 _SectionDetector(
                   sectionName: 'hero',
-                  controller:  controller,
-                  child: RepaintBoundary(),
-                    child: RepaintBoundary(),
-                    child: RepaintBoundary(),
-                    child: RepaintBoundary(),
-                    child: RepaintBoundary(
-                    child: RepaintBoundary(
+                  controller: controller,
+                  child: RepaintBoundary(
                     child: FadeInSection(
                       child: HeroSection(key: controller.heroKey),
                     ),
                   ),
                 ),
-              ),
 
                 _SectionDetector(
                   sectionName: 'projects',
-                  controller:  controller,
+                  controller: controller,
                   child: RepaintBoundary(
                     child: FadeInSection(
                       delay: const Duration(milliseconds: 60),
@@ -62,7 +54,7 @@ class HomeScreen extends StatelessWidget {
 
                 _SectionDetector(
                   sectionName: 'skills',
-                  controller:  controller,
+                  controller: controller,
                   child: RepaintBoundary(
                     child: FadeInSection(
                       delay: const Duration(milliseconds: 60),
@@ -72,8 +64,19 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 _SectionDetector(
+                  sectionName: 'experience',
+                  controller: controller,
+                  child: RepaintBoundary(
+                    child: FadeInSection(
+                      delay: const Duration(milliseconds: 60),
+                      child: ExperienceSection(key: controller.experienceKey), // You'll need to add this key to HomeController
+                    ),
+                  ),
+                ),
+
+                _SectionDetector(
                   sectionName: 'about',
-                  controller:  controller,
+                  controller: controller,
                   child: RepaintBoundary(
                     child: FadeInSection(
                       delay: const Duration(milliseconds: 60),
@@ -84,7 +87,7 @@ class HomeScreen extends StatelessWidget {
 
                 _SectionDetector(
                   sectionName: 'contact',
-                  controller:  controller,
+                  controller: controller,
                   child: RepaintBoundary(
                     child: FadeInSection(
                       delay: const Duration(milliseconds: 60),
@@ -95,21 +98,19 @@ class HomeScreen extends StatelessWidget {
 
                 // Footer 
                 const FooterSection(),
-
               ],
             ),
           ),
 
           // Scroll Progress Bar 
           const Positioned(
-            top:   0,
-            left:  0,
+            top: 0,
+            left: 0,
             right: 0,
             child: RepaintBoundary(
               child: _ScrollProgressBar(),
             ),
           ),
-
         ],
       ),
     );
@@ -119,11 +120,12 @@ class HomeScreen extends StatelessWidget {
 // Scroll Progress Bar 
 class _ScrollProgressBar extends StatefulWidget {
   const _ScrollProgressBar();
-  @override State<_ScrollProgressBar> createState() => _ScrollProgressBarState();
+  
+  @override
+  State<_ScrollProgressBar> createState() => _ScrollProgressBarState();
 }
 
 class _ScrollProgressBarState extends State<_ScrollProgressBar> {
-
   double _progress = 0.0;
 
   @override
@@ -136,7 +138,7 @@ class _ScrollProgressBarState extends State<_ScrollProgressBar> {
     final controller = Get.find<HomeController>();
     controller.scrollController.addListener(() {
       if (!mounted) return;
-      final sc  = controller.scrollController;
+      final sc = controller.scrollController;
       if (!sc.hasClients) return;
       final max = sc.position.maxScrollExtent;
       if (max <= 0) return;
@@ -147,29 +149,25 @@ class _ScrollProgressBarState extends State<_ScrollProgressBar> {
   @override
   Widget build(BuildContext context) {
     return LinearProgressIndicator(
-      value:            _progress,
-      minHeight:        3,
-      backgroundColor:  Colors.transparent,
-      valueColor: const AlwaysStoppedAnimation<Color>(AppColors.gold),
+      value: _progress,
+      minHeight: 3,
+      backgroundColor: Colors.transparent,
+      valueColor: const AlwaysStoppedAnimation<Color>(AppColors.gold), 
     );
   }
 }
 
 // Section Detector 
-// Wraps a section in a VisibilityDetector and notifies the controller
-// when the section becomes sufficiently visible — drives scroll-spy navbar.
-
 class _SectionDetector extends StatelessWidget {
-
   const _SectionDetector({
     required this.sectionName,
     required this.controller,
     required this.child,
   });
 
-  final String         sectionName;
+  final String sectionName;
   final HomeController controller;
-  final Widget         child;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

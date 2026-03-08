@@ -41,7 +41,7 @@ class RouteNames {
     contact,
   ];
 
-  /// Maps a section route string to its [HomeController] activeSection key.
+  // Maps a section route string to its HomeController activeSection key.
   static const Map<String, String> routeToSection = {
     hero:     'hero',
     projects: 'projects',

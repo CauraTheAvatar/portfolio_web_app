@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:portfolio_web_app/controllers/home_controller.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; // ADD THIS IMPORT
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart'; // ADD THIS IMPORT
 
 class MobileDrawer extends StatelessWidget {
-
   const MobileDrawer({super.key, required this.controller});
 
   final HomeController controller;
@@ -51,10 +52,14 @@ class MobileDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // Header — name + close button
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(AppSizes.drawerHeaderPadL, AppSizes.drawerHeaderPadT, AppSizes.drawerHeaderPadR, 0),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSizes.drawerHeaderPadL,
+                    AppSizes.drawerHeaderPadT,
+                    AppSizes.drawerHeaderPadR,
+                    0,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -93,13 +98,17 @@ class MobileDrawer extends StatelessWidget {
                       controller: controller,
                       onItemTap: (key) {
                         Navigator.of(context).pop();
+                        // FIXED: Convert Duration to milliseconds and divide
                         Future.delayed(
-                          AppSizes.durationScroll / 2,
+                          Duration(
+                            milliseconds:
+                                (AppSizes.durationScroll.inMilliseconds / 2)
+                                    .round(),
+                          ),
                           () => controller.scrollTo(key),
                         );
                       },
                     )),
-
               ],
             ),
           ),
@@ -110,9 +119,7 @@ class MobileDrawer extends StatelessWidget {
 }
 
 // Nav Links — list of drawer items
-
 class _NavLinks extends StatelessWidget {
-
   const _NavLinks({
     required this.controller,
     required this.onItemTap,
@@ -124,11 +131,11 @@ class _NavLinks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      (AppStrings.navHero,     'hero',     controller.heroKey),
+      (AppStrings.navHero, 'hero', controller.heroKey),
       (AppStrings.navProjects, 'projects', controller.projectsKey),
-      (AppStrings.navSkills,   'skills',   controller.skillsKey),
-      (AppStrings.navAbout,    'about',    controller.aboutKey),
-      (AppStrings.navContact,  'contact',  controller.contactKey),
+      (AppStrings.navSkills, 'skills', controller.skillsKey),
+      (AppStrings.navAbout, 'about', controller.aboutKey),
+      (AppStrings.navContact, 'contact', controller.contactKey),
     ];
 
     return Column(
@@ -146,25 +153,22 @@ class _NavLinks extends StatelessWidget {
 }
 
 // DrawerNavItem — individual link row inside the drawer
-
 class _DrawerNavItem extends StatefulWidget {
-
   const _DrawerNavItem({
     required this.title,
     required this.isActive,
     required this.onTap,
   });
 
-  final String        title;
-  final bool          isActive;
-  final VoidCallback  onTap;
+  final String title;
+  final bool isActive;
+  final VoidCallback onTap;
 
   @override
   State<_DrawerNavItem> createState() => _DrawerNavItemState();
 }
 
 class _DrawerNavItemState extends State<_DrawerNavItem> {
-
   bool _hovered = false;
 
   @override
@@ -174,13 +178,16 @@ class _DrawerNavItemState extends State<_DrawerNavItem> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
-      onExit:  (_) => setState(() => _hovered = false),
+      onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: AppSizes.durationFast,
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.drawerItemPaddingH, vertical: AppSizes.drawerItemPaddingV),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.drawerItemPaddingH,
+            vertical: AppSizes.drawerItemPaddingV,
+          ),
           decoration: BoxDecoration(
             color: highlighted
                 ? AppColors.gold.withOpacity(0.06)

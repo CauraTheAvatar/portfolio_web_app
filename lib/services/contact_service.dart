@@ -5,11 +5,6 @@ import 'package:portfolio_web_app/core/constants/app_strings.dart';
 
 class ContactService {
   ContactService._();
-
-  // POST name, email, message to the Formspree endpoint.
-  // Returns a [ContactResult] indicating success or failure.
-  // Honeypot field is always sent as an empty string — bots fill it in,
-  // Formspree silently discards those submissions.
   static Future<ContactResult> send({
     required String name,
     required String email,
@@ -63,9 +58,6 @@ class ContactService {
 }
 
 // ContactResult
-// Immutable value object returned by ContactService.send().
-// Carries success flag and an optional error message.
-
 class ContactResult {
 
   const ContactResult._({

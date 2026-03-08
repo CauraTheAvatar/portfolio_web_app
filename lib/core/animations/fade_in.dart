@@ -3,28 +3,27 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 
 class FadeInSection extends StatefulWidget {
-
   const FadeInSection({
     super.key,
     required this.child,
-    this.delay     = Duration.zero,
+    this.delay = Duration.zero,
     this.slideFrom = 30.0,
+    this.duration, // Optional custom duration
   });
 
-  final Widget   child;
+  final Widget child;
   final Duration delay;
-  final double   slideFrom;
-
+  final double slideFrom;
+  final Duration? duration; 
   @override
   State<FadeInSection> createState() => _FadeInSectionState();
 }
 
 class _FadeInSectionState extends State<FadeInSection>
     with SingleTickerProviderStateMixin {
-
   late final AnimationController _ctrl;
-  late final Animation<double>   _opacity;
-  late final Animation<Offset>   _slide;
+  late final Animation<double> _opacity;
+  late final Animation<Offset> _slide;
 
   bool _triggered = false;
 
@@ -32,29 +31,30 @@ class _FadeInSectionState extends State<FadeInSection>
   void initState() {
     super.initState();
 
+    // Use provided duration or default to AppSizes.durationSlow
     _ctrl = AnimationController(
-      vsync:    this,
-      duration: AppSizes.durationFadeIn,
+      vsync: this,
+      duration: widget.duration ?? AppSizes.durationSlow,
     );
 
     _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _ctrl, curve: Curves.easeOut),
     );
 
-    // slideFrom px → normalised Offset (Offset(0, 1) = full widget height)
-    // We use a small fixed pixel value expressed as a fraction.
-    // FractionalTranslation uses fractions of widget size, so we use
-    // a SlideTransition with Tween<Offset> where 0.08 ≈ 30px on most screens.
+    // Normalize slide distance based on screen height for consistency
     _slide = Tween<Offset>(
-      begin: Offset(0, widget.slideFrom / 400),
-      end:   Offset.zero,
+      begin: Offset(0, widget.slideFrom / 400), 
+      end: Offset.zero,
     ).animate(
       CurvedAnimation(parent: _ctrl, curve: Curves.easeOut),
     );
   }
 
   @override
-  void dispose() { _ctrl.dispose(); super.dispose(); }
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   void _onVisibilityChanged(VisibilityInfo info) {
     if (_triggered) return;
@@ -74,13 +74,13 @@ class _FadeInSectionState extends State<FadeInSection>
   @override
   Widget build(BuildContext context) {
     return VisibilityDetector(
-      key:                  key ?? ValueKey(widget.child.runtimeType),
-      onVisibilityChanged:  _onVisibilityChanged,
+      key: widget.key ?? ValueKey('fade_${widget.child.runtimeType}'),
+      onVisibilityChanged: _onVisibilityChanged,
       child: SlideTransition(
         position: _slide,
-        child:    FadeTransition(
+        child: FadeTransition(
           opacity: _opacity,
-          child:   widget.child,
+          child: widget.child,
         ),
       ),
     );
