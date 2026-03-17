@@ -43,3 +43,14 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Create .gitkeep files to ensure folders are tracked by git
+New-Item -ItemType File -Path assets\images\ui\cao_cao_investment\.gitkeep -Force
+New-Item -ItemType File -Path assets\images\ui\portfolio_website\.gitkeep -Force
+New-Item -ItemType File -Path assets\images\ui\prayer_box\.gitkeep -Force
+
+New-item -ItemType File -Path assets\images\graphic\posters\social_media\.gitkeep -Force
+New-item -ItemType File -Path assets\images\graphic\posters\print_materials\.gitkeep -Force
+New-Item -ItemType File -Path assets\images\graphic\banners\.gitkeep -Force
+New-Item -ItemType File -Path assets\images\graphic\logos\.gitkeep -Force
+New-Item -ItemType File -Path assets\logos\.gitkeep -Force

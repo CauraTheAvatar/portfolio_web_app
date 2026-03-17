@@ -26,7 +26,7 @@ class PortfolioApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Laura Conceicao Uuyuni Portfolio",
+      title: "C'aura Technology",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       initialRoute: RouteNames.home,

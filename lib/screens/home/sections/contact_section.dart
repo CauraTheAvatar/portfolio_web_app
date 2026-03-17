@@ -7,6 +7,10 @@ import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
 import 'package:portfolio_web_app/controllers/contact_controller.dart';
 import 'package:portfolio_web_app/screens/form/contact_form.dart';
+import 'package:portfolio_web_app/screens/home/sections/section_container.dart';
+import 'package:portfolio_web_app/core/animations/confetti.dart'; 
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; 
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart'; 
 
 class ContactSection extends StatelessWidget {
   const ContactSection({super.key});
@@ -14,20 +18,36 @@ class ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
-    Get.put(ContactController());
+    final controller = Get.put(ContactController()); // Capture controller reference
 
-    return SectionWrapper(
-      color: AppColors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const _SectionHeader(),
-          const SizedBox(height: AppSizes.sectionHeaderGapContent),
-          screen.isMobileOrTablet
-              ? const _MobileLayout()
-              : const _DesktopLayout(), 
-        ],
-      ),
+    return Stack(
+      children: [
+        SectionContainer(
+          color: AppColors.white,
+          addGradient: true,
+          useStandardPadding: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const _SectionHeader(),
+              const SizedBox(height: AppSizes.sectionHeaderGapContent),
+              screen.isMobileOrTablet
+                  ? const _MobileLayout()
+                  : const _DesktopLayout(), 
+            ],
+          ),
+        ),
+        
+        // Confetti overlay
+        Obx(() => Confetti(
+          isActive: controller.showConfetti.value,
+          onComplete: () {
+            controller.showConfetti.value = false;
+          },
+          particleCount: 80, // Subtle amount of confetti
+          duration: const Duration(seconds: 3),
+        )),
+      ],
     );
   }
 }
@@ -177,7 +197,10 @@ class _SocialLinkState extends State<_SocialLink> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
-        onTap: () => debugPrint('[Contact] ${widget.value}'),
+        onTap: () {
+          // TODO: Implement actual URL launching
+          debugPrint('[Contact] ${widget.value}');
+        },
         child: Row(
           children: [
             AnimatedContainer(
@@ -217,30 +240,6 @@ class _SocialLinkState extends State<_SocialLink> {
           ],
         ),
       ),
-    );
-  }
-}
-
-// If SectionWrapper doesn't exist, add this at the bottom of the file:
-class SectionWrapper extends StatelessWidget {
-  final Widget child;
-  final Color color;
-
-  const SectionWrapper({
-    super.key,
-    required this.child,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: color,
-      padding: EdgeInsets.symmetric(
-        horizontal: Responsive.of(context).horizontalPadding,
-        vertical: AppSizes.sectionPaddingVertical,
-      ),
-      child: child,
     );
   }
 }

@@ -8,7 +8,7 @@ import 'package:portfolio_web_app/screens/home/sections/projects_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/skills_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/contact_section.dart';
 import 'package:portfolio_web_app/screens/home/sections/footer.dart';
-import 'package:portfolio_web_app/screens/home/sections/experience_section.dart'; 
+import 'package:portfolio_web_app/screens/home/sections/collaborations_section.dart'; 
 
 import 'package:portfolio_web_app/screens/widgets/navigation/navbar.dart';
 import 'package:portfolio_web_app/core/animations/fade_in.dart';
@@ -64,12 +64,12 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 _SectionDetector(
-                  sectionName: 'experience',
+                  sectionName: 'collaborations',
                   controller: controller,
                   child: RepaintBoundary(
                     child: FadeInSection(
                       delay: const Duration(milliseconds: 60),
-                      child: ExperienceSection(key: controller.experienceKey), // You'll need to add this key to HomeController
+                      child: CollaborationsSection(key: controller.collaborationsKey), // You'll need to add this key to HomeController
                     ),
                   ),
                 ),

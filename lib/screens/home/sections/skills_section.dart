@@ -6,17 +6,21 @@ import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
 import 'package:portfolio_web_app/core/theme/app_colors.dart';
 import 'package:portfolio_web_app/core/theme/app_textstyle.dart';
+import 'package:portfolio_web_app/screens/home/sections/section_container.dart';
 import 'package:portfolio_web_app/services/analytics_service.dart';
 import 'package:portfolio_web_app/screens/widgets/cards/skill_card.dart';
-import 'package:portfolio_web_app/models/skill_model.dart'; // ADDED - Missing import
+import 'package:portfolio_web_app/models/skill_model.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class SkillsSection extends StatelessWidget {
   const SkillsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SectionWrapper(
+    return SectionContainer(
       color: AppColors.white,
+      addGradient: true,
+      useStandardPadding: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -37,10 +41,10 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('WHAT I KNOW', style: AppTextStyle.overline),
+        Text('PROFICIENT TECHSTACKS', style: AppTextStyle.overline),
         const SizedBox(height: AppSizes.sectionHeaderGapOverline),
         Text(
-          AppStrings.skillsTitle,
+          'Skills', 
           style: AppTextStyle.sectionTitle,
           textAlign: TextAlign.center,
         ),
@@ -55,7 +59,7 @@ class _SectionHeader extends StatelessWidget {
         ),
         const SizedBox(height: AppSizes.sectionHeaderGapSubtitle),
         Text(
-          AppStrings.skillsSubtitle,
+          'Technologies & Tools We Work With', 
           style: AppTextStyle.sectionSubtitle,
           textAlign: TextAlign.center,
         ),
@@ -74,10 +78,10 @@ class _SkillCardRow extends StatefulWidget {
 
 class _SkillCardRowState extends State<_SkillCardRow> {
   int _hoveredIndex = -1;
+  bool _isVisible = false;
 
   void _onHover(int index) {
     setState(() => _hoveredIndex = index);
-    // Track skill hover for analytics - FIXED: Use named parameter
     AnalyticsService.to.logUserAction(
       'skill_hover',
       properties: {
@@ -93,66 +97,60 @@ class _SkillCardRowState extends State<_SkillCardRow> {
     final screen = Responsive.of(context);
     final categories = AppStrings.skillCategories;
 
-    // Convert string-based skills to SkillModel objects
+    // Convert string-based skills to SkillModel objects with varied proficiencies
     final skillModels = categories.map((cat) {
-      final skills = (cat['skills'] as List).map((skill) => SkillModel(
-        name: skill,
-        category: cat['title'],
-        proficiency: 85, // Default proficiency - you can adjust per skill
-        keywords: [],
-      )).toList();
+      final skills = (cat['skills'] as List).asMap().entries.map((entry) {
+        final index = entry.key;
+        final skill = entry.value;
+        int proficiency = 95;
+        
+        if (skill.toString().contains('Flutter') || skill.toString().contains('Dart')) {
+          proficiency = 98;
+        } else if (skill.toString().contains('Python') || skill.toString().contains('Data')) {
+          proficiency = 90;
+        } else if (skill.toString().contains('Figma') || skill.toString().contains('Design')) {
+          proficiency = 92;
+        } else if (skill.toString().contains('TypeScript') || skill.toString().contains('Angular')) {
+          proficiency = 85;
+        } else if (skill.toString().contains('WordPress')) {
+          proficiency = 88;
+        }
+        
+        return SkillModel(
+          name: skill,
+          category: cat['title'],
+          proficiency: proficiency,
+          keywords: [],
+        );
+      }).toList();
       return {
         'title': cat['title'],
         'skills': skills,
       };
     }).toList();
 
-    if (screen.isMobileOrTablet && !screen.isTabletLarge) {
-      return Column(
-        children: List.generate(skillModels.length, (i) {
-          final item = skillModels[i];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: AppSizes.cardGridSpacing),
-            child: SkillCard(
-              category: item['title'],
-              skills: item['skills'],
-              onTap: () {
-                // FIXED: Use named parameter
-                AnalyticsService.to.logUserAction(
-                  'skill_category_click',
-                  properties: {
-                    'category': item['title'],
-                  },
-                );
-              },
-            ),
-          );
-        }),
-      );
-    }
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(skillModels.length, (i) {
-        final item = skillModels[i];
-        final isHovered = _hoveredIndex == i;
-        final isDefocused = _hoveredIndex != -1 && !isHovered;
-
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-              right: i < skillModels.length - 1 ? AppSizes.cardGridSpacing : 0,
-            ),
-            child: MouseRegion(
-              onEnter: (_) => _onHover(i),
-              onExit: (_) => _onExit(),
-              child: Stack(
-                children: [
-                  SkillCard(
+    return VisibilityDetector(
+      key: const Key('skills_section_visibility'),
+      onVisibilityChanged: (info) {
+        if (info.visibleFraction > 0.2 && !_isVisible) {
+          setState(() {
+            _isVisible = true;
+          });
+        }
+      },
+      child: Column(
+        children: [
+          if (screen.isMobileOrTablet && !screen.isTabletLarge)
+            Column(
+              children: List.generate(skillModels.length, (i) {
+                final item = skillModels[i];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: AppSizes.cardGridSpacing),
+                  child: SkillCard(
                     category: item['title'],
                     skills: item['skills'],
+                    isVisible: _isVisible,
                     onTap: () {
-                      // FIXED: Use named parameter
                       AnalyticsService.to.logUserAction(
                         'skill_category_click',
                         properties: {
@@ -161,63 +159,75 @@ class _SkillCardRowState extends State<_SkillCardRow> {
                       );
                     },
                   ),
-                  if (isDefocused)
-                    const _DefocusOverlay(),
-                ],
-              ),
+                );
+              }),
+            )
+          else
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(skillModels.length, (i) {
+                final item = skillModels[i];
+                final isHovered = _hoveredIndex == i;
+                final isDefocused = _hoveredIndex != -1 && !isHovered;
+
+                return Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: i < skillModels.length - 1 ? AppSizes.cardGridSpacing : 0,
+                    ),
+                    child: MouseRegion(
+                      onEnter: (_) => _onHover(i),
+                      onExit: (_) => _onExit(),
+                      child: Stack(
+                        fit: StackFit.passthrough, // ADDED: Ensures stack doesn't impose constraints
+                        children: [
+                          SkillCard(
+                            category: item['title'],
+                            skills: item['skills'],
+                            isVisible: _isVisible,
+                            onTap: () {
+                              AnalyticsService.to.logUserAction(
+                                'skill_category_click',
+                                properties: {
+                                  'category': item['title'],
+                                },
+                              );
+                            },
+                          ),
+                          if (isDefocused)
+                            const _DefocusOverlay(), // RE-ENABLED with fixed implementation
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
             ),
-          ),
-        );
-      }),
+        ],
+      ),
     );
   }
 }
 
-// Defocus Overlay
+// FIXED Defocus Overlay - Now properly constrained
 class _DefocusOverlay extends StatelessWidget {
   const _DefocusOverlay();
 
   @override
   Widget build(BuildContext context) {
-    return Positioned.fill(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppSizes.radiusL),
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppSizes.radiusL),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-          child: AnimatedContainer(
-            duration: AppSizes.durationDefault,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.50),
-              borderRadius: BorderRadius.circular(AppSizes.radiusL),
-            ),
+          child: Container(
+            color: Colors.white.withOpacity(0.45),
           ),
         ),
       ),
-    );
-  }
-}
-
-// SectionWrapper - Add this at the bottom if it doesn't exist elsewhere
-class SectionWrapper extends StatelessWidget {
-  final Widget child;
-  final Color color;
-
-  const SectionWrapper({
-    super.key,
-    required this.child,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final screen = Responsive.of(context);
-    return Container(
-      color: color,
-      padding: EdgeInsets.symmetric(
-        horizontal: screen.horizontalPadding,
-        vertical: AppSizes.sectionPaddingVertical,
-      ),
-      child: child,
     );
   }
 }

@@ -108,7 +108,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
         NavbarItem(
           title: 'Experience', // You can add this to AppStrings if desired
           isActive: controller.activeSection.value == 'experience',
-          onTap: () => controller.scrollToSection(controller.experienceKey),
+          onTap: () => controller.scrollToSection(controller.collaborationsKey),
         ),
         NavbarItem(
           title: AppStrings.navAbout,

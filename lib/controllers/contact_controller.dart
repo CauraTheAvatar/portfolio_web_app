@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/services/formspree_service.dart';
 import 'package:portfolio_web_app/services/analytics_service.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; // ADD THIS IMPORT
 
 class ContactController extends GetxController {
   static ContactController get to => Get.find();
@@ -11,6 +12,7 @@ class ContactController extends GetxController {
   // Observable state
   final isSending = false.obs;
   final isSuccess = false.obs;
+  final showConfetti = false.obs; // ADD THIS
 
   // Field controllers
   final nameCtrl = TextEditingController();
@@ -68,6 +70,7 @@ class ContactController extends GetxController {
     // Enter loading state
     isSending.value = true;
     isSuccess.value = false;
+    showConfetti.value = false; // Reset confetti
 
     // Send via Formspree service
     final success = await FormspreeService.to.sendContactForm(
@@ -81,6 +84,7 @@ class ContactController extends GetxController {
     if (success) {
       _clearFields();
       isSuccess.value = true;
+      showConfetti.value = true; // TRIGGER CONFETTI!
       
       AnalyticsService.to.trackFormSubmission(
         formName: 'contact',
@@ -95,6 +99,13 @@ class ContactController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 4),
       );
+
+      // Auto-hide confetti after animation completes
+      Future.delayed(const Duration(seconds: 4), () {
+        if (Get.isRegistered<ContactController>()) {
+          showConfetti.value = false;
+        }
+      });
     } else {
       final error = FormspreeService.to.lastError.value;
       

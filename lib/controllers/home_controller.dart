@@ -8,17 +8,18 @@ class HomeController extends GetxController {
   final heroKey     = GlobalKey();
   final projectsKey = GlobalKey();
   final skillsKey   = GlobalKey();
-  final experienceKey = GlobalKey(); 
+  final collaborationsKey = GlobalKey();
+  final partnersKey = GlobalKey(); 
   final aboutKey    = GlobalKey();
   final contactKey  = GlobalKey();
 
-  // Active Section (reactive) 
+  // Active Section (reactive) — drives navbar highlight via Obx
   var activeSection = 'hero'.obs;
 
   // Scroll Controller
   final scrollController = ScrollController();
 
-  // Visibility threshold 
+  // Visibility threshold
   static const double _visibilityThreshold = 0.30;
 
   @override
@@ -35,7 +36,7 @@ class HomeController extends GetxController {
     }
   }
 
-  // Scroll To 
+  // Scroll To
   void scrollTo(GlobalKey key) {
     final ctx = key.currentContext;
     if (ctx == null) return;
@@ -43,11 +44,9 @@ class HomeController extends GetxController {
     final box = ctx.findRenderObject() as RenderBox?;
     if (box == null) return;
 
-    // Absolute Y position of the section relative to the scroll origin
     final sectionTop =
         box.localToGlobal(Offset.zero).dy + scrollController.offset;
 
-    // Subtract navbar height so the heading isn't hidden beneath it
     const navbarHeight = AppSizes.navbarHeight;
     final targetOffset = (sectionTop - navbarHeight).clamp(
       0.0,

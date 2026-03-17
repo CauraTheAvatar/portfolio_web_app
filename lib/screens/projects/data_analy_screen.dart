@@ -6,7 +6,9 @@ import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
 import 'package:portfolio_web_app/core/navigation/route_names.dart';
 import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
-import 'package:portfolio_web_app/screens/widgets/cards/project_card.dart' as project_card; 
+import 'package:portfolio_web_app/screens/widgets/cards/project_card.dart' as project_card;
+import 'package:portfolio_web_app/core/theme/app_colors.dart';
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart';
 
 // Data Analytics Screen
 class DataAnalyScreen extends StatelessWidget {
@@ -16,29 +18,26 @@ class DataAnalyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title: AppStrings.catDataAnalytics,
+      title: 'Data Science & Analytics', // UPDATED title
       overline: 'ANALYTICS',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
         cards: [
           SubCategoryCard(
             title: 'Data Analytics Projects',
-            description:
-                'Full project documentation with downloadable reports for each analysis.',
+            description: 'Full project documentation with downloadable reports for each analysis.',
             icon: Icons.analytics_rounded,
             onTap: () => Get.toNamed(RouteNames.dataAnalFull),
           ),
           SubCategoryCard(
-            title: 'Tableau Dashboards',
-            description:
-                'Interactive data visualisation dashboards published on Tableau Public.',
+            title: 'Data Visualization', // UPDATED title
+            description: 'Interactive Tableau dashboards and data visualizations.',
             icon: Icons.bar_chart_rounded,
             onTap: () => Get.to(() => const DataAnalVizScreen()),
           ),
           SubCategoryCard(
             title: 'Code Repositories',
-            description:
-                'Python scripts, Jupyter notebooks, and SQL queries stored on GitHub.',
+            description: 'Python scripts, Jupyter notebooks, and SQL queries stored on GitHub.',
             icon: Icons.code_rounded,
             onTap: () => Get.toNamed(RouteNames.dataAnalCode),
           ),
@@ -260,7 +259,7 @@ class DataAnalVizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
     return SecondaryScreenShell(
-      title: 'Tableau Dashboards',
+      title: 'Data Visualization', // UPDATED title
       overline: 'ANALYTICS',
       child: ProjectGrid(
         columns: screen.subProjectCardColumns,
@@ -268,7 +267,7 @@ class DataAnalVizScreen extends StatelessWidget {
           project_card.ProjectCard(
             title: 'Tableau Public Profile',
             description:
-                'View all published dashboards and interactive data visualisations on Tableau Public.',
+                'View all published dashboards and interactive data visualizations on Tableau Public.',
             links: [ProjectLink.tableau(AppStrings.tableauProfile)],
           ),
         ],

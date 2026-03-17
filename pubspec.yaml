@@ -18,6 +18,7 @@ dependencies:
   # Images & Media
   cached_network_image: ^3.4.1
   visibility_detector: ^0.4.0+2
+  video_player: ^2.11.1
   
   # Networking & Forms
   http: ^1.6.0
@@ -34,7 +35,20 @@ flutter:
   
   # Assets section for images only
   assets:
+    # Root asset folders
     - assets/images/
-  #   - assets/images/graphic/posters/
-  #   - assets/images/graphic/brand/
-  #   - assets/images/graphic/events/
+
+    # UI Design Assets
+    - assets/images/ui/cao_cao_investment/
+    - assets/images/ui/portfolio_website/
+    - assets/images/ui/prayer_box/
+
+    # Graphic Design Assets - Poster Type Structure
+    - assets/images/graphic/posters/social_media/
+    - assets/images/graphic/posters/print_materials/
+
+    - assets/images/graphic/banners/
+    - assets/images/graphic/logos/
+
+    # OuKrag Logo Video
+    - assets/images/graphic/logos/OuKrag_Logo_Video.mp4

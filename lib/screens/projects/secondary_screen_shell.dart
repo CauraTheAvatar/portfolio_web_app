@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart'; // ADD THIS IMPORT
 
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
@@ -492,7 +493,7 @@ class _ScreenshotArea extends StatelessWidget {
       );
 }
 
-// Project Link
+// Project Link - FIXED with actual URL launching
 class ProjectLink {
   const ProjectLink({
     required this.label,
@@ -540,8 +541,19 @@ class ProjectLink {
         url: url,
       );
 
-  void launch() => debugPrint('[Link] $url');
-  // Replace with: launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+  // FIXED: Now actually launches URLs
+  Future<void> launch() async {
+    final uri = Uri.parse(url);
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        debugPrint('Could not launch $url');
+      }
+    } catch (e) {
+      debugPrint('Error launching $url: $e');
+    }
+  }
 }
 
 // Link Chip
@@ -564,7 +576,7 @@ class _LinkChipState extends State<_LinkChip> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
-        onTap: widget.link.launch,
+        onTap: () => widget.link.launch(), // Now actually launches URLs
         child: AnimatedContainer(
           duration: AppSizes.durationDefault,
           padding: const EdgeInsets.symmetric(

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/responsive/responsive.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart';
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart';
+import 'package:portfolio_web_app/screens/home/sections/section_container.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -10,17 +13,15 @@ class AboutSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final screen = Responsive.of(context);
 
-    return SectionWrapper(
+    return SectionContainer(
       color: AppColors.lightGrey,
+      addGradient: true,
+      useStandardPadding: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Section header
           const _SectionHeader(),
-
           const SizedBox(height: AppSizes.sectionHeaderGapContent),
-
-          // Three info blocks
           screen.isMobileOrTablet
               ? const _MobileLayout()
               : const _DesktopLayout(),
@@ -39,20 +40,16 @@ class _SectionHeader extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'WHO I AM',
+          'WHO WE ARE',
           style: AppTextStyle.overline,
         ),
-
         const SizedBox(height: AppSizes.sectionHeaderGapOverline),
-
         Text(
           AppStrings.aboutTitle,
           style: AppTextStyle.sectionTitle,
           textAlign: TextAlign.center,
         ),
-
         const SizedBox(height: AppSizes.sectionHeaderGapRule),
-
         Container(
           width: AppSizes.goldRuleWidth,
           height: AppSizes.goldRuleHeight,
@@ -61,9 +58,7 @@ class _SectionHeader extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppSizes.radiusXS),
           ),
         ),
-
         const SizedBox(height: AppSizes.sectionHeaderGapSubtitle),
-
         Text(
           AppStrings.aboutSubtitle,
           style: AppTextStyle.sectionSubtitle,
@@ -74,53 +69,44 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-// Desktop Layout (Row of three equal blocks)
+// Desktop Layout
 class _DesktopLayout extends StatelessWidget {
   const _DesktopLayout();
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Block 1 — Education (left-aligned)
-          Expanded(
-            child: _TextBlock(
-              title: AppStrings.aboutEduTitle,
-              body: AppStrings.aboutEduBody,
-              icon: Icons.school_rounded,
-              alignment: TextAlign.left,
-            ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start, // Changed from stretch
+      children: [
+        Expanded(
+          child: _TextBlock(
+            title: AppStrings.aboutEduTitle,
+            body: AppStrings.aboutEduBody,
+            icon: Icons.school_rounded,
+            alignment: TextAlign.left,
           ),
-
-          const SizedBox(width: AppSizes.cardGridSpacing),
-
-          // Block 2 — Achievements + startup chips
-          Expanded(
-            child: _TextBlock(
-              title: AppStrings.aboutAchTitle,
-              body: AppStrings.aboutAchBody,
-              icon: Icons.emoji_events_rounded,
-              alignment: TextAlign.right,
-              isMiddle: true,
-              extra: const _StartupCallouts(),
-            ),
+        ),
+        const SizedBox(width: AppSizes.cardGridSpacing),
+        Expanded(
+          child: _TextBlock(
+            title: AppStrings.aboutAchTitle,
+            body: AppStrings.aboutAchBody,
+            icon: Icons.emoji_events_rounded,
+            alignment: TextAlign.right,
+            isMiddle: true,
+            extra: const _StartupCallouts(),
           ),
-
-          const SizedBox(width: AppSizes.cardGridSpacing),
-
-          // Block 3 — Personal profile 
-          Expanded(
-            child: _TextBlock(
-              title: AppStrings.aboutPersonalTitle,
-              body: AppStrings.aboutPersonalBody,
-              icon: Icons.self_improvement_rounded,
-              alignment: TextAlign.left,
-            ),
+        ),
+        const SizedBox(width: AppSizes.cardGridSpacing),
+        Expanded(
+          child: _TextBlock(
+            title: AppStrings.aboutPersonalTitle,
+            body: AppStrings.aboutPersonalBody,
+            icon: Icons.self_improvement_rounded,
+            alignment: TextAlign.left,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -139,20 +125,16 @@ class _MobileLayout extends StatelessWidget {
           icon: Icons.school_rounded,
           alignment: TextAlign.left,
         ),
-
         const SizedBox(height: AppSizes.cardGridSpacing),
-
         _TextBlock(
           title: AppStrings.aboutAchTitle,
           body: AppStrings.aboutAchBody,
           icon: Icons.emoji_events_rounded,
-          alignment: TextAlign.left, 
+          alignment: TextAlign.left,
           isMiddle: true,
           extra: const _StartupCallouts(),
         ),
-
         const SizedBox(height: AppSizes.cardGridSpacing),
-
         _TextBlock(
           title: AppStrings.aboutPersonalTitle,
           body: AppStrings.aboutPersonalBody,
@@ -164,7 +146,7 @@ class _MobileLayout extends StatelessWidget {
   }
 }
 
-// Text Block
+// Text Block - FIXED: Allow natural height
 class _TextBlock extends StatefulWidget {
   const _TextBlock({
     required this.title,
@@ -238,6 +220,7 @@ class _TextBlockState extends State<_TextBlock> {
         ),
         child: Column(
           crossAxisAlignment: crossAxis,
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Icon
             AnimatedContainer(
@@ -256,9 +239,8 @@ class _TextBlockState extends State<_TextBlock> {
                 color: _hovered ? AppColors.gold : AppColors.grey,
               ),
             ),
-
             const SizedBox(height: AppSizes.cardInternalGapL),
-
+            
             // Title
             AnimatedDefaultTextStyle(
               duration: AppSizes.durationDefault,
@@ -270,10 +252,9 @@ class _TextBlockState extends State<_TextBlock> {
                 textAlign: widget.alignment,
               ),
             ),
-
             const SizedBox(height: AppSizes.spaceS),
-
-            // Gold rule 
+            
+            // Gold rule
             Align(
               alignment: widget.alignment == TextAlign.right
                   ? Alignment.centerRight
@@ -289,17 +270,16 @@ class _TextBlockState extends State<_TextBlock> {
                 ),
               ),
             ),
-
             const SizedBox(height: AppSizes.cardInternalGapL),
-
-            // Body text
+            
+            // Body text - No constraints
             Text(
               widget.body,
               textAlign: widget.alignment,
               style: AppTextStyle.bodyMedium,
             ),
-
-            // Extra widget 
+            
+            // Extra widget
             if (widget.extra != null) ...[
               const SizedBox(height: AppSizes.cardInternalGapL),
               widget.extra!,
@@ -325,21 +305,11 @@ class _StartupCallouts extends StatelessWidget {
           style: AppTextStyle.overline.copyWith(fontSize: 10),
           textAlign: TextAlign.right,
         ),
-
         const SizedBox(height: AppSizes.spaceS),
-
         _StartupChip(
           name: AppStrings.aboutStartup1,
           subtitle: AppStrings.aboutStartup1Sub,
           icon: Icons.content_cut_rounded,
-        ),
-
-        const SizedBox(height: AppSizes.spaceS),
-
-        _StartupChip(
-          name: AppStrings.aboutStartup2,
-          subtitle: AppStrings.aboutStartup2Sub,
-          icon: Icons.celebration_rounded,
         ),
       ],
     );
@@ -397,9 +367,7 @@ class _StartupChipState extends State<_StartupChip> {
               size: AppSizes.iconXS + 2,
               color: AppColors.gold,
             ),
-
             const SizedBox(width: AppSizes.spaceM),
-
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -411,7 +379,6 @@ class _StartupChipState extends State<_StartupChip> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-
                 Text(
                   widget.subtitle,
                   style: AppTextStyle.bodySmall.copyWith(
