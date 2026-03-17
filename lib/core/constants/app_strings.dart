@@ -89,8 +89,8 @@ class AppStrings {
   // Prayer Box project
   static const String projPrayerBoxTitle   = "Prayer Box";
   static const String projPrayerBoxDesc    = "A cross-platform prayer journaling app that helps users record, organise and reflect on their prayers. Built with Flutter and Firebase.";
-  static const String projPrayerBoxWeb     = "https://astounding-alfajores-a2eed0.netlify.app/";
-  static const String projPrayerBoxMobile  = "https://astounding-alfajores-a2eed0.netlify.app/downloads/app-release.apk";
+  static const String projPrayerBoxWeb     = "https://personalprayerbox.netlify.app/";
+  static const String projPrayerBoxMobile  = "https://personalprayerboxmobile.netlify.app/";
   static const String projPrayerBoxGithub  = "https://github.com/CauraTheAvatar/prayer-box";
 
   // GitHub listing
