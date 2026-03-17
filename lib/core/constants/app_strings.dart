@@ -284,7 +284,7 @@ class AppStrings {
       "Have a project in mind or just want to say hello? "
       "Drop us a message and we will get back to you as soon as possible.";
 
-  static const String contactEmail    = "cauratechnology@gmail.com";
+  static const String contactEmail    = "conceicao.laurauuyuni@gmail.com";
   static const String contactGithub   = "https://github.com/CauraTheAvatar";
   static const String contactLinkedin = "https://www.linkedin.com/in/conceicao-uuyuni-35a1a6200/"; // Update with your LinkedIn
 

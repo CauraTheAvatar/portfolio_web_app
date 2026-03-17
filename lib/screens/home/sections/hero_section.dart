@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:portfolio_web_app/controllers/home_controller.dart';
 import 'package:portfolio_web_app/screens/home/sections/section_container.dart';
-import 'package:portfolio_web_app/core/animations/particle_background.dart'; 
+// import 'package:portfolio_web_app/core/animations/particle_background.dart'; // COMMENTED OUT
 
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
@@ -22,18 +22,11 @@ class HeroSection extends StatelessWidget {
       color: AppColors.white,
       addGradient: true,
       useStandardPadding: true,
-      minHeight: screen.isMobileOrTablet ? 600 : 700,
-      verticalPadding: screen.isMobileOrTablet ? 60 : 0,
-      child: SizedBox(
-        width: double.infinity,
-        height: screen.isMobileOrTablet ? 600 : 700,
-        child: ParticleBackground( 
-          isActive: true,
-          child: screen.isMobileOrTablet
-              ? const _MobileLayout()
-              : const _DesktopLayout(),
-        ),
-      ),
+      minHeight: screen.isMobileOrTablet ? 700 : 700, // Increased mobile height
+      verticalPadding: screen.isMobileOrTablet ? 40 : 0, // Reduced padding
+      child: screen.isMobileOrTablet
+          ? const _MobileLayout()
+          : const _DesktopLayout(),
     );
   }
 }
@@ -63,19 +56,23 @@ class _DesktopLayout extends StatelessWidget {
   }
 }
 
-// Mobile Layout 
+// Mobile Layout - FIXED overflow
 class _MobileLayout extends StatelessWidget {
   const _MobileLayout();
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _ProfileImage(),
-        SizedBox(height: AppSizes.heroMobileImageGap),
-        _HeroText(centerAlign: true),
-      ],
+    return SingleChildScrollView( // Added scrolling for mobile
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20), // Top spacing
+          const _ProfileImage(),
+          const SizedBox(height: AppSizes.heroMobileImageGap),
+          const _HeroText(centerAlign: true),
+          const SizedBox(height: 40), // Bottom spacing
+        ],
+      ),
     );
   }
 }
@@ -92,60 +89,83 @@ class _HeroText extends StatelessWidget {
     final cross = centerAlign ? CrossAxisAlignment.center : CrossAxisAlignment.start;
     final textAlign = centerAlign ? TextAlign.center : TextAlign.start;
 
-    return Column(
-      crossAxisAlignment: cross,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Overline 
-        Text(
-          AppStrings.heroGreeting,
-          style: AppTextStyle.overline.copyWith(
-            fontSize: AppSizes.heroOverlineFontSize,
-            letterSpacing: AppSizes.heroOverlineSpacing,
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        horizontal: screen.isMobile ? 16 : 0,
+      ),
+      child: Column(
+        crossAxisAlignment: cross,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Overline 
+          Text(
+            AppStrings.heroGreeting,
+            style: AppTextStyle.overline.copyWith(
+              fontSize: screen.isMobile 
+                  ? AppSizes.heroOverlineFontSize * 0.9 
+                  : AppSizes.heroOverlineFontSize,
+              letterSpacing: AppSizes.heroOverlineSpacing,
+            ),
           ),
-        ),
-        const SizedBox(height: AppSizes.heroNameGap),
-        // Developer name 
-        ShimmerName(
-          style: AppTextStyle.developerName.copyWith(
-            fontSize: AppTextStyle.developerName.fontSize! * screen.fontScale,
+          const SizedBox(height: AppSizes.heroNameGap),
+          
+          // Developer name 
+          ShimmerName(
+            style: AppTextStyle.developerName.copyWith(
+              fontSize: screen.isMobile 
+                  ? AppTextStyle.developerName.fontSize! * 0.7 
+                  : AppTextStyle.developerName.fontSize! * screen.fontScale,
+            ),
           ),
-        ),
-        const SizedBox(height: AppSizes.heroRoleStripGap),
-        // Static role strip 
-        _RoleStrip(textAlign: textAlign),
-        const SizedBox(height: AppSizes.heroAnimTitleGap),
-        // Animated subtitle 
-        _AnimatedTitles(centerAlign: centerAlign),
-        const SizedBox(height: AppSizes.heroRuleGap),
-        // Gold rule divider
-        _GoldRule(centered: centerAlign),
-        const SizedBox(height: AppSizes.heroParaGap),
-        // Intro paragraph
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSizes.heroParaMaxWidth),
-          child: Text(
-            AppStrings.heroIntro,
-            textAlign: textAlign,
-            style: AppTextStyle.bodyLarge,
+          const SizedBox(height: AppSizes.heroRoleStripGap),
+          
+          // Static role strip - FIXED wrapping for mobile
+          _RoleStrip(textAlign: textAlign, isMobile: screen.isMobile),
+          const SizedBox(height: AppSizes.heroAnimTitleGap),
+          
+          // Animated subtitle 
+          _AnimatedTitles(centerAlign: centerAlign),
+          const SizedBox(height: AppSizes.heroRuleGap),
+          
+          // Gold rule divider
+          _GoldRule(centered: centerAlign),
+          const SizedBox(height: AppSizes.heroParaGap),
+          
+          // Intro paragraph - FIXED constraints for mobile
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: screen.isMobile 
+                  ? double.infinity 
+                  : AppSizes.heroParaMaxWidth,
+            ),
+            child: Text(
+              AppStrings.heroIntro,
+              textAlign: textAlign,
+              style: AppTextStyle.bodyLarge.copyWith(
+                fontSize: screen.isMobile ? 14 : 16,
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: AppSizes.heroCtaGap),
-        // CTA buttons
-        _CtaButtons(
-          centerAlign: centerAlign,
-          onPrimary: () => controller.scrollTo(controller.projectsKey),
-          onSecondary: () => controller.scrollTo(controller.contactKey),
-        ),
-      ],
+          const SizedBox(height: AppSizes.heroCtaGap),
+          
+          // CTA buttons
+          _CtaButtons(
+            centerAlign: centerAlign,
+            onPrimary: () => controller.scrollTo(controller.projectsKey),
+            onSecondary: () => controller.scrollTo(controller.contactKey),
+          ),
+        ],
+      ),
     );
   }
 }
 
-// Role Strip
+// Role Strip - FIXED with wrapping for mobile
 class _RoleStrip extends StatelessWidget {
-  const _RoleStrip({required this.textAlign});
+  const _RoleStrip({required this.textAlign, this.isMobile = false});
   final TextAlign textAlign;
+  final bool isMobile;
 
   static const List<String> _roles = [
     'Software Developer',
@@ -155,8 +175,27 @@ class _RoleStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spans = <InlineSpan>[];
+    if (isMobile) {
+      // Mobile: Show roles as separate lines
+      return Column(
+        children: _roles.map((role) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Text(
+            role,
+            style: AppTextStyle.bodyLarge.copyWith(
+              color: AppColors.black,
+              fontWeight: FontWeight.w500,
+              height: 1.4,
+              fontSize: 14,
+            ),
+            textAlign: textAlign,
+          ),
+        )).toList(),
+      );
+    }
 
+    // Desktop: Show roles inline with separators
+    final spans = <InlineSpan>[];
     for (int i = 0; i < _roles.length; i++) {
       spans.add(TextSpan(
         text: _roles[i],
@@ -176,7 +215,6 @@ class _RoleStrip extends StatelessWidget {
         ));
       }
     }
-
     return Text.rich(
       TextSpan(children: spans),
       textAlign: textAlign,

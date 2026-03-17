@@ -239,7 +239,7 @@ class _TimelineDot extends StatelessWidget {
   }
 }
 
-// Collaboration Card - REMOVED View Project button
+// Collaboration Card - FIXED with responsive mobile layout
 class _CollaborationCard extends StatefulWidget {
   const _CollaborationCard({
     required this.collaboration,
@@ -282,6 +282,8 @@ class _CollaborationCardState extends State<_CollaborationCard>
 
   @override
   Widget build(BuildContext context) {
+    final screen = Responsive.of(context);
+    
     return MouseRegion(
       onEnter: (_) {
         setState(() => _hovered = true);
@@ -333,177 +335,350 @@ class _CollaborationCardState extends State<_CollaborationCard>
                     ),
                   ],
           ),
-          child: Row(
+          child: screen.isMobile
+              ? _buildMobileLayout()
+              : _buildDesktopLayout(),
+        ),
+      ),
+    );
+  }
+
+  // Desktop layout - Original layout
+  Widget _buildDesktopLayout() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Left side - Content (70% width)
+        Expanded(
+          flex: 7,
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left side - Content (70% width)
-              Expanded(
-                flex: 7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Company and Period
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.collaboration.company,
-                            style: AppTextStyle.cardTitle.copyWith(
-                              color: _hovered ? AppColors.gold : AppColors.black,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSizes.spaceM,
-                            vertical: AppSizes.spaceXS,
-                          ),
-                          decoration: BoxDecoration(
-                            color: _hovered
-                                ? AppColors.gold.withOpacity(0.1)
-                                : AppColors.lightGrey,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            widget.collaboration.period,
-                            style: AppTextStyle.bodySmall.copyWith(
-                              color: _hovered ? AppColors.gold : AppColors.grey,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
+              // Company and Period
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.collaboration.company,
+                      style: AppTextStyle.cardTitle.copyWith(
+                        color: _hovered ? AppColors.gold : AppColors.black,
+                      ),
                     ),
-
-                    const SizedBox(height: AppSizes.spaceXS),
-
-                    // Project Name
-                    Text(
-                      widget.collaboration.projectName,
-                      style: AppTextStyle.bodyLarge.copyWith(
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.spaceM,
+                      vertical: AppSizes.spaceXS,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _hovered
+                          ? AppColors.gold.withOpacity(0.1)
+                          : AppColors.lightGrey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      widget.collaboration.period,
+                      style: AppTextStyle.bodySmall.copyWith(
+                        color: _hovered ? AppColors.gold : AppColors.grey,
                         fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: AppSizes.spaceXS),
+
+              // Project Name
+              Text(
+                widget.collaboration.projectName,
+                style: AppTextStyle.bodyLarge.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: _hovered ? AppColors.gold : AppColors.grey,
+                ),
+              ),
+
+              const SizedBox(height: AppSizes.spaceM),
+
+              // Gold Divider
+              Container(
+                width: 40,
+                height: 2,
+                decoration: BoxDecoration(
+                  color: AppColors.gold.withOpacity(_hovered ? 1 : 0.5),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+
+              const SizedBox(height: AppSizes.spaceM),
+
+              // Description
+              Text(
+                widget.collaboration.description,
+                style: AppTextStyle.bodyMedium,
+              ),
+
+              const SizedBox(height: AppSizes.spaceL),
+
+              // Technologies
+              Wrap(
+                spacing: AppSizes.spaceS,
+                runSpacing: AppSizes.spaceS,
+                children: widget.collaboration.technologies.map((tech) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.spaceM,
+                      vertical: AppSizes.spaceXS,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _hovered
+                          ? AppColors.gold.withOpacity(0.1)
+                          : AppColors.lightGrey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      tech,
+                      style: AppTextStyle.chip.copyWith(
                         color: _hovered ? AppColors.gold : AppColors.grey,
                       ),
                     ),
+                  );
+                }).toList(),
+              ),
 
-                    const SizedBox(height: AppSizes.spaceM),
-
-                    // Gold Divider
-                    Container(
-                      width: 40,
-                      height: 2,
-                      decoration: BoxDecoration(
-                        color: AppColors.gold.withOpacity(_hovered ? 1 : 0.5),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-
-                    const SizedBox(height: AppSizes.spaceM),
-
-                    // Description
-                    Text(
-                      widget.collaboration.description,
-                      style: AppTextStyle.bodyMedium,
-                    ),
-
-                    const SizedBox(height: AppSizes.spaceL),
-
-                    // Technologies
-                    Wrap(
-                      spacing: AppSizes.spaceS,
-                      runSpacing: AppSizes.spaceS,
-                      children: widget.collaboration.technologies.map((tech) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSizes.spaceM,
-                            vertical: AppSizes.spaceXS,
-                          ),
-                          decoration: BoxDecoration(
-                            color: _hovered
-                                ? AppColors.gold.withOpacity(0.1)
-                                : AppColors.lightGrey,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            tech,
-                            style: AppTextStyle.chip.copyWith(
-                              color: _hovered ? AppColors.gold : AppColors.grey,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-
-                    // REMOVED: Project Link Button section
-
-                    if (widget.collaboration.isCurrent) ...[
-                      const SizedBox(height: AppSizes.spaceM),
+              if (widget.collaboration.isCurrent) ...[
+                const SizedBox(height: AppSizes.spaceM),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.spaceM,
+                    vertical: AppSizes.spaceXS,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.gold.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSizes.spaceM,
-                          vertical: AppSizes.spaceXS,
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: AppColors.gold,
+                          shape: BoxShape.circle,
                         ),
-                        decoration: BoxDecoration(
-                          color: AppColors.gold.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 8,
-                              height: 8,
-                              decoration: const BoxDecoration(
-                                color: AppColors.gold,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: AppSizes.spaceXS),
-                            Text(
-                              'Active Collaboration',
-                              style: AppTextStyle.bodySmall.copyWith(
-                                color: AppColors.gold,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
+                      ),
+                      const SizedBox(width: AppSizes.spaceXS),
+                      Text(
+                        'Active Collaboration',
+                        style: AppTextStyle.bodySmall.copyWith(
+                          color: AppColors.gold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
-                  ],
-                ),
-              ),
-
-              const SizedBox(width: AppSizes.spaceL),
-
-              // Right side - Logo (30% width)
-              Expanded(
-                flex: 3,
-                child: Container(
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: _hovered
-                        ? AppColors.gold.withOpacity(0.05)
-                        : AppColors.lightGrey,
-                    borderRadius: BorderRadius.circular(AppSizes.radiusM),
-                    border: Border.all(
-                      color: _hovered
-                          ? AppColors.gold.withOpacity(0.3)
-                          : Colors.transparent,
-                      width: 1,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(AppSizes.radiusM),
-                    child: _buildLogo(),
                   ),
                 ),
-              ),
+              ],
             ],
           ),
         ),
-      ),
+
+        const SizedBox(width: AppSizes.spaceL),
+
+        // Right side - Logo (30% width)
+        Expanded(
+          flex: 3,
+          child: Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: _hovered
+                  ? AppColors.gold.withOpacity(0.05)
+                  : AppColors.lightGrey,
+              borderRadius: BorderRadius.circular(AppSizes.radiusM),
+              border: Border.all(
+                color: _hovered
+                    ? AppColors.gold.withOpacity(0.3)
+                    : Colors.transparent,
+                width: 1,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppSizes.radiusM),
+              child: _buildLogo(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Mobile layout - Stacked vertically for better readability
+  Widget _buildMobileLayout() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Company and Period
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                widget.collaboration.company,
+                style: AppTextStyle.cardTitle.copyWith(
+                  color: _hovered ? AppColors.gold : AppColors.black,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 4,
+              ),
+              decoration: BoxDecoration(
+                color: _hovered
+                    ? AppColors.gold.withOpacity(0.1)
+                    : AppColors.lightGrey,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                widget.collaboration.period,
+                style: AppTextStyle.bodySmall.copyWith(
+                  color: _hovered ? AppColors.gold : AppColors.grey,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
+                ),
+              ),
+            ),
+          ],
+        ),
+        
+        const SizedBox(height: 12),
+        
+        // Logo on mobile (top)
+        Container(
+          height: 100,
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: _hovered
+                ? AppColors.gold.withOpacity(0.05)
+                : AppColors.lightGrey,
+            borderRadius: BorderRadius.circular(AppSizes.radiusM),
+            border: Border.all(
+              color: _hovered
+                  ? AppColors.gold.withOpacity(0.3)
+                  : Colors.transparent,
+              width: 1,
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppSizes.radiusM),
+            child: _buildLogo(),
+          ),
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // Project Name
+        Text(
+          widget.collaboration.projectName,
+          style: AppTextStyle.bodyLarge.copyWith(
+            fontWeight: FontWeight.w600,
+            color: _hovered ? AppColors.gold : AppColors.grey,
+            fontSize: 14,
+          ),
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // Gold Divider
+        Container(
+          width: 40,
+          height: 2,
+          decoration: BoxDecoration(
+            color: AppColors.gold.withOpacity(_hovered ? 1 : 0.5),
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        
+        const SizedBox(height: 12),
+        
+        // Description
+        Text(
+          widget.collaboration.description,
+          style: AppTextStyle.bodyMedium.copyWith(
+            fontSize: 13,
+          ),
+        ),
+        
+        const SizedBox(height: 16),
+        
+        // Technologies
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: widget.collaboration.technologies.map((tech) {
+            return Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 4,
+              ),
+              decoration: BoxDecoration(
+                color: _hovered
+                    ? AppColors.gold.withOpacity(0.1)
+                    : AppColors.lightGrey,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                tech,
+                style: AppTextStyle.chip.copyWith(
+                  color: _hovered ? AppColors.gold : AppColors.grey,
+                  fontSize: 11,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+        
+        if (widget.collaboration.isCurrent) ...[
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 4,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.gold.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: const BoxDecoration(
+                    color: AppColors.gold,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  'Active Collaboration',
+                  style: AppTextStyle.bodySmall.copyWith(
+                    color: AppColors.gold,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
     );
   }
 

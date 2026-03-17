@@ -76,27 +76,27 @@ class GraphicDesignScreen extends StatelessWidget {
     _GraphicAlbum(
       title: 'Business Logos',
       description: 'Logo designs for various businesses including Abba Selah, Cao Cao Investment, Caura Hair Care, and AgriSync.',
-      coverImage: 'assets/images/graphic/logos/abba_selah_logo.jpg',
+      coverImage: 'assets/images/graphic/logos/Abba_Selah_Logo.jpg',
       aspectRatio: GraphicAspectRatio.square,
       imagePaths: [
-        'assets/images/graphic/logos/abba_selah_logo.jpg',
-        'assets/images/graphic/logos/cao_cao_investment_logo.jpg',
-        'assets/images/graphic/logos/caura_hair_care_logo.jpg',
-        'assets/images/graphic/logos/agri_sync_favicon_logo.jpg',
-        'assets/images/graphic/logos/agri_sync_primary_logo.jpg',
-        'assets/images/graphic/logos/agri_sync_secondary_logo.jpg',
-        'assets/images/graphic/logos/agri_sync_submark_logo.jpg',
+        'assets/images/graphic/logos/Abba_Selah_Logo.jpg',
+        'assets/images/graphic/logos/Cao_Cao_Investment_Logo.jpg',
+        'assets/images/graphic/logos/Caura_Hair_Care_Logo.jpg',
+        'assets/images/graphic/logos/AgriSync_Favicon_Logo.jpg',
+        'assets/images/graphic/logos/AgriSync_Primary_Logo.jpg',
+        'assets/images/graphic/logos/AgriSync_Secondary_Logo.jpg',
+        'assets/images/graphic/logos/AgriSync_Submark_Logo.jpg',
       ],
       isVideo: false,
     ),
-    // Video Logo - MP4 format
+    // Video Logo - MP4 format - FIXED filename
     _GraphicAlbum(
       title: 'OuKrag Animated Logo',
       description: 'Motion graphics logo animation for OuKrag in MP4 format.',
-      coverImage: 'assets/images/graphic/logos/ou_krag_logo_video.jpg',
+      coverImage: 'assets/images/graphic/logos/OuKrag_Logo_Video.jpg', // You'll need a thumbnail image
       aspectRatio: GraphicAspectRatio.landscape,
       imagePaths: [
-        'assets/images/graphic/logos/ou_krag_logo_video.mp4',
+        'assets/images/graphic/logos/OuKrag_Logo_Video.mp4',
       ],
       isVideo: true,
     ),
@@ -707,6 +707,8 @@ class _GraphicAlbumViewScreen extends StatelessWidget {
         'AgriSync Favicon', 'AgriSync Primary', 'AgriSync Secondary', 'AgriSync Submark'
       ];
       return names[index];
+    } else if (albumTitle.contains('OuKrag')) {
+      return 'Animated Logo';
     }
     return 'Image ${index + 1}';
   }

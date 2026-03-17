@@ -9,6 +9,17 @@ import 'package:portfolio_web_app/core/responsive/responsive.dart';
 import 'package:portfolio_web_app/core/theme/app_colors.dart';
 import 'package:portfolio_web_app/core/theme/app_textstyle.dart';
 
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:portfolio_web_app/screens/projects/secondary_screen_shell.dart';
+import 'package:portfolio_web_app/screens/widgets/images/cached_gallery_image.dart';
+
+import 'package:portfolio_web_app/core/constants/app_strings.dart';
+import 'package:portfolio_web_app/core/constants/app_sizes.dart';
+import 'package:portfolio_web_app/core/responsive/responsive.dart';
+import 'package:portfolio_web_app/core/theme/app_colors.dart';
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart';
+
 class UIDesignGalleryScreen extends StatelessWidget {
   const UIDesignGalleryScreen({super.key});
 
@@ -31,41 +42,41 @@ class UIDesignGalleryScreen extends StatelessWidget {
       ],
     ),
     
-    // Portfolio Website UI Album
+    // Portfolio Website UI Album - FIXED: Changed to .png
     _UIAlbum(
       title: 'Portfolio Website UI',
       description: 'UI design concept for this very portfolio website - featuring hero section, footer, and 4 key screens with gold accents.',
-      coverImage: 'assets/images/ui/portfolio_website/hero.jpg',
+      coverImage: 'assets/images/ui/portfolio_website/hero.png',
       imagePaths: [
-        'assets/images/ui/portfolio_website/hero.jpg',
-        'assets/images/ui/portfolio_website/footer.jpg',
-        'assets/images/ui/portfolio_website/screen_1.jpg',
-        'assets/images/ui/portfolio_website/screen_2.jpg',
-        'assets/images/ui/portfolio_website/screen_3.jpg',
-        'assets/images/ui/portfolio_website/screen_4.jpg',
+        'assets/images/ui/portfolio_website/hero.png',
+        'assets/images/ui/portfolio_website/footer.png',
+        'assets/images/ui/portfolio_website/screen_1.png',
+        'assets/images/ui/portfolio_website/screen_2.png',
+        'assets/images/ui/portfolio_website/screen_3.png',
+        'assets/images/ui/portfolio_website/screen_4.png',
       ],
     ),
     
-    // Prayer Box UI Album
+    // Prayer Box UI Album - FIXED: Changed to .png
     _UIAlbum(
       title: 'Prayer Box App UI',
       description: 'Complete mobile and desktop UI design for the Prayer Box prayer journaling app - featuring 14 screens with intuitive interface design.',
-      coverImage: 'assets/images/ui/prayer_box/primary_ui_design.jpg',
+      coverImage: 'assets/images/ui/prayer_box/primary_ui_design.png',
       imagePaths: [
-        'assets/images/ui/prayer_box/answered_desktop.jpg',
-        'assets/images/ui/prayer_box/answered_screen_mobile.jpg',
-        'assets/images/ui/prayer_box/landing_desktop.jpg',
-        'assets/images/ui/prayer_box/landing_mobile.jpg',
-        'assets/images/ui/prayer_box/nav_menu_desktop.jpg',
-        'assets/images/ui/prayer_box/nav_menu_mobile.jpg',
-        'assets/images/ui/prayer_box/prayer_details_desktop.jpg',
-        'assets/images/ui/prayer_box/prayer_request_details_mobile.jpg',
-        'assets/images/ui/prayer_box/primary_ui_design.jpg',
-        'assets/images/ui/prayer_box/primary_ui_design_2.jpg',
-        'assets/images/ui/prayer_box/side_by_side_view.jpg',
-        'assets/images/ui/prayer_box/stats_1_mobile.jpg',
-        'assets/images/ui/prayer_box/stats_2_mobile.jpg',
-        'assets/images/ui/prayer_box/stats_desktop.jpg',
+        'assets/images/ui/prayer_box/answered_desktop.png',
+        'assets/images/ui/prayer_box/answered_screen_mobile.png',
+        'assets/images/ui/prayer_box/landing_desktop.png',
+        'assets/images/ui/prayer_box/landing_mobile.png',
+        'assets/images/ui/prayer_box/nav_menu_desktop.png',
+        'assets/images/ui/prayer_box/nav_menu_mobile.png',
+        'assets/images/ui/prayer_box/prayer_details_desktop.png',
+        'assets/images/ui/prayer_box/prayer_request_details_mobile.png',
+        'assets/images/ui/prayer_box/primary_ui_design.png',
+        'assets/images/ui/prayer_box/primary_ui_design_2.png',
+        'assets/images/ui/prayer_box/side_by_side_view.png',
+        'assets/images/ui/prayer_box/stats_1_mobile.png',
+        'assets/images/ui/prayer_box/stats_2_mobile.png',
+        'assets/images/ui/prayer_box/stats_desktop.png',
       ],
     ),
   ];
