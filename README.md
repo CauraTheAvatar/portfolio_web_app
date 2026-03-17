@@ -1,6 +1,9 @@
 # Portfolio Web App
 A personal developer portfolio built with **Flutter Web** — a single-page, scroll-based application showcasing software development, data engineering, UI/UX design, and graphic design work. The app is fully responsive across mobile, tablet, and desktop, and is designed to be deployed as a static web application.
 
+# Site URL
+
+
 ## Overview
 This is a professionally structured Flutter Web project with a clean architecture separating concerns across constants, controllers, services, core utilities, and UI sections. The design language is built around a white and gold palette with Playfair Display and Montserrat typography, glassmorphism effects on the navbar, and smooth hover animations throughout.
 
