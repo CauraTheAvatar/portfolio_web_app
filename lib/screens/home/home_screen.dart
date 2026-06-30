@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                   child: RepaintBoundary(
                     child: FadeInSection(
                       delay: const Duration(milliseconds: 60),
-                      child: CollaborationsSection(key: controller.collaborationsKey), // You'll need to add this key to HomeController
+                      child: CollaborationsSection(key: controller.collaborationsKey), // Add this key to HomeController
                     ),
                   ),
                 ),
