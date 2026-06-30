@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // ADD THIS IMPORT
+import 'package:cached_network_image/cached_network_image.dart'; 
 
 import 'package:portfolio_web_app/core/constants/app_sizes.dart';
 import 'package:portfolio_web_app/core/constants/app_strings.dart';
-import 'package:portfolio_web_app/core/theme/app_colors.dart'; // ADD THIS IMPORT
-import 'package:portfolio_web_app/core/theme/app_textstyle.dart'; // ADD THIS IMPORT
+import 'package:portfolio_web_app/core/theme/app_colors.dart'; 
+import 'package:portfolio_web_app/core/theme/app_textstyle.dart'; 
 
 class CachedGalleryImage extends StatefulWidget {
   const CachedGalleryImage({
@@ -38,7 +38,7 @@ class _CachedGalleryImageState extends State<CachedGalleryImage>
     super.initState();
     _overlayCtrl = AnimationController(
       vsync: this,
-      duration: AppSizes.durationOverlay, // FIXED: Now properly defined
+      duration: AppSizes.durationOverlay, 
     );
 
     _scrimOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -80,7 +80,7 @@ class _CachedGalleryImageState extends State<CachedGalleryImage>
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Base image - FIXED: Now properly imported
+              // Base image
               CachedNetworkImage(
                 imageUrl: widget.imageUrl,
                 fit: widget.fit,
