@@ -49,12 +49,20 @@ class WebAppsScreen extends StatelessWidget {
 
   static const List<_SoftwareProject> _projects = [
     _SoftwareProject(
+      title: AppStrings.projPrayerBoxTitle,
+      description: AppStrings.projPrayerBoxDesc,
+      imageUrl: AppStrings.fbPrayerBoxWeb,
+      liveUrl: AppStrings.projPrayerBoxWeb,
+      githubUrl: AppStrings.projPrayerBoxGithub,
+    ),
+    _SoftwareProject(
       title:       'Prayer Box',
       description: 'Version 2 of a Personal Prayer Box',
       imageUrl: AppStrings.fbPrayerBoxWeb,
       liveUrl:     'https://prayer-box-flutter.web.app',
       githubUrl:   'https://github.com/CauraTheAvatar/prayer-box-responsive-flutter-app.git',
     ),
+    
     // Add more web projects here:
     // _SoftwareProject(
     //   title:       'Project Name',
@@ -99,6 +107,13 @@ class MobileAppsScreen extends StatelessWidget {
       liveUrl: AppStrings.projPrayerBoxWeb,
       githubUrl: AppStrings.projPrayerBoxGithub,
     ),
+    _SoftwareProject(
+      title:       'Prayer Box Mobile App',
+      description: 'Version 2 of a Personal Prayer Box',
+      imageUrl: AppStrings.fbPrayerBoxWeb,
+      liveUrl:     'https://github.com/CauraTheAvatar/prayer-box-responsive-flutter-app/releases/download/v1.0.0/PrayerBox-v1.0.apk',
+      githubUrl:   'https://github.com/CauraTheAvatar/prayer-box-responsive-flutter-app.git',
+    ),
   ];
 
   @override
@@ -133,12 +148,19 @@ class GithubProjectsScreen extends StatelessWidget {
       description: 'Browse all public repositories, contributions, and open source work.',
       githubUrl: AppStrings.githubProfile,
     ),
+    _SoftwareProject(
+      title:     "Avatar C'arua's Work",
+      description: 'Repository of my projects',
+      imageUrl: 'https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o/projects%2Frepo_screenshot.jpg?alt=media',
+      githubUrl: 'https://github.com/CauraTheAvatar?tab=repositories',
+      liveUrl:   'https://cauratechnology.netlify.app/', 
+    ),
     // Add individual repos here:
     // _SoftwareProject(
     //   title:     'Repo Name',
     //   description: 'Short description of what this repo does.',
     //   imageUrl: 'https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET/o/projects%2Frepo_screenshot.jpg?alt=media',
-    //   githubUrl: 'https://github.com/yourname/repo-name',
+    //   githubUrl: 'https://github.com/CauraTheAvatar?tab=repositories',
     //   liveUrl:   'https://yourdeployment.com',  // optional
     // ),
   ];
