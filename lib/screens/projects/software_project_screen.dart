@@ -49,17 +49,10 @@ class WebAppsScreen extends StatelessWidget {
 
   static const List<_SoftwareProject> _projects = [
     _SoftwareProject(
-      title: AppStrings.projPrayerBoxTitle,
-      description: AppStrings.projPrayerBoxDesc,
-      imageUrl: AppStrings.fbPrayerBoxWeb,
-      liveUrl: AppStrings.projPrayerBoxWeb,
-      githubUrl: AppStrings.projPrayerBoxGithub,
-    ),
-    _SoftwareProject(
       title:       'Prayer Box',
       description: 'Version 2 of a Personal Prayer Box',
       imageUrl: AppStrings.fbPrayerBoxWeb,
-      liveUrl:     'https://prayer-box-flutter.web.app',
+      liveUrl:     'myprayerbox.netlify.app',
       githubUrl:   'https://github.com/CauraTheAvatar/prayer-box-responsive-flutter-app.git',
     ),
     
@@ -100,13 +93,13 @@ class MobileAppsScreen extends StatelessWidget {
   const MobileAppsScreen({super.key});
 
   static const List<_SoftwareProject> _projects = [
-    _SoftwareProject(
-      title: AppStrings.projPrayerBoxTitle,
-      description: AppStrings.projPrayerBoxDesc,
-      imageUrl: AppStrings.fbPrayerBoxMobile,
-      liveUrl: AppStrings.projPrayerBoxWeb,
-      githubUrl: AppStrings.projPrayerBoxGithub,
-    ),
+    // _SoftwareProject(
+    //   title: AppStrings.projPrayerBoxTitle,
+    //   description: AppStrings.projPrayerBoxDesc,
+    //   imageUrl: AppStrings.fbPrayerBoxMobile,
+    //   liveUrl: AppStrings.projPrayerBoxWeb,
+    //   githubUrl: AppStrings.projPrayerBoxGithub,
+    // ),
     _SoftwareProject(
       title:       'Prayer Box Mobile App',
       description: 'Version 2 of a Personal Prayer Box',
