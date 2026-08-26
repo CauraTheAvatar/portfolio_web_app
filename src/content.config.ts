@@ -1,0 +1,27 @@
+import { defineCollection, z } from "astro:content";
+
+const projects = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    category: z.enum([
+      "Software Development",
+      "WordPress",
+      "Data Engineering",
+      "Data Analytics",
+      "UI Design",
+      "Graphic Design",
+    ]),
+    year: z.string(),
+    featured: z.boolean().default(false),
+    status: z.enum(["Live", "In Progress", "Upcoming", "Open Source"]).default("Live"),
+    liveUrl: z.string().url().optional(),
+    githubUrl: z.string().url().optional(),
+    tech: z.array(z.string()).default([]),
+    image: z.string().optional(),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { projects };

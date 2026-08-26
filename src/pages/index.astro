@@ -1,0 +1,279 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+
+const SKILLS = [
+  {
+    title: "Software Engineering",
+    skills: ["Flutter", "Dart", "Node.js", "TypeScript", "Angular", "REST APIs", "Firebase", "Supabase", "GetX", "Riverpod", "Git & GitHub", "PostgreSQL", "WordPress"],
+  },
+  {
+    title: "Data Science & Analytics",
+    skills: ["Python", "Data Engineering", "Tableau", "Data Analytics", "Data Visualization", "Scalable Pipelines", "SQL"],
+  },
+  {
+    title: "UI/UX Design",
+    skills: ["Figma", "Canva", "Wireframing", "Prototyping", "User Research", "Design Systems", "Responsive Design"],
+  },
+  {
+    title: "Graphic Design",
+    skills: ["Poster Design", "Brand Identity", "Typography", "Print Design", "Digital Illustration", "Canva Pro"],
+  },
+];
+
+const COLLABORATIONS = [
+  {
+    company: "Hope Home Base Healthcare",
+    project: "Healthcare Information & Outreach Website",
+    period: "2026 — Present",
+    description: "Comprehensive website educating the public on healthcare services and caring for chronically ill patients. The site serves as the first point of contact for potential clients, featuring educational resources and a contact form. Hope Home Base is an NGO dedicated to caring for chronically ill and bedridden patients who have no one else to care for them.",
+    tech: ["Flutter Web", "Firebase", "Contact Form Integration"],
+    current: true,
+  },
+  {
+    company: "Abba Selah Collectives",
+    project: "Automated Quotation Generation System",
+    period: "2026",
+    description: "Automated custom quotation generation engine using JavaScript and Google Apps Script. Links Google Form responses to a custom Google Doc template, computes item sums by category, generates PDF quotations within 30 seconds, and emails them to clients.",
+    tech: ["JavaScript", "Google Apps Script", "Google Forms", "Google Docs API"],
+    current: false,
+  },
+  {
+    company: "Cao Cao Investment CC",
+    project: "Minimalist Corporate Website",
+    period: "2025",
+    description: "WordPress website for this SME built with their small tech team. Minimalistic design as per client preference, serving as the first point of contact for potential clients.",
+    tech: ["WordPress", "PHP", "Custom Theme", "Elementor"],
+    current: false,
+  },
+];
+
+const PARTNERS = ["Abba Selah Collectives", "Cao Cao Investment CC", "Hope Home Base Healthcare"];
+
+const CONTACT = {
+  email: "conceicao.laurauuyuni@gmail.com",
+  github: "https://github.com/CauraTheAvatar",
+  linkedin: "https://www.linkedin.com/in/conceicao-uuyuni-35a1a6200/",
+  formspree: "https://formspree.io/f/xvzwovdo",
+};
+---
+
+<Base title="C'AURA TECHNOLOGY | Full-Stack Flutter Developer">
+
+  <!-- HERO -->
+  <section id="hero" class="section">
+    <div class="container grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr]">
+      <div>
+        <p class="overline">We are</p>
+        <h1 class="text-4xl font-bold text-[var(--brown)] md:text-6xl">C'AURA<br />TECHNOLOGY</h1>
+        <p class="mt-2 font-serif text-xl text-[var(--olive-dark)]">Full-Stack Flutter Developer</p>
+        <div class="gold-rule"></div>
+        <p class="max-w-xl text-[var(--muted)]">
+          With a passion for clean code and thoughtful design, we bridge the gap between software
+          engineering precision and creative vision — turning ideas into polished digital experiences.
+          We provide top quality technical solutions for your corporate needs.
+        </p>
+        <p class="mt-3 font-semibold text-[var(--brown)]">Software Developer · Data Analyst · Flutter Engineer · UI/UX Designer · IT Solutions Specialist</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#projects" class="btn btn-primary">View Our Work</a>
+          <a href="#contact" class="btn btn-outline">Get In Touch</a>
+        </div>
+      </div>
+      <div class="mx-auto w-64 md:w-80">
+        <img
+          src="/images/portfolio-photo.jpeg"
+          alt="Portrait"
+          class="aspect-[4/5] w-full rounded-2xl border-4 border-white object-cover shadow-[0_20px_50px_rgba(62,47,35,0.18)]"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section bg-white">
+    <div class="container">
+      <p class="overline">Projects</p>
+      <h2 class="section-title">A selection of things we've built.</h2>
+      <div class="gold-rule"></div>
+      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          projects.map((p) => (
+            <article class="card flex flex-col p-6">
+              <div class="mb-3 flex items-center justify-between">
+                <span class="text-xs font-semibold text-[var(--olive-dark)]">{p.data.category}</span>
+                <span class={`rounded-full px-3 py-1 text-[10px] font-bold uppercase ${p.data.status === "Live" ? "bg-[var(--olive-light)]/50 text-[var(--olive-dark)]" : "bg-[var(--gold-light)]/40 text-[var(--brown)]"}`}>{p.data.status}</span>
+              </div>
+              <h3 class="text-lg font-bold text-[var(--brown)]">{p.data.title}</h3>
+              <p class="mt-2 flex-1 text-sm text-[var(--muted)]">{p.data.summary}</p>
+              <p class="mt-3 text-xs font-medium text-[var(--muted)]">{p.data.tech.join(" · ")}</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                {p.data.liveUrl && <a href={p.data.liveUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">View Live</a>}
+                {p.data.githubUrl && <a href={p.data.githubUrl} target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">GitHub</a>}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section">
+    <div class="container">
+      <p class="overline">Skills</p>
+      <h2 class="section-title">What we bring to the table.</h2>
+      <div class="gold-rule"></div>
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        {
+          SKILLS.map((cat) => (
+            <div class="card p-6">
+              <h3 class="font-serif text-lg font-bold text-[var(--brown)]">{cat.title}</h3>
+              <div class="mt-4 flex flex-wrap gap-2">
+                {cat.skills.map((s) => (
+                  <span class="rounded-full border border-[var(--line)] bg-[var(--canvas)] px-3 py-1 text-xs font-medium text-[var(--brown)]">{s}</span>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLABORATIONS -->
+  <section id="collaborations" class="section bg-white">
+    <div class="container">
+      <p class="overline">Collaborations</p>
+      <h2 class="section-title">Companies and organizations we've collaborated with.</h2>
+      <div class="gold-rule"></div>
+      <div class="mt-10 space-y-6">
+        {
+          COLLABORATIONS.map((c) => (
+            <article class="card grid gap-4 p-6 md:grid-cols-[1fr_auto]">
+              <div>
+                <h3 class="font-serif text-lg font-bold text-[var(--brown)]">{c.company}</h3>
+                <p class="text-sm font-semibold text-[var(--olive-dark)]">{c.project}</p>
+                <p class="mt-2 text-sm text-[var(--muted)]">{c.description}</p>
+                <p class="mt-3 text-xs font-medium text-[var(--muted)]">{c.tech.join(" · ")}</p>
+              </div>
+              <div class="text-left md:text-right">
+                <span class={`inline-block rounded-full px-3 py-1 text-xs font-bold ${c.current ? "bg-[var(--olive-light)]/50 text-[var(--olive-dark)]" : "bg-[var(--gold-light)]/40 text-[var(--brown)]"}`}>{c.period}</span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="overline mt-14">Trusted Partners</p>
+      <div class="mt-6 flex flex-wrap gap-4">
+        {
+          PARTNERS.map((name) => (
+            <div class="card flex items-center gap-3 px-5 py-4">
+              <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--olive-light)]/40 font-bold text-[var(--olive-dark)]">
+                {name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+              </span>
+              <span class="text-sm font-semibold text-[var(--brown)]">{name}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="container">
+      <p class="overline">About</p>
+      <h2 class="section-title">A little background.</h2>
+      <div class="gold-rule"></div>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        <div class="card p-6">
+          <h3 class="font-serif text-lg font-bold text-[var(--brown)]">Founder Education & Learning</h3>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+            My journey into technology began with a genuine curiosity about how things work. I pursued
+            formal education in Computer Science, building a strong foundation in software engineering,
+            data structures, and systems thinking — and completed a 6-month stint at Aalto University in
+            Finland, broadening my perspective on modern software practice. Beyond the classroom, I've
+            committed to continuous self-development, completing professional certifications in data
+            analytics, machine learning, and mobile development.
+          </p>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-serif text-lg font-bold text-[var(--brown)]">Milestones & Achievements</h3>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+            Across software, data, and design, we've built real-world solutions people use. From
+            engineering scalable data pipelines and deploying cross-platform Flutter applications, to
+            founding C'aura Hair Care, a professional loctician business, and C'aura Technologies — we've
+            learned to lead with intention and execute with discipline.
+          </p>
+          <p class="mt-3 text-xs font-semibold text-[var(--olive-dark)]">C'aura Hair Care — Loctician Business</p>
+        </div>
+        <div class="card p-6">
+          <h3 class="font-serif text-lg font-bold text-[var(--brown)]">Philosophy & Values</h3>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+            We believe great software is built at the intersection of empathy and engineering. Our work
+            philosophy centres on clarity, ownership, and craft — writing code that is as readable as it
+            is functional. We lead by example, whether in a collaborative setting or tackling business
+            ventures, and we hold our organisation to a standard of continuous improvement.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section bg-white">
+    <div class="container">
+      <p class="overline">Contact</p>
+      <h2 class="section-title">Let's work together.</h2>
+      <div class="gold-rule"></div>
+      <p class="max-w-xl text-[var(--muted)]">
+        Have a project in mind or just want to say hello? Drop us a message and we will get back to you
+        as soon as possible.
+      </p>
+      <div class="mt-8 grid gap-8 md:grid-cols-[1fr_1fr]">
+        <div class="space-y-4">
+          <a href={`mailto:${CONTACT.email}`} class="card flex items-center gap-4 p-5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--olive-light)]/40 font-bold text-[var(--olive-dark)]">@</span>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Email Us</p>
+              <p class="text-sm font-semibold text-[var(--brown)]">{CONTACT.email}</p>
+            </div>
+          </a>
+          <a href={CONTACT.github} target="_blank" rel="noopener noreferrer" class="card flex items-center gap-4 p-5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--olive-light)]/40 font-bold text-[var(--olive-dark)]">GH</span>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">GitHub</p>
+              <p class="text-sm font-semibold text-[var(--brown)]">CauraTheAvatar</p>
+            </div>
+          </a>
+          <a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="card flex items-center gap-4 p-5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--olive-light)]/40 font-bold text-[var(--olive-dark)]">in</span>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">LinkedIn</p>
+              <p class="text-sm font-semibold text-[var(--brown)]">Conceição Uuyuni</p>
+            </div>
+          </a>
+        </div>
+        <form action={CONTACT.formspree} method="POST" class="card p-6">
+          <input type="text" name="_gotcha" class="hidden" />
+          <label class="block">
+            <span class="mb-2 block text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Full Name</span>
+            <input required name="name" placeholder="Your name" class="w-full rounded-lg border border-[var(--line)] px-4 py-3 text-sm outline-none focus:border-[var(--olive-dark)]" />
+          </label>
+          <label class="mt-4 block">
+            <span class="mb-2 block text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Email Address</span>
+            <input required type="email" name="email" placeholder="you@example.com" class="w-full rounded-lg border border-[var(--line)] px-4 py-3 text-sm outline-none focus:border-[var(--olive-dark)]" />
+          </label>
+          <label class="mt-4 block">
+            <span class="mb-2 block text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Message</span>
+            <textarea required name="message" rows="5" placeholder="Tell us about your project" class="w-full resize-none rounded-lg border border-[var(--line)] px-4 py-3 text-sm outline-none focus:border-[var(--olive-dark)]"></textarea>
+          </label>
+          <button type="submit" class="btn btn-primary mt-5 w-full justify-center">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>

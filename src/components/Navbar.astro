@@ -1,0 +1,41 @@
+---
+const NAV = [
+  { label: "Introduction", href: "#hero" },
+  { label: "Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Collaborations", href: "#collaborations" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--canvas)]/90 backdrop-blur">
+  <div class="container flex h-16 items-center justify-between">
+    <a href="#hero" class="flex items-center gap-2 font-semibold tracking-wide">
+      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--brown)] text-[var(--gold)] text-sm font-bold">C</span>
+      <span class="hidden sm:inline">C'AURA TECHNOLOGY</span>
+    </a>
+    <nav class="hidden items-center gap-6 text-sm text-[var(--muted)] md:flex">
+      {
+        NAV.map((item) => (
+          <a href={item.href} class="transition-colors hover:text-[var(--brown)]">
+            {item.label}
+          </a>
+        ))
+      }
+      <a href="#contact" class="btn btn-primary btn-sm">Get In Touch</a>
+    </nav>
+    <details class="md:hidden">
+      <summary class="cursor-pointer list-none p-2 text-[var(--brown)]">☰</summary>
+      <nav class="absolute right-4 top-16 w-52 rounded-xl border border-[var(--line)] bg-white p-3 shadow-lg">
+        {
+          NAV.map((item) => (
+            <a href={item.href} class="block rounded-lg px-3 py-2 text-sm hover:bg-[var(--olive-light)]/30">
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </details>
+  </div>
+</header>

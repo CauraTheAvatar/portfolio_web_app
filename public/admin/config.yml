@@ -1,0 +1,48 @@
+local_backend: true
+backend:
+  name: git-gateway
+  branch: main
+  accept_roles:
+    - admin
+    - editor
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - {
+          label: "Category",
+          name: "category",
+          widget: "select",
+          options:
+            [
+              "Software Development",
+              "Data Engineering",
+              "WordPress",
+              "UI/UX Design",
+              "Graphic Design",
+            ],
+        }
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - {
+          label: "Status",
+          name: "status",
+          widget: "select",
+          options: ["Live", "In Progress", "Upcoming", "Open Source"],
+        }
+      - { label: "Live URL", name: "liveUrl", widget: "string", required: false }
+      - { label: "GitHub URL", name: "githubUrl", widget: "string", required: false }
+      - { label: "Tech Stack", name: "tech", widget: "list" }
+      - { label: "Order", name: "order", widget: "number", default: 99 }
+      - { label: "Body", name: "body", widget: "markdown" }
