@@ -1,0 +1,78 @@
+---
+// Inline SVG icon set (lucide-style strokes), matching Flutter's Material icons
+// usage: <Icon name="code" size={26} />
+interface Props {
+  name: string;
+  size?: number;
+  filled?: boolean;
+}
+const { name, size = 24, filled = false } = Astro.props;
+const common = {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: filled ? "currentColor" : "none",
+  stroke: filled ? "none" : "currentColor",
+  "stroke-width": 1.8,
+  "stroke-linecap": "round" as const,
+  "stroke-linejoin": "round" as const,
+  "aria-hidden": "true",
+};
+---
+{name === "code" && (
+  <svg {...common}><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></svg>
+)}
+{name === "globe" && (
+  <svg {...common}><circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" /></svg>
+)}
+{name === "database" && (
+  <svg {...common}><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5v14a9 3 0 0 0 18 0V5" /><path d="M3 12a9 3 0 0 0 18 0" /></svg>
+)}
+{name === "analytics" && (
+  <svg {...common}><path d="M3 3v16a2 2 0 0 0 2 2h16" /><path d="m7 14 4-4 3 3 5-6" /></svg>
+)}
+{name === "pen-tool" && (
+  <svg {...common}><path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="m2 2 7.586 7.586" /><circle cx="11" cy="11" r="2" /></svg>
+)}
+{name === "brush" && (
+  <svg {...common}><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08" /><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z" /></svg>
+)}
+{name === "school" && (
+  <svg {...common}><path d="M22 10 12 5 2 10l10 5 10-5z" /><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" /><path d="M22 10v6" /></svg>
+)}
+{name === "trophy" && (
+  <svg {...common}><path d="M8 21h8" /><path d="M12 17v4" /><path d="M7 4h10v6a5 5 0 0 1-10 0V4z" /><path d="M17 5h4v2a3 3 0 0 1-3 3" /><path d="M7 5H3v2a3 3 0 0 0 3 3" /></svg>
+)}
+{name === "leaf" && (
+  <svg {...common}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" /><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" /></svg>
+)}
+{name === "scissors" && (
+  <svg {...common}><circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M20 4 8.12 15.88" /><path d="M14.47 14.48 20 20" /><path d="M8.12 8.12 12 12" /></svg>
+)}
+{name === "mail" && (
+  <svg {...common}><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+)}
+{name === "link" && (
+  <svg {...common}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
+)}
+{name === "person" && (
+  <svg {...common}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+)}
+{name === "chat" && (
+  <svg {...common}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+)}
+{name === "menu" && (
+  <svg {...common}><path d="M4 6h16" /><path d="M4 12h16" /><path d="M4 18h16" /></svg>
+)}
+{name === "close" && (
+  <svg {...common}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+)}
+{name === "arrow-right" && (
+  <svg {...common}><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+)}
+{name === "touch" && (
+  <svg {...common}><path d="M18 11V6a2 2 0 0 0-4 0v5" /><path d="M14 10V4a2 2 0 0 0-4 0v6" /><path d="M10 10.5V6a2 2 0 0 0-4 0v8" /><path d="M6 14v-2a2 2 0 0 0-4 0v4a6 6 0 0 0 12 0v-1" /></svg>
+)}
+{name === "github" && (
+  <svg {...common} width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.73.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.26 5.66.41.36.78 1.05.78 2.13v3.16c0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" /></svg>
+)}

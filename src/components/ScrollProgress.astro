@@ -1,0 +1,25 @@
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<style>
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--gold);
+    z-index: 1000;
+    transition: width 60ms linear;
+  }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>(".scroll-progress");
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0) return;
+    bar!.style.width = `${Math.min(100, (window.scrollY / max) * 100)}%`;
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+</script>

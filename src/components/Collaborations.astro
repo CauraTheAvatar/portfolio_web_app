@@ -1,0 +1,308 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
+
+const collaborations = [
+  {
+    company: "Hope Home Base Healthcare",
+    logo: "",
+    projectName: "Healthcare Information & Outreach Website",
+    period: "2026 - Present",
+    description:
+      "Building a comprehensive website to educate the public on healthcare services and provide information for caring for chronically ill patients. The site serves as the first point of contact for potential clients, featuring educational resources and a contact form. Hope Home Base is an NGO dedicated to caring for chronically ill and bedridden patients who have no one else to care for them.",
+    technologies: ["Flutter Web", "Firebase", "Contact Form Integration"],
+    isCurrent: true,
+  },
+  {
+    company: "Abba Selah Collectives",
+    logo: "/images/collab-abba-selah.jpg",
+    projectName: "Automated Quotation Generation System",
+    period: "2026",
+    description:
+      "Developed an automated custom quotation generation engine using JavaScript and Google Apps Script. The system links Google Form responses to a custom Google Doc template, automatically computes item sums by category, generates PDF quotations within 30 seconds, and emails them to clients. Quotes are logged and both business owners receive copies to stay informed.",
+    technologies: ["JavaScript", "Google Apps Script", "Google Forms", "Google Docs API"],
+    isCurrent: false,
+  },
+  {
+    company: "Cao Cao Investment CC",
+    logo: "/images/collab-cao-cao.jpg",
+    projectName: "Minimalist Corporate Website",
+    period: "2025",
+    description:
+      "Collaborated with their small tech team to build a WordPress website for this SME. Created a minimalistic design as per client preference. The website serves as the first point of contact for potential clients, providing essential information about their investment services.",
+    technologies: ["WordPress", "PHP", "Custom Theme", "Elementor"],
+    isCurrent: false,
+  },
+];
+
+const initials = (company: string) =>
+  company
+    .split(" ")
+    .filter((w) => w.length > 0)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+---
+
+<section class="section section--cream" id="collaborations">
+  <div class="shell">
+    <SectionHeader
+      overline="Collaborations"
+      title="Collaborations"
+      subtitle="Companies and organizations we've collaborated with to build technological solutions."
+    />
+
+    <div class="timeline">
+      {collaborations.map((collab) => (
+        <div class="timeline__row">
+          <div class="timeline__side timeline__side--card">
+            <article class="card collab__card">
+              <div class="collab__content">
+                <div class="collab__top">
+                  <h3 class="card-title collab__company">{collab.company}</h3>
+                  <span class="collab__period">{collab.period}</span>
+                </div>
+                <p class="collab__project">{collab.projectName}</p>
+                <div class="collab__rule"></div>
+                <p class="collab__desc">{collab.description}</p>
+                <div class="collab__tech">
+                  {collab.technologies.map((tech) => (
+                    <span class="chip">{tech}</span>
+                  ))}
+                </div>
+                {collab.isCurrent && (
+                  <span class="collab__active">
+                    <span class="collab__active-dot"></span>
+                    Active Collaboration
+                  </span>
+                )}
+              </div>
+              {collab.logo ? (
+                <div class="collab__logo">
+                  <img src={collab.logo} alt={`${collab.company} logo`} loading="lazy" />
+                </div>
+              ) : (
+                <div class="collab__logo collab__logo--initials">{initials(collab.company)}</div>
+              )}
+            </article>
+          </div>
+          <div class="timeline__dot"></div>
+          <div class="timeline__side timeline__side--spacer"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    margin-top: 56px;
+    position: relative;
+    /* safety net: nothing may push the page wider than the viewport */
+    overflow-x: clip;
+    /* --- centred shrunk column: 1.5× smaller than the old ~50% track
+       (33.333% equivalent) but centred for smooth viewing. Device-agnostic:
+       the centred block grows fluidly on smaller viewports so cards never
+       look cramped or overflow. --- */
+    width: min(620px, 42%);
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Gold spine runs along the left edge of the centred column */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px; /* dot centre (8px) minus half the spine (1px) */
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: rgba(212, 175, 55, 0.3);
+  }
+  .timeline__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    margin-bottom: 40px;
+  }
+  .timeline__row:last-child { margin-bottom: 0; }
+
+  .timeline__side {
+    min-width: 0; /* allow flex children to shrink below content width */
+  }
+  .timeline__side--spacer { display: none; }
+  /* Card fills the centred column (the column itself is the 1.5× shrunk track) */
+  .timeline__side--card { width: 100%; flex: 1 1 0; }
+  .timeline__dot {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 3px solid var(--cream);
+    box-shadow: 0 0 8px 2px rgba(212, 175, 55, 0.3);
+    position: relative;
+    z-index: 2; /* sits above the spine */
+  }
+
+  /* Card — Flutter desktop layout: content (flex 7) + logo box (flex 3, 120px) */
+  .collab__card {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    min-width: 0; /* let the card shrink inside its grid track */
+  }
+  .collab__card:hover { transform: scale(1.02); }
+  .collab__content {
+    flex: 7;
+    min-width: 0;
+  }
+  .collab__logo {
+    flex: 3;
+    height: 120px;
+    border-radius: var(--radius-m);
+    background: var(--light);
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all var(--dur) ease;
+  }
+  .collab__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 12px;
+  }
+  .collab__logo--initials {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--grey);
+  }
+  .collab__card:hover .collab__logo {
+    background: rgba(212, 175, 55, 0.05);
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+  .collab__card:hover .collab__logo--initials { color: var(--gold); }
+
+  .collab__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .collab__company { font-size: 22px; line-height: 1.25; overflow-wrap: anywhere; }
+  .collab__period {
+    flex: none;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--light);
+    color: var(--grey);
+    font-size: 12px;
+    font-weight: 600;
+    transition: all var(--dur) ease;
+  }
+  .collab__card:hover .collab__period {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--gold);
+  }
+  .collab__project {
+    margin-top: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--grey);
+    overflow-wrap: anywhere;
+    transition: color var(--dur) ease;
+  }
+  .collab__card:hover .collab__project { color: var(--gold); }
+  .collab__rule {
+    margin: 12px 0;
+    width: 40px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(212, 175, 55, 0.5);
+    transition: background var(--dur) ease;
+  }
+  .collab__card:hover .collab__rule { background: var(--gold); }
+  .collab__desc { font-size: 15px; color: var(--grey); overflow-wrap: anywhere; }
+  .collab__tech {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .collab__active {
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .collab__active-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* Device-agnostic fluid steps — the centred shrunk track widens
+     smoothly so cards never look cramped on mid-width viewports */
+  @media (max-width: 1200px) {
+    .timeline { width: min(580px, 52%); }
+  }
+  @media (max-width: 1024px) {
+    .timeline { width: min(560px, 62%); }
+  }
+
+  /* Mobile — mirrors Flutter's _MobileTimeline: stacked cards with a
+     2px × 40px gold line between them (no rail, no dot). */
+  @media (max-width: 900px) {
+    .timeline { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
+    .timeline::before { display: none; } /* no spine on mobile */
+    .timeline__row {
+      display: block;
+      margin-bottom: 0;
+    }
+    .timeline__dot,
+    .timeline__side--spacer { display: none; }
+    .timeline__side--card { width: 100%; }
+    .timeline__row:not(:last-child)::after {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 40px;
+      margin: 28px auto;
+      background: rgba(212, 175, 55, 0.3);
+    }
+    /* Flutter mobile order: company/period, logo (100px), project, rule,
+       desc, chips, active — achieved via display:contents + order */
+    .collab__card { flex-direction: column; }
+    .collab__content { display: contents; }
+    .collab__top { order: 1; }
+    .collab__logo {
+      order: 2;
+      flex: none;
+      width: 100%;
+      height: 100px;
+      margin: 12px 0;
+    }
+    .collab__project { order: 3; }
+    .collab__rule { order: 4; }
+    .collab__desc { order: 5; }
+    .collab__tech { order: 6; }
+    .collab__active { order: 7; }
+    /* Flutter mobile type scale */
+    .collab__company { font-size: 18px; }
+    .collab__period { font-size: 11px; }
+    .collab__project { font-size: 14px; }
+    .collab__desc { font-size: 13px; }
+    .chip { font-size: 11px; }
+  }
+</style>

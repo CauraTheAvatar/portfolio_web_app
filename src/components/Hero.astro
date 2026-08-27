@@ -1,0 +1,202 @@
+---
+import Icon from "./Icon.astro";
+
+const developerName = "C'AURA TECHNOLOGY";
+const developerTitles = [
+  "Software Developer",
+  "Data Analyst",
+  "Flutter Engineer",
+  "UI/UX Designer",
+  "IT Solutions Specialist",
+];
+const roleStrip = ["Software Developer", "Data Analyst", "ML Enthusiast"];
+const heroIntro =
+  "With a passion for clean code and thoughtful design, we bridge the gap between software engineering precision and creative vision — turning ideas into polished digital experiences. We provide top quality technical solutions for your corporate needs.";
+---
+<section class="section section--cream hero" id="introduction">
+  <div class="shell hero__grid">
+    <div class="hero__left">
+      <span class="overline">We are</span>
+
+      <h1 class="hero__name">
+        <span class="shimmer">{developerName}</span>
+      </h1>
+
+      <div class="hero__roles" aria-label="Roles">
+        {roleStrip.map((role, i) => (
+          <span class="hero__role">
+            {i > 0 && <span class="hero__sep" aria-hidden="true">|</span>}
+            {role}
+          </span>
+        ))}
+      </div>
+
+      <div class="hero__titles" aria-live="polite">
+        <span class="hero__title" data-rotator>{developerTitles[0]}</span>
+      </div>
+
+      <div class="gold-rule hero__rule"></div>
+
+      <p class="hero__intro">{heroIntro}</p>
+
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href="#projects">View Our Work</a>
+        <a class="btn btn--outline" href="#contact">Get In Touch</a>
+      </div>
+    </div>
+
+    <div class="hero__right">
+      <div class="hero__imgwrap">
+        <img
+          class="hero__img"
+          src="/images/caura-logo-gold.png"
+          alt="C'aura Technology gold logo"
+          width="340"
+          height="340"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    align-items: center;
+    gap: 60px;
+    padding-top: calc(var(--navbar-height) + 8px);
+    padding-bottom: 24px;
+  }
+  .hero__left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hero__name {
+    margin-top: 10px;
+    font-size: 58px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 1.2px;
+    line-height: 1.05;
+  }
+  .shimmer {
+    background: linear-gradient(
+      100deg,
+      #b08d1e 0%,
+      var(--gold) 20%,
+      #f3e0a0 38%,
+      var(--gold-light) 50%,
+      #f3e0a0 62%,
+      var(--gold) 80%,
+      #b08d1e 100%
+    );
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer-move var(--dur-shimmer) linear infinite;
+  }
+  @keyframes shimmer-move {
+    to { background-position: -220% center; }
+  }
+
+  .hero__roles {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .hero__sep {
+    margin: 0 12px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .hero__titles {
+    margin-top: 10px;
+    min-height: 26px;
+  }
+  .hero__title {
+    display: inline-block;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--ink);
+    opacity: 1;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .hero__title.is-fading {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .hero__rule { margin-top: 24px; }
+
+  .hero__intro {
+    margin-top: 24px;
+    max-width: 480px;
+    font-size: 16px;
+    color: var(--grey);
+  }
+
+  .hero__ctas {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .hero__right {
+    display: flex;
+    justify-content: center;
+  }
+  .hero__imgwrap {
+    width: 340px;
+    max-width: 100%;
+    padding: 6px;
+    border-radius: var(--radius-xxl);
+    background: var(--cream);
+    border: var(--border-thick) solid var(--gold);
+    box-shadow: var(--shadow-profile);
+  }
+  .hero__img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    border-radius: var(--radius-xl);
+    background: var(--cream);
+  }
+
+  @media (max-width: 900px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding-top: calc(var(--navbar-height) + 24px);
+      text-align: left;
+    }
+    .hero__name { font-size: 42px; }
+    .hero__right { order: -1; }
+    .hero__imgwrap { width: 220px; }
+  }
+</style>
+
+<script define:vars={{ titles: developerTitles }}>
+  // Rotating titles (Flutter _AnimatedTitles: fade/scale every 2.8s)
+  const el = document.querySelector<HTMLElement>("[data-rotator]");
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % titles.length;
+    el!.classList.add("is-fading");
+    setTimeout(() => {
+      el!.textContent = titles[i];
+      el!.classList.remove("is-fading");
+    }, 350);
+  }, 2800);
+</script>

@@ -1,41 +1,250 @@
 ---
-const NAV = [
-  { label: "Introduction", href: "#hero" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Collaborations", href: "#collaborations" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+import Icon from "./Icon.astro";
+
+const items = [
+  { id: "introduction", label: "Introduction" },
+  { id: "projects", label: "Projects" },
+  { id: "skills", label: "Skills" },
+  { id: "collaborations", label: "Collaborations" },
+  { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
 ];
 ---
-
-<header class="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--canvas)]/90 backdrop-blur">
-  <div class="container flex h-16 items-center justify-between">
-    <a href="#hero" class="flex items-center gap-2 font-semibold tracking-wide">
-      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--brown)] text-[var(--gold)] text-sm font-bold">C</span>
-      <span class="hidden sm:inline">C'AURA TECHNOLOGY</span>
+<header class="navbar" id="top">
+  <div class="shell navbar__inner">
+    <a class="navbar__brand" href="#introduction">
+      <span class="navbar__dot" aria-hidden="true"></span>
+      <span class="navbar__name">C'aura Technology</span>
     </a>
-    <nav class="hidden items-center gap-6 text-sm text-[var(--muted)] md:flex">
-      {
-        NAV.map((item) => (
-          <a href={item.href} class="transition-colors hover:text-[var(--brown)]">
-            {item.label}
-          </a>
-        ))
-      }
-      <a href="#contact" class="btn btn-primary btn-sm">Get In Touch</a>
+
+    <nav class="navbar__links" aria-label="Primary">
+      {items.map((item) => (
+        <a class="nav-link" href={`#${item.id}`} data-section={item.id}>{item.label}</a>
+      ))}
     </nav>
-    <details class="md:hidden">
-      <summary class="cursor-pointer list-none p-2 text-[var(--brown)]">☰</summary>
-      <nav class="absolute right-4 top-16 w-52 rounded-xl border border-[var(--line)] bg-white p-3 shadow-lg">
-        {
-          NAV.map((item) => (
-            <a href={item.href} class="block rounded-lg px-3 py-2 text-sm hover:bg-[var(--olive-light)]/30">
-              {item.label}
-            </a>
-          ))
-        }
-      </nav>
-    </details>
+
+    <button class="navbar__burger" aria-label="Open menu" data-burger>
+      <Icon name="menu" size={26} />
+    </button>
   </div>
 </header>
+
+<!-- Mobile drawer -->
+<div class="drawer-overlay" data-drawer-overlay></div>
+<aside class="drawer" data-drawer aria-label="Mobile menu">
+  <div class="drawer__header">
+    <span class="drawer__brand">C'aura Technology</span>
+    <button class="drawer__close" aria-label="Close menu" data-drawer-close>
+      <Icon name="close" size={22} />
+    </button>
+  </div>
+  <div class="drawer__divider"></div>
+  <nav class="drawer__links">
+    {items.map((item) => (
+      <a class="drawer__link" href={`#${item.id}`} data-drawer-link data-section={item.id}>
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</aside>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--navbar-height);
+    z-index: 900;
+    background: rgba(251, 248, 241, 0.8);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid transparent;
+    transition: box-shadow var(--dur-med) ease, background var(--dur-med) ease;
+  }
+  .navbar--scrolled {
+    background: rgba(251, 248, 241, 0.92);
+    box-shadow: 0 2px 20px rgba(62, 50, 41, 0.06);
+  }
+  .navbar__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .navbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .navbar__dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex: none;
+  }
+  .navbar__name {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+  }
+  .navbar__links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .nav-link {
+    position: relative;
+    padding: 10px 15px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    transition: color var(--dur) ease, font-weight var(--dur) ease;
+  }
+  .nav-link:hover,
+  .nav-link.is-active {
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 4px;
+    width: 24px; height: 2px;
+    border-radius: 2px;
+    background: var(--gold);
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    transition: transform var(--dur) ease-out;
+  }
+  .nav-link.is-active::after,
+  .nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+  .navbar__burger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--ink);
+    padding: 6px;
+  }
+
+  /* Drawer */
+  .drawer-overlay {
+    position: fixed; inset: 0;
+    background: rgba(62, 50, 41, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-med) ease;
+    z-index: 950;
+  }
+  .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+  .drawer {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 280px;
+    z-index: 960;
+    background: var(--cream);
+    box-shadow: -4px 0 24px rgba(62, 50, 41, 0.13);
+    transform: translateX(100%);
+    transition: transform var(--dur-med) cubic-bezier(0.33, 1, 0.68, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 24px;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 12px 0 24px;
+  }
+  .drawer__brand {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--gold);
+  }
+  .drawer__close {
+    background: none; border: none;
+    color: var(--ink);
+    padding: 4px;
+  }
+  .drawer__divider {
+    margin: 14px 24px;
+    height: 1px;
+    background: rgba(212, 175, 55, 0.3);
+  }
+  .drawer__links {
+    display: flex;
+    flex-direction: column;
+  }
+  .drawer__link {
+    padding: 15px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    border-left: 3px solid transparent;
+    transition: all var(--dur) ease;
+  }
+  .drawer__link:hover,
+  .drawer__link.is-active {
+    color: var(--gold);
+    font-weight: 600;
+    border-left-color: var(--gold);
+    background: rgba(212, 175, 55, 0.06);
+  }
+
+  @media (max-width: 900px) {
+    .navbar__links { display: none; }
+    .navbar__burger { display: block; }
+  }
+</style>
+
+<script>
+  const navbar = document.querySelector<HTMLElement>(".navbar");
+  const burger = document.querySelector<HTMLButtonElement>("[data-burger]");
+  const drawer = document.querySelector<HTMLElement>("[data-drawer]");
+  const overlay = document.querySelector<HTMLElement>("[data-drawer-overlay]");
+  const closeBtn = document.querySelector<HTMLButtonElement>("[data-drawer-close]");
+
+  const closeDrawer = () => {
+    drawer!.classList.remove("open");
+    overlay!.classList.remove("open");
+  };
+  burger?.addEventListener("click", () => {
+    drawer!.classList.toggle("open");
+    overlay!.classList.toggle("open");
+  });
+  closeBtn?.addEventListener("click", closeDrawer);
+  overlay?.addEventListener("click", closeDrawer);
+  document.querySelectorAll("[data-drawer-link]").forEach((a) =>
+    a.addEventListener("click", closeDrawer)
+  );
+
+  window.addEventListener("scroll", () => {
+    navbar!.classList.toggle("navbar--scrolled", window.scrollY > 10);
+  }, { passive: true });
+
+  // Active section highlight (Flutter's VisibilityDetector equivalent)
+  const sections = ["introduction", "projects", "skills", "collaborations", "about", "contact"];
+  const links = Array.from(document.querySelectorAll<HTMLElement>(".nav-link, .drawer__link"));
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          const id = (e.target as HTMLElement).id;
+          links.forEach((l) => l.classList.toggle("is-active", l.dataset.section === id));
+        }
+      }
+    },
+    { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+  );
+  sections.forEach((s) => {
+    const el = document.getElementById(s);
+    if (el) io.observe(el);
+  });
+</script>

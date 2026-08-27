@@ -1,0 +1,322 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
+
+const socials = [
+  { icon: "mail", label: "Email Us", value: "conceicao.laurauuyuni@gmail.com", href: "mailto:conceicao.laurauuyuni@gmail.com" },
+  { icon: "github", label: "GitHub", value: "https://github.com/CauraTheAvatar", href: "https://github.com/CauraTheAvatar" },
+  { icon: "link", label: "LinkedIn", value: "https://www.linkedin.com/in/conceicao-uuyuni-35a1a6200/", href: "https://www.linkedin.com/in/conceicao-uuyuni-35a1a6200/" },
+];
+const formspreeUrl = "https://formspree.io/f/xvzwovdo";
+---
+<section class="section section--cream" id="contact">
+  <div class="shell">
+    <SectionHeader
+      overline="Get In Touch"
+      title="Contact"
+      subtitle="Let's work together."
+      body="Have a project in mind or just want to say hello? Drop us a message and we will get back to you as soon as possible."
+    />
+
+    <div class="contact__grid">
+      <div class="contact__info">
+        <h3 class="contact__heading">Let's connect</h3>
+        <p class="contact__intro">
+          Open to freelance projects, collaborations, and full-time opportunities. Reach out through
+          the form or connect directly.
+        </p>
+
+        <div class="contact__links">
+          {socials.map((s) => (
+            <a class="contact__link" href={s.href} target="_blank" rel="noopener noreferrer">
+              <span class="contact__icon">
+                <Icon name={s.icon} size={22} />
+              </span>
+              <span class="contact__link-text">
+                <span class="contact__label">{s.label}</span>
+                <span class="contact__value">{s.value}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <form class="contact__form" data-contact-form novalidate>
+        <input type="text" name="_gotcha" class="contact__honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <label class="field">
+          <span class="field__label">Full Name</span>
+          <span class="field__box">
+            <Icon name="person" size={22} />
+            <input type="text" name="name" placeholder="Jane Smith" required />
+          </span>
+          <span class="field__error" data-error="name"></span>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Email Address</span>
+          <span class="field__box">
+            <Icon name="mail" size={22} />
+            <input type="email" name="email" placeholder="jane@example.com" required />
+          </span>
+          <span class="field__error" data-error="email"></span>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Message</span>
+          <span class="field__box field__box--area">
+            <Icon name="chat" size={22} />
+            <textarea name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+          </span>
+          <span class="field__error" data-error="message"></span>
+        </label>
+
+        <button class="btn btn--primary contact__submit" type="submit" data-submit>
+          <span data-submit-label>Send Message</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Snackbar (gold success / red error, mirrors Get.snackbar) -->
+  <div class="snackbar" data-snackbar role="status"></div>
+
+  <!-- Confetti canvas (80 particles, 3s — mirrors Confetti widget) -->
+  <canvas class="confetti" data-confetti width="1200" height="800"></canvas>
+</section>
+
+<style>
+  .contact__grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: 40fr 60fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .contact__heading {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .contact__intro {
+    margin-top: 12px;
+    font-size: 15px;
+    color: var(--grey);
+    max-width: 380px;
+  }
+
+  .contact__links { margin-top: 36px; display: flex; flex-direction: column; gap: 24px; }
+  .contact__link { display: flex; align-items: center; gap: 16px; width: fit-content; max-width: 100%; }
+  .contact__icon {
+    flex: none;
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    padding: 12px;
+    border-radius: var(--radius-m);
+    background: var(--light);
+    color: var(--grey);
+    transition: all var(--dur) ease;
+  }
+  .contact__link:hover .contact__icon {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--gold);
+  }
+  .contact__link-text { display: flex; flex-direction: column; min-width: 0; }
+  .contact__label { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .contact__value {
+    font-size: 13px;
+    color: var(--grey);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color var(--dur) ease;
+  }
+  .contact__link:hover .contact__value { color: var(--gold); }
+
+  /* Form */
+  .contact__form { display: flex; flex-direction: column; gap: 24px; }
+  .contact__honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    height: 0;
+    width: 0;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field__label { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .field__box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: var(--radius-s);
+    background: var(--light);
+    color: var(--grey);
+    border: 1.5px solid transparent;
+    transition: border-color var(--dur) ease, background var(--dur) ease;
+  }
+  .field__box:focus-within {
+    background: var(--cream);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .field__box input,
+  .field__box textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    resize: none;
+  }
+  .field__box input::placeholder,
+  .field__box textarea::placeholder { color: #b3a68f; }
+  .field__error { font-size: 12px; color: #c0392b; min-height: 14px; }
+  .contact__submit { margin-top: 4px; align-self: flex-start; }
+
+  .snackbar {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    padding: 12px 22px;
+    border-radius: var(--radius-s);
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--gold);
+    box-shadow: 0 6px 20px rgba(62, 50, 41, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-med) ease, transform var(--dur-med) ease;
+    z-index: 1200;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .snackbar.show { opacity: 1; transform: translate(-50%, 0); }
+  .snackbar.error { background: #c0392b; }
+
+  .confetti {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1100;
+  }
+
+  @media (max-width: 900px) {
+    .contact__grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+</style>
+
+<script define:vars={{ formspreeUrl }}>
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const snackbar = document.querySelector<HTMLElement>("[data-snackbar]");
+  const submitBtn = document.querySelector<HTMLButtonElement>("[data-submit]");
+  const submitLabel = document.querySelector<HTMLElement>("[data-submit-label]");
+  const errors: Record<string, HTMLElement> = {
+    name: document.querySelector<HTMLElement>('[data-error="name"]')!,
+    email: document.querySelector<HTMLElement>('[data-error="email"]')!,
+    message: document.querySelector<HTMLElement>('[data-error="message"]')!,
+  };
+
+  let snackTimer: number | undefined;
+  const showSnack = (text: string, isError = false) => {
+    snackbar!.textContent = text;
+    snackbar!.classList.toggle("error", isError);
+    snackbar!.classList.add("show");
+    window.clearTimeout(snackTimer);
+    snackTimer = window.setTimeout(() => snackbar!.classList.remove("show"), 3000);
+  };
+
+  // Confetti — 80 gold/earth particles, 3s (mirrors Flutter Confetti widget)
+  const canvas = document.querySelector<HTMLCanvasElement>("[data-confetti]");
+  const ctx = canvas!.getContext("2d")!;
+  const colors = ["#d4af37", "#e5c87c", "#f3e7cf", "#8a7b6b", "#3e3229", "#efe9db"];
+  const fireConfetti = () => {
+    const parts = Array.from({ length: 80 }, () => ({
+      x: Math.random() * canvas!.width,
+      y: -20 - Math.random() * canvas!.height * 0.4,
+      w: 6 + Math.random() * 6,
+      h: 8 + Math.random() * 8,
+      vy: 2 + Math.random() * 3.5,
+      vx: (Math.random() - 0.5) * 1.6,
+      rot: Math.random() * Math.PI,
+      vr: (Math.random() - 0.5) * 0.2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }));
+    const start = performance.now();
+    const dur = 3000;
+    const tick = (now: number) => {
+      const t = (now - start) / dur;
+      ctx.clearRect(0, 0, canvas!.width, canvas!.height);
+      parts.forEach((p) => {
+        p.y += p.vy;
+        p.x += p.vx + Math.sin((now + p.rot * 100) / 200) * 0.4;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.globalAlpha = Math.max(0, 1 - t);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      if (t < 1) requestAnimationFrame(tick);
+      else ctx.clearRect(0, 0, canvas!.width, canvas!.height);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const validEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+  form!.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = (form!.elements.namedItem("name") as HTMLInputElement).value.trim();
+    const email = (form!.elements.namedItem("email") as HTMLInputElement).value.trim();
+    const message = (form!.elements.namedItem("message") as HTMLTextAreaElement).value.trim();
+    const gotcha = (form!.elements.namedItem("_gotcha") as HTMLInputElement).value;
+
+    errors.name!.textContent = "";
+    errors.email!.textContent = "";
+    errors.message!.textContent = "";
+
+    let ok = true;
+    if (!name) { errors.name!.textContent = "Please enter your name"; ok = false; }
+    if (!email) { errors.email!.textContent = "Please enter your email"; ok = false; }
+    else if (!validEmail(email)) { errors.email!.textContent = "Please enter a valid email"; ok = false; }
+    if (!message) { errors.message!.textContent = "Please enter your message"; ok = false; }
+    else if (message.length < 10) { errors.message!.textContent = "Message must be at least 10 characters"; ok = false; }
+    if (!ok || gotcha) return;
+
+    submitBtn!.disabled = true;
+    submitBtn!.style.opacity = "0.65";
+    submitLabel!.textContent = "Sending...";
+
+    try {
+      const res = await fetch(formspreeUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name, email, message, _gotcha: gotcha }),
+      });
+      if (res.ok) {
+        form!.reset();
+        showSnack("Message sent successfully!");
+        fireConfetti();
+      } else {
+        showSnack("Something went wrong. Please try again.", true);
+      }
+    } catch {
+      showSnack("Failed to send message. Please try again.", true);
+    } finally {
+      submitBtn!.disabled = false;
+      submitBtn!.style.opacity = "1";
+      submitLabel!.textContent = "Send Message";
+    }
+  });
+</script>

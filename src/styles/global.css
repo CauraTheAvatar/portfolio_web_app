@@ -1,137 +1,237 @@
+/* ==========================================================================
+   C'AURA TECHNOLOGY — Portfolio
+   Design: faithful port of the deployed Flutter web build
+   (https://cauratechnology.netlify.app/)
+   ONLY change vs the original: general colour palette shifted to a
+   pastel, earthier tone with gold. Layout, copy, spacing & behaviour
+   mirror the deployed site exactly.
+   ========================================================================== */
+
 :root {
-  /* Pastel olive + gold + dark brown + white re-theme */
-  --olive: #8a9a5b;
-  --olive-dark: #5c6b38;
-  --olive-light: #c9d3a8;
-  --gold: #d4af37;
+  /* --- Pastel earthy + gold palette (token roles kept identical) --- */
+  --gold: #d4af37;            /* brand gold */
   --gold-light: #e5c87c;
-  --brown: #3e2f23;
-  --brown-dark: #2a1e15;
-  --canvas: #fdfcf8;
-  --ink: #3e2f23;
-  --muted: #777777;
-  --line: #e8e4d8;
+  --gold-extra: #f3e7cf;      /* pale gold tint */
+  --ink: #3e3229;             /* deep earthy umber  (was black #111) */
+  --ink-soft: #4a3d31;
+  --grey: #8a7b6b;            /* warm taupe          (was grey #777) */
+  --light: #efe9db;           /* warm sand           (was lightGrey #f5f5f5) */
+  --cream: #fbf8f1;           /* warm white          (was white #fff) */
+  --line: #e3dac7;            /* sand hairline */
+
+  /* --- Sizes (AppSizes, 4pt grid) --- */
+  --space-xxs: 4px;  --space-xs: 6px;  --space-s: 8px;   --space-m: 12px;
+  --space-l: 16px;   --space-xl: 18px; --space-xxl: 24px; --space-3xl: 28px;
+  --space-4xl: 36px; --space-5xl: 40px; --space-6xl: 56px; --space-7xl: 60px;
+  --space-8xl: 80px;
+
+  --radius-xs: 2px; --radius-s: 6px; --radius-m: 10px; --radius-l: 12px;
+  --radius-xl: 18px; --radius-xxl: 20px;
+
+  --border-thin: 1px; --border-default: 1.5px; --border-thick: 2.5px;
+
+  --navbar-height: 70px;
+  --card-padding: 28px;
+  --card-icon-size: 52px;
+  --section-pad-v: 80px;
+  --gold-rule-w: 52px;
+  --gold-rule-h: 3px;
+  --max-width: 1200px;
+
+  --dur-fast: 180ms; --dur: 200ms; --dur-med: 280ms; --dur-slow: 400ms;
+  --dur-scroll: 600ms; --dur-shimmer: 3s; --dur-titles: 2800ms;
+
+  --shadow-card: 0 2px 10px rgba(62, 50, 41, 0.05);
+  --shadow-card-hover: 0 8px 24px rgba(212, 175, 55, 0.18), 0 4px 16px rgba(62, 50, 41, 0.07);
+  --shadow-profile: 0 10px 30px rgba(212, 175, 55, 0.18), 0 6px 20px rgba(62, 50, 41, 0.08);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  margin: 0;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  background: var(--canvas);
-  color: var(--ink);
-  line-height: 1.6;
+  font-family: "Montserrat", "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--grey);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-h1,
-h2,
-h3 {
-  font-family: Georgia, "Times New Roman", serif;
-  letter-spacing: -0.01em;
-}
+h1, h2, h3, h4 { font-family: "Playfair Display", Georgia, serif; color: var(--ink); }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
 
-.container {
-  max-width: 76rem;
-  margin: 0 auto;
-  padding: 0 1.25rem;
-}
+::selection { background: var(--gold); color: var(--cream); }
+
+/* Scrollbar (earthy) */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--light); }
+::-webkit-scrollbar-thumb { background: #cbb98a; border-radius: 20px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ---------------------------------------------------------------
+   Layout shell
+   --------------------------------------------------------------- */
+.shell { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
 
 .section {
-  padding: 5rem 0;
+  position: relative;
+  padding: var(--section-pad-v) 0;
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-margin-top: var(--navbar-height);
+}
+.section--sand { background: var(--light); }
+.section--cream { background: var(--cream); }
+.section--sand::before, .section--cream::before {
+  /* subtle warm radial glow, mirrors Flutter's addGradient */
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 900px 400px at 50% -10%, rgba(212, 175, 55, 0.07), transparent 70%);
 }
 
+/* ---------------------------------------------------------------
+   Section header (overline / title / gold rule / subtitle)
+   --------------------------------------------------------------- */
+.section-header { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.section-header .overline,
 .overline {
-  font-size: 0.75rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.25em;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--olive-dark);
+  color: var(--gold);
 }
-
-.section-title {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  color: var(--brown);
-  margin: 0.5rem 0 0.25rem;
+.section-header h2 {
+  margin-top: var(--space-m);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
-
 .gold-rule {
-  width: 4rem;
-  height: 3px;
+  width: var(--gold-rule-w);
+  height: var(--gold-rule-h);
+  margin-top: var(--space-l);
   background: var(--gold);
-  border-radius: 999px;
-  margin: 1rem 0;
+  border-radius: var(--radius-xs);
+}
+.section-header .section-subtitle {
+  margin-top: var(--space-l);
+  font-size: 16px;
+  color: var(--grey);
+  max-width: 560px;
 }
 
-.center {
-  text-align: center;
+/* ---------------------------------------------------------------
+   FadeIn (hydration-safe: gated behind .js on <html>)
+   --------------------------------------------------------------- */
+.js .fade {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: var(--fade-delay, 0ms);
 }
+.js .fade.in-view { opacity: 1; transform: none; }
 
-.center .gold-rule {
-  margin: 1rem auto;
-}
-
-.card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(62, 47, 35, 0.1);
-}
-
+/* ---------------------------------------------------------------
+   Buttons (radius 6, black→gold hover — now umber→gold)
+   --------------------------------------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 999px;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: var(--radius-s);
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
+  border: 1.5px solid transparent;
+  transition: all var(--dur) ease;
+  white-space: nowrap;
 }
-
-.btn-primary {
-  background: var(--brown);
+.btn--primary {
+  background: var(--ink);
   color: #fff;
+  border-color: var(--ink);
 }
-
-.btn-primary:hover {
-  background: var(--brown-dark);
+.btn--primary:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+  transform: translateY(-1px);
+}
+.btn--outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.btn--outline:hover {
+  background: rgba(212, 175, 55, 0.08);
+  border-color: var(--gold);
+  color: var(--gold);
   transform: translateY(-1px);
 }
 
-.btn-outline {
-  border: 2px solid var(--brown);
-  color: var(--brown);
+/* ---------------------------------------------------------------
+   Cards
+   --------------------------------------------------------------- */
+.card {
+  background: var(--cream);
+  border: var(--border-default) solid rgba(212, 175, 55, 0.35);
+  border-radius: var(--radius-l);
+  padding: var(--card-padding);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--dur) ease, border-color var(--dur) ease,
+              box-shadow var(--dur) ease, background var(--dur) ease;
+}
+.card:hover {
+  border-color: var(--gold);
+  box-shadow: var(--shadow-card-hover);
 }
 
-.btn-outline:hover {
-  background: var(--brown);
-  color: #fff;
+.card-icon {
+  width: var(--card-icon-size);
+  height: var(--card-icon-size);
+  border-radius: var(--radius-m);
+  background: var(--light);
+  color: var(--grey);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--dur) ease;
 }
+.card:hover .card-icon { background: rgba(212, 175, 55, 0.12); color: var(--gold); }
 
-.btn-sm {
-  padding: 0.5rem 1.1rem;
-  font-size: 0.8rem;
+.card-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  transition: color var(--dur) ease;
 }
+.card:hover .card-title { color: var(--gold); }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+/* ---------------------------------------------------------------
+   Chips
+   --------------------------------------------------------------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-xxl);
+  background: var(--light);
+  color: var(--grey);
+  font-size: 12px;
+  font-weight: 500;
+  transition: all var(--dur) ease;
 }
+.card:hover .chip { background: rgba(212, 175, 55, 0.1); color: var(--gold); }

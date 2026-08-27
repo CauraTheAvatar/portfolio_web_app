@@ -1,0 +1,16 @@
+---
+interface Props {
+  overline: string;
+  title: string;
+  subtitle?: string;
+  body?: string;
+}
+const { overline, title, subtitle, body } = Astro.props;
+---
+<div class="section-header">
+  <span class="overline">{overline}</span>
+  <h2>{title}</h2>
+  <div class="gold-rule"></div>
+  {subtitle && <p class="section-subtitle">{subtitle}</p>}
+  {body && <p style="margin-top:12px; max-width:480px; font-size:15px;">{body}</p>}
+</div>

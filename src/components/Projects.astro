@@ -1,0 +1,143 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
+
+const cards = [
+  {
+    icon: "code",
+    title: "Software Development",
+    subtitle: "Web · Mobile · GitHub",
+    href: "https://github.com/CauraTheAvatar",
+  },
+  {
+    icon: "globe",
+    title: "WordPress",
+    subtitle: "Websites & CMS builds",
+    href: "https://conceicaolaurauuyuni.wordpress.com/",
+  },
+  {
+    icon: "database",
+    title: "Data Engineering",
+    subtitle: "Pipelines & infrastructure",
+    href: "https://github.com/CauraTheAvatar/Scalable-Data-Pipeline-for-Public-Health-Cost-of-Living-Insights-in-Namibia.git",
+  },
+  {
+    icon: "analytics",
+    title: "Data Analytics",
+    subtitle: "Analysis · Visualizations · Code",
+    href: "https://github.com/CauraTheAvatar/data-analytics",
+  },
+  {
+    icon: "pen-tool",
+    title: "UI Design",
+    subtitle: "Figma · Canva interfaces",
+    href: "https://figma.com/@cauratech",
+  },
+  {
+    icon: "brush",
+    title: "Graphic Design",
+    subtitle: "Posters · branding · print",
+    href: "https://www.notion.so/DECOR-CONTENT-CREATION-PLANNER-2ee3ce6e325d81a1ac70f7b8238587ae?source=copy_link",
+  },
+];
+---
+<section class="section section--sand" id="projects">
+  <div class="shell">
+    <SectionHeader
+      overline="What We've Built"
+      title="Projects"
+      subtitle="A selection of things we've built. Click on any card to explore more."
+    />
+
+    <div class="projects__hint" aria-hidden="true">
+      <Icon name="touch" size={16} />
+      <span>Click on any card to explore projects</span>
+      <Icon name="arrow-right" size={16} />
+    </div>
+
+    <div class="projects__grid">
+      {cards.map((card) => (
+        <a class="card projects__card" href={card.href} target="_blank" rel="noopener noreferrer">
+          <div class="card-icon">
+            <Icon name={card.icon} size={26} />
+          </div>
+          <h3 class="card-title projects__title">{card.title}</h3>
+          <p class="projects__subtitle">{card.subtitle}</p>
+          <span class="projects__arrow">
+            <span class="projects__arrow-label">View Projects</span>
+            <span class="projects__arrow-icon"><Icon name="arrow-right" size={14} /></span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects__hint {
+    margin: 28px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    padding: 8px 18px;
+    border-radius: var(--radius-xxl);
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .projects__grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .projects__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transform: scale(1);
+  }
+  .projects__card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.22), 0 4px 16px rgba(62, 50, 41, 0.08);
+  }
+  .projects__title { margin-top: 18px; font-size: 22px; }
+  .projects__subtitle {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--grey);
+    transition: color var(--dur) ease;
+  }
+  .projects__card:hover .projects__subtitle { color: var(--ink-soft); }
+  .projects__arrow {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .projects__arrow-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .projects__arrow-icon {
+    display: inline-flex;
+    color: var(--gold);
+    transition: transform var(--dur) ease;
+  }
+  .projects__card:hover .projects__arrow-icon {
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 1000px) {
+    .projects__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .projects__grid { grid-template-columns: 1fr; }
+  }
+</style>

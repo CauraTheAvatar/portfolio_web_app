@@ -1,0 +1,154 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
+
+const blocks = [
+  {
+    icon: "school",
+    title: "Founder Education & Learning",
+    body: "My journey into technology began with a genuine curiosity about how things work. I pursued a formal education in Computer Science, where I developed a strong foundation in software engineering, data structures, and systems thinking. Beyond the classroom, I've committed to continuous self-development — completing professional certifications in data analytics, machine learning, and mobile development. I believe learning never stops, and every project is an opportunity to grow. Outside of tech, I find balance in creative expression, community building, and the pursuit of excellence in everything I take on.",
+    align: "left",
+    isMiddle: false,
+  },
+  {
+    icon: "trophy",
+    title: "Milestones & Achievements",
+    body: "Across software, data, and design, we've had the privilege of building real-world solutions that people use. From engineering scalable data pipelines and deploying cross-platform Flutter applications, to founding C'aura Hair Care, a professional loctician business, and C'aura Technologies — we've learned to lead with intention and execute with discipline. Each milestone has sharpened both our technical edge and entrepreneurial instinct.",
+    align: "right",
+    isMiddle: true,
+  },
+  {
+    icon: "leaf",
+    title: "Philosophy & Values",
+    body: "We believe great software is built at the intersection of empathy and engineering. Our work philosophy centres on clarity, ownership, and craft — writing code that is as readable as it is functional. We lead by example, whether in a collaborative setting or tackling business ventures, and we hold our organisation to a standard of continuous improvement.",
+    align: "left",
+    isMiddle: false,
+  },
+];
+---
+<section class="section section--sand" id="about">
+  <div class="shell">
+    <SectionHeader
+      overline="Who We Are"
+      title="About Us"
+      subtitle="A little background."
+    />
+
+    <div class="about__grid">
+      {blocks.map((block) => (
+        <article
+          class={`card about__block ${block.isMiddle ? "about__block--middle" : ""} ${
+            block.align === "right" ? "about__block--right" : ""
+          }`}
+        >
+          <div class="card-icon">
+            <Icon name={block.icon} size={26} />
+          </div>
+          <h3 class="card-title about__title">{block.title}</h3>
+          <div class="about__rule"></div>
+          <p class="about__body">{block.body}</p>
+
+          {block.isMiddle && (
+            <div class="about__ventures">
+              <span class="about__ventures-label">Ventures</span>
+              <div class="about__chip">
+                <Icon name="scissors" size={16} />
+                <span class="about__chip-text">
+                  <span class="about__chip-name">C'aura Hair Care</span>
+                  <span class="about__chip-sub">Loctician Business</span>
+                </span>
+              </div>
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+
+    <div class="about__cta">
+      <a class="btn btn--primary" href="https://yourname.dev/cv.pdf" target="_blank" rel="noopener noreferrer">
+        Download CV
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+  .about__block { display: flex; flex-direction: column; align-items: flex-start; height: 100%; }
+  .about__block--right { align-items: flex-end; text-align: right; }
+  .about__block--middle:hover { background: rgba(212, 175, 55, 0.04); }
+
+  .about__title { margin-top: 18px; }
+  .about__rule {
+    margin: 8px 0 18px;
+    width: 32px;
+    height: var(--gold-rule-h);
+    border-radius: var(--radius-xs);
+    background: rgba(212, 175, 55, 0.5);
+    transition: background var(--dur) ease;
+  }
+  .about__block:hover .about__rule { background: var(--gold); }
+  .about__body { font-size: 15px; color: var(--grey); }
+
+  .about__ventures {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .about__ventures-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .about__chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    border-radius: var(--radius-s);
+    background: var(--light);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--gold);
+    transition: all var(--dur) ease;
+  }
+  .about__chip:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--gold);
+  }
+  .about__chip-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .about__chip-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .about__chip-sub {
+    font-size: 11px;
+    color: var(--gold);
+  }
+
+  .about__cta {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 1000px) {
+    .about__grid { grid-template-columns: 1fr; }
+    .about__block--right { align-items: flex-start; text-align: left; }
+    .about__ventures { align-items: flex-start; }
+  }
+</style>

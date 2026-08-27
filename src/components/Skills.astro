@@ -1,0 +1,203 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
+
+// Data faithful to AppStrings.skillCategories + skills_section proficiencies
+const categories = [
+  {
+    icon: "code",
+    title: "Software Engineering",
+    skills: [
+      { name: "Flutter", pct: 98 },
+      { name: "Dart", pct: 98 },
+      { name: "Node.js", pct: 95 },
+      { name: "TypeScript", pct: 85 },
+      { name: "Angular", pct: 85 },
+      { name: "REST APIs", pct: 95 },
+      { name: "Firebase", pct: 95 },
+      { name: "Supabase", pct: 95 },
+      { name: "GetX", pct: 95 },
+      { name: "Riverpod", pct: 95 },
+      { name: "Git & GitHub", pct: 95 },
+      { name: "PostgreSQL", pct: 95 },
+      { name: "WordPress", pct: 88 },
+    ],
+  },
+  {
+    icon: "analytics",
+    title: "Data Science & Analytics",
+    skills: [
+      { name: "Python", pct: 90 },
+      { name: "Data Engineering", pct: 90 },
+      { name: "Tableau", pct: 90 },
+      { name: "Data Analytics", pct: 90 },
+      { name: "Data Visualization", pct: 90 },
+      { name: "Scalable Pipelines", pct: 90 },
+      { name: "SQL", pct: 90 },
+    ],
+  },
+  {
+    icon: "pen-tool",
+    title: "UI/UX Design",
+    skills: [
+      { name: "Figma", pct: 92 },
+      { name: "Canva", pct: 92 },
+      { name: "Wireframing", pct: 92 },
+      { name: "Prototyping", pct: 92 },
+      { name: "User Research", pct: 92 },
+      { name: "Design Systems", pct: 92 },
+      { name: "Responsive Design", pct: 92 },
+    ],
+  },
+  {
+    icon: "brush",
+    title: "Graphic Design",
+    skills: [
+      { name: "Poster Design", pct: 92 },
+      { name: "Brand Identity", pct: 92 },
+      { name: "Typography", pct: 92 },
+      { name: "Print Design", pct: 92 },
+      { name: "Digital Illustration", pct: 92 },
+      { name: "Canva Pro", pct: 92 },
+    ],
+  },
+];
+---
+<section class="section section--cream" id="skills">
+  <div class="shell">
+    <SectionHeader
+      overline="Proficient Techstacks"
+      title="Skills"
+      subtitle="Technologies & Tools We Work With"
+    />
+
+    <div class="skills__grid">
+      {categories.map((cat, ci) => (
+        <div class="skills__card-wrap" data-skill-card>
+          <article class="card skills__card">
+            <div class="skills__head">
+              <div class="card-icon">
+                <Icon name={cat.icon} size={24} />
+              </div>
+              <h3 class="card-title skills__cat">{cat.title}</h3>
+            </div>
+
+            <div class="skills__list">
+              {cat.skills.map((skill) => (
+                <div class="skill-row">
+                  <div class="skill-row__top">
+                    <span class="skill-row__name">{skill.name}</span>
+                    <span class="skill-row__pct" data-pct data-target={skill.pct}>{skill.pct}%</span>
+                  </div>
+                  <div class="skill-row__track">
+                    <div class="skill-row__fill" data-fill data-target={skill.pct} style={`width:0%`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills__grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+  .skills__card { height: 100%; }
+  .skills__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .skills__cat { font-size: 20px; line-height: 1.2; }
+  .skills__list { display: flex; flex-direction: column; gap: 16px; }
+
+  .skill-row__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .skill-row__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .skill-row__pct {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .skill-row__track {
+    margin-top: 4px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--light);
+    overflow: hidden;
+  }
+  .skill-row__fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--grey);
+    transition: background var(--dur) ease;
+  }
+  /* Hover: card gold fill + defocus siblings (Flutter _DefocusOverlay) */
+  .skills__grid:hover .skills__card-wrap:not(:hover) .skills__card {
+    opacity: 0.55;
+    filter: blur(1.5px);
+  }
+  .skills__card-wrap:hover .skills__card {
+    transform: scale(1.02);
+    border-color: var(--gold);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+  }
+  .skills__card-wrap:hover .skill-row__fill { background: var(--gold); }
+
+  @media (max-width: 1100px) {
+    .skills__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .skills__grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // Animate bars + counters when the section scrolls into view (1.5s easeOutCubic)
+  const section = document.querySelector<HTMLElement>("#skills");
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        io.disconnect();
+        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+        const dur = 1500;
+        const start = performance.now();
+        const fills = Array.from(section!.querySelectorAll<HTMLElement>("[data-fill]"));
+        const pcts = Array.from(section!.querySelectorAll<HTMLElement>("[data-pct]"));
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - start) / dur);
+          const v = easeOutCubic(t);
+          fills.forEach((f) => {
+            const target = parseFloat(f.dataset.target || "0");
+            f.style.width = `${(target * v).toFixed(1)}%`;
+          });
+          pcts.forEach((p) => {
+            const target = parseFloat(p.dataset.target || "0");
+            p.textContent = `${Math.round(target * v)}%`;
+          });
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    },
+    { threshold: 0.2 }
+  );
+  io.observe(section!);
+</script>

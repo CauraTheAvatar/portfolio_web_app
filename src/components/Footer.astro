@@ -1,14 +1,135 @@
 ---
-const year = new Date().getFullYear();
+const SCRIPTURES = [
+  { text: "I can do all things through Christ who strengthens me.", ref: "Philippians 4:13" },
+  { text: "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.", ref: "Jeremiah 29:11" },
+  { text: "Trust in the Lord with all your heart and lean not on your own understanding.", ref: "Proverbs 3:5" },
+  { text: "Commit your work to the Lord, and your plans will be established.", ref: "Proverbs 16:3" },
+  { text: "Whatever you do, work heartily, as for the Lord and not for men.", ref: "Colossians 3:23" },
+];
+const json = JSON.stringify(SCRIPTURES);
 ---
 
-<footer class="border-t border-[var(--line)] bg-white">
-  <div class="container flex flex-col items-center gap-4 py-10 text-center">
-    <a href="#hero" class="flex items-center gap-2 font-semibold">
-      <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--brown)] text-[var(--gold)] text-sm font-bold">C</span>
-      C'AURA TECHNOLOGY
-    </a>
-    <p class="text-sm text-[var(--muted)]">Building elegant solutions one line of code at a time.</p>
-    <p class="text-xs text-[var(--muted)]">© {year} C'aura Technology. All Rights Reserved.</p>
+<footer class="footer">
+  <div class="shell footer__inner">
+    <div class="footer__rule"></div>
+
+    <p class="footer__tagline">
+      Building elegant solutions one line of code at a time.
+    </p>
+
+    <!-- Dynamic scripture rotator — one verse at a time, every 6s -->
+    <div class="footer__scripture" data-scripture aria-live="polite">
+      <p class="footer__scripture-text" data-scripture-text>{SCRIPTURES[0].text}</p>
+      <p class="footer__scripture-ref" data-scripture-ref>{SCRIPTURES[0].ref}</p>
+    </div>
+
+    <p class="footer__nav">
+      Introduction&ensp;·&ensp;Projects&ensp;·&ensp;Skills&ensp;·&ensp;Collaborations&ensp;·&ensp;About&ensp;·&ensp;Contact
+    </p>
+
+    <div class="footer__divider"></div>
+
+    <p class="footer__copyright">© 2026 C'aura Technology. All Rights Reserved.</p>
   </div>
 </footer>
+
+<style>
+  .footer {
+    width: 100%;
+    background: var(--ink);
+    padding: 56px 0;
+  }
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer__rule {
+    width: calc(var(--gold-rule-w) * 1.5);
+    height: var(--border-default);
+    border-radius: var(--radius-xxl);
+    background: var(--gold);
+  }
+  .footer__tagline {
+    margin-top: 36px;
+    font-size: 15px;
+    font-style: italic;
+    letter-spacing: 0.2px;
+    color: rgba(251, 248, 241, 0.75);
+  }
+  /* --- scripture rotator (gold on umber) --- */
+  .footer__scripture {
+    margin-top: 32px;
+    max-width: 640px;
+    padding: 20px 28px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 12px;
+    background: rgba(212, 175, 55, 0.06);
+  }
+  .footer__scripture-text {
+    font-family: "Alice", Georgia, serif;
+    font-size: 14px;
+    font-style: normal;
+    line-height: 1.6;
+    color: var(--gold-light);
+    transition: opacity 0.5s ease;
+  }
+  .footer__scripture-ref {
+    margin-top: 8px;
+    font-family: "Alice", Georgia, serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.7);
+    transition: opacity 0.5s ease;
+  }
+  .footer__nav {
+    margin-top: 28px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.6);
+  }
+  .footer__divider {
+    margin-top: 36px;
+    width: 100%;
+    height: 1px;
+    background: rgba(251, 248, 241, 0.08);
+  }
+  .footer__copyright {
+    margin-top: 24px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    color: rgba(251, 248, 241, 0.4);
+  }
+</style>
+
+<script define:vars={{ scriptures: SCRIPTURES }}>
+  // Dynamic Bible scripture rotator — crossfades between 5 verses every 6s.
+  // Safe for SSR: text is set only via JS after hydration (no opacity:0 markup).
+  const textEl = document.querySelector<HTMLElement>("[data-scripture-text]");
+  const refEl = document.querySelector<HTMLElement>("[data-scripture-ref]");
+  let index = 0;
+
+  function show(i: number) {
+    const s = scriptures[i];
+    if (!s) return;
+    textEl!.style.opacity = "0";
+    refEl!.style.opacity = "0";
+    setTimeout(() => {
+      textEl!.textContent = `“${s.text}”`;
+      refEl!.textContent = `— ${s.ref}`;
+      textEl!.style.opacity = "1";
+      refEl!.style.opacity = "1";
+    }, 250);
+  }
+
+  show(0);
+  setInterval(() => {
+    index = (index + 1) % scriptures.length;
+    show(index);
+  }, 6000);
+</script>
